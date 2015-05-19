@@ -51,19 +51,19 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 
 ### SQL
 
-#### Review
-
-#### In-Depth
+1. Review
+  * [Introduction to SQL for Data Scientists][14]
+2. In-Depth
+  * [SQL Zoo][15]
 
 ### Machine Learning
 
-#### Review
+1. Review
+  * [A Few Useful Things to know about Machine Learning][16]
+2. In-Depth
+  * Andrew Ng Coursera ([online][17] | [archive][18])
 
-* [A Few Useful Things to know about Machine Learning][]
-
-#### In-Depth
-
-* Andrew Ng Coursera ([online] | [archive][])
+<!-- references -->
 
 [1]: http://learnpythonthehardway.org/book/
 [2]: https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-0
@@ -82,5 +82,9 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 [12]: https://www.khanacademy.org/math/linear-algebra/matrix_transformations/composition_of_transformations/v/compositions-of-linear-transformations-1
 [13]: https://www.khanacademy.org/math/linear-algebra/matrix_transformations/inverse_of_matrices/v/linear-algebra-deriving-a-method-for-determining-inverses
 
-: http://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf
-: https://www.coursera.org/course/ml
+[14]: http://bensresearch.com/downloads/SQL.pdf
+[15]: http://sqlzoo.net/wiki/SQL_Tutorial
+
+[16]: http://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf
+[17]: https://www.coursera.org/course/ml
+[18]: resources/coursera_ml
