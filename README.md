@@ -18,7 +18,7 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 
 ### Programming
 
-#### Review
+__Review__
 
 * [Learn Python the Hard Way][1]
 
@@ -28,9 +28,8 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 
 ### Probability
 
-#### Review
-
-* [University of Washington: ML Math Essentials (probability)][3]
+* Review
+  * [University of Washington: ML Math Essentials (probability)][3]
 
 #### In-Depth
 
