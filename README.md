@@ -18,37 +18,33 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 
 ### Programming
 
-* Review
+1. Review
   * [Learn Python the Hard Way][1]
-
-* In-Depth
+2. In-Depth
   * [MITx: Introduction to Computer Science][2]
 
 ### Probability
 
-* Review
+1. Review
   * [University of Washington: ML Math Essentials (probability)][3]
-
-* In-Depth
+2. In-Depth
   * [Khan Academy: Independent and Dependent Events][4]
   * [Khan Academy: Probability and Combinatorics][5]
   * [Khan Academy: Random Variables and Probability Distributions][6]
 
 ### Statistics
 
-* Review
+1. Review
   * [MIT: Statistics Cheat Sheet][7]
-
-* In-Depth
+2. In-Depth
   * [Khan Academy: Descriptive Statistics][8]
   * [Khan Academy: Inferential Statistics][9]
 
 ### Linear Algebra
 
-* Review
+1. Review
   * [University of Washington: ML Math Essentials (linear algrebra)][10]
-
-* In-Depth
+2. In-Depth
   * [Khan Academy: Vectors][11]
   * [Khan Academy: Matrix Multiplication][12]
   * [Khan Academy: Determinants][13]
