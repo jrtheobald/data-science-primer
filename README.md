@@ -78,7 +78,7 @@ Thanks to the following course for putting their content online for all to lever
 * [MITx: Introduction to Computer Science][2]
 * [Coursera: Machine Learning][18]
 
-This resource is intentionally meant to be curated, concise, and compact, it covers the absolute necessities. If you are looking for even more resources we recommend looking to the [The Open-Source Data Science Masters][21].
+This resource is intentionally meant to be curated, concise, and compact. It covers the absolute necessities. If you are looking for even more resources we recommend looking to the [The Open-Source Data Science Masters][21].
 
 <!-- references -->
 
