@@ -1,0 +1,126 @@
+You now know about the stochastic gradient descent algorithm.
+But when you're running the algorithm, how do you make sure that it's completely debugged and is converging okay?
+Equally important, how do you tune the learning rate alpha with Stochastic Gradient Descent.
+In this video we'll talk about some techniques for doing these things, for making sure it's converging and for picking the learning rate alpha.
+Back when we were using batch gradient descent, our standard way for making sure that
+gradient descent was converging was we would plot the optimization cost function as a function of the number of iterations.
+So that was the cost function and we would make sure that this cost function is decreasing on every iteration.
+When the training set sizes were small, we could do that because we could compute the sum pretty efficiently.
+But when you have a massive training set size then you don't want to have to pause your algorithm periodically.
+You don't want to have to pause stochastic gradient descent periodically in order to compute this cost function
+since it requires a sum of your entire training set size.
+And the whole point of stochastic gradient was that you wanted to start to make progress
+after looking at just a single example without needing to occasionally scan through your entire training set
+right in the middle of the algorithm, just to compute things like the cost function of the entire training set.
+So for stochastic gradient descent, in order to check the algorithm is converging, here's what we can do instead.
+Let's take the definition of the cost that we had previously.
+So the cost of the parameters theta with respect to a single training example is just one half of the square error on that training example.
+Then, while stochastic gradient descent is learning, right before we train on a specific example.
+So, in stochastic gradient descent we're going to look at the examples xi, yi, in order, and
+then sort of take a little update with respect to this example.
+And we go on to the next example, xi plus 1, yi plus 1, and so on, right?
+That's what stochastic gradient descent does.
+So, while the algorithm is looking at the example xi, yi, but before it has updated the parameters theta
+using that an example, let's compute the cost of that example.
+Just to say the same thing again, but using slightly different words.
+A stochastic gradient descent is scanning through our training set right before we have updated theta using a specific training example x(i) comma y(i)
+let's compute how well our hypothesis is doing on that training example.
+And we want to do this before updating theta because if we've just updated theta using example,
+you know, that it might be doing better on that example than what would be representative.
+Finally, in order to check for the convergence of  stochastic gradient descent, what we can do is every, say, every thousand iterations,
+we can plot these costs that we've been computing in the previous step.
+We can plot those costs average over, say, the last thousand examples processed by the algorithm.
+And if you do this, it kind of gives you a running estimate of how well the algorithm is doing.
+on, you know, the last 1000 training examples that your algorithm has seen.
+So, in contrast to computing J<u>train periodically which needed to scan through the entire training set.</u>
+With this other procedure, well, as part of stochastic gradient descent,
+it doesn't cost much to compute these costs as well right before updating to parameter theta.
+And all we're doing is every thousand integrations or so, we just average the last 1,000 costs that we computed and plot that.
+And by looking at those plots, this will allow us to check if stochastic gradient descent is converging.
+So here are a few examples of what these plots might look like.
+Suppose you have plotted the cost average over the last thousand examples,
+because these are averaged over just a thousand examples, they are going to be a little bit noisy and so,
+it may not decrease on every single iteration.
+Then if you get a figure that looks like this, So the plot is noisy
+because it's average over, you know, just a small subset, say a thousand training examples.
+If you get a figure that looks like this, you know that would be a pretty decent run with the algorithm,
+maybe, where it looks like the cost has gone down and then this plateau that looks kind of flattened out, you know, starting from around that point.
+look like, this is what your cost looks like then maybe your learning algorithm has converged.
+If you want to try using a smaller learning rate, something you might see is that
+the algorithm may initially learn more slowly so the cost goes down more slowly.
+But then eventually you have a smaller learning rate is actually possible for the algorithm to end up at a, maybe very slightly better solution.
+So the red line may represent the behavior of stochastic gradient descent using a slower, using a smaller leaning rate.
+And the reason this is the case is because, you remember, stochastic gradient descent doesn't just converge to the global minimum,
+is that what it does is the parameters will oscillate a bit around the global minimum.
+And so by using a smaller learning rate, you'll end up with smaller oscillations.
+And sometimes this little difference will be negligible
+and sometimes with a smaller than you can get a slightly better value for the parameters.
+Here are some other things that might happen.
+Let's say you run stochastic gradient descent and you average over a thousand examples when plotting these costs.
+So, you know, here might be the result of another one of these plots.
+Then again, it kind of looks like it's converged.
+If you were to take this number, a thousand, and increase to averaging over 5 thousand examples.
+Then it's possible that you might get a smoother curve that looks more like this.
+And by averaging over, say 5,000 examples instead of 1,000, you might be able to get a smoother curve like this.
+And so that's the effect of increasing the number of examples you average over.
+The disadvantage of making this too big of course is that now you get one date point only every 5,000 examples.
+And so the feedback you get on how well your learning learning algorithm is doing is, sort of, maybe it's more delayed
+because you get one data point on your plot only every 5,000 examples rather than every 1,000 examples.
+Along a similar vein some times you may run a gradient descent and end up with a plot that looks like this.
+And with a plot that looks like this, you know, it looks like the cost just is not decreasing at all.
+It looks like the algorithm is just not learning.
+It's just, looks like this here a flat curve and the cost is just not decreasing.
+But again if you were to increase this to averaging over a larger number of examples
+it is possible that you see something like this red line
+it looks like the cost actually is decreasing, it's just that the blue line averaging over 2, 3 examples,
+the blue line was too noisy so you couldn't see the actual trend in the cost actually decreasing
+and possibly averaging over 5,000 examples instead of 1,000 may help.
+Of course we averaged over a larger number examples that we've averaged here over 5,000 examples,
+I'm just using a different color, it is also possible that you that see a learning curve ends up looking like this.
+That it's still flat even when you average over a larger number of examples.
+And as you get that, then that's maybe just a more firm verification that
+unfortunately the algorithm just isn't learning much for whatever reason.
+And you need to either change the learning rate or change the features or change something else about the algorithm.
+Finally, one last thing that you might see would be if you were to plot these curves
+and you see a curve that looks like this, where it actually looks like it's increasing.
+And if that's the case then this is a sign that the algorithm is diverging.
+And what you really should do is use a smaller value of the learning rate alpha.
+So hopefully this gives you a sense of the range of phenomena you might see
+when you plot these cost average over some range of examples as well as
+suggests the sorts of things you might try to do in response to seeing different plots.
+So if the plots looks too noisy, or if it wiggles up and down too much, then try increasing the number of examples
+you're averaging over so you can see the overall trend in the plot better.
+And if you see that the errors are actually increasing, the costs are actually increasing, try using a smaller value of alpha.
+Finally, it's worth examining the issue of the learning rate just a little bit more.
+We saw that when we run stochastic gradient descent, the algorithm will start here and sort of meander towards the minimum
+And then it won't really converge, and instead it'll wander around the minimum forever.
+And so you end up with a parameter value that is hopefully close to the global minimum that won't be exact at the global minimum.
+In most typical implementations of stochastic gradient descent, the learning rate alpha is typically held constant.
+And so what you we end up is exactly a picture like this.
+If you want stochastic gradient descent to actually converge to the global minimum,
+there's one thing which you can do which is you can slowly decrease the learning rate alpha over time.
+So, a pretty typical way of doing that would be to set alpha equals some constant 1 divided by iteration number plus constant 2.
+So, iteration number is the number of iterations you've run of stochastic gradient descent,
+so it's really the number of training examples you've seen
+And const 1 and const 2 are additional parameters of the algorithm
+that you might have to play with a bit in order to get good performance.
+One of the reasons people tend not to do this is because you end up needing to spend time
+playing with these 2 extra parameters, constant 1 and constant 2, and so this makes the algorithm more finicky.
+You know, it's just more parameters able to fiddle with in order to make the algorithm work well.
+But if you manage to tune the parameters well, then the picture you can get is that
+the algorithm will actually around towards the minimum, but as it gets closer
+because you're decreasing the learning rate the meanderings will get smaller and smaller
+until it pretty much just to the global minimum. I hope this makes sense, right?
+And the reason this formula makes sense is because as the algorithm runs, the iteration number becomes large So alpha will slowly become small,
+and so you take smaller and smaller steps until it hopefully converges to the global minimum.
+So If you do slowly decrease alpha to zero you can end up with a slightly better hypothesis.
+But because of the extra work needed to fiddle with the constants and because frankly usually we're pretty happy
+with any parameter value that is, you know, pretty close to the global minimum.
+Typically this process of decreasing alpha slowly is usually not done and keeping the learning rate alpha constant
+is the more common application of stochastic gradient descent although you will see people use either version.
+To summarize in this video we talk about a way for approximately monitoring
+how the stochastic gradient descent is doing in terms for optimizing the cost function.
+And this is a method that does not require scanning over the entire training set periodically to compute the cost function on the entire training set.
+But instead it looks at say only the last thousand examples or so.
+And you can use this method both to make sure the stochastic gradient descent is okay and is converging
+or to use it to tune the learning rate alpha.

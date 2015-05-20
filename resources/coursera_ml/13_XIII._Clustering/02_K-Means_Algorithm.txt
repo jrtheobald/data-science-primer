@@ -1,0 +1,385 @@
+In the clustering problem we are
+given an unlabeled data
+set and we would like
+to have an algorithm automatically
+group the data into coherent
+subsets or into coherent clusters for us.
+The K Means algorithm is by
+far the most popular, by
+far the most widely used clustering
+algorithm, and in this
+video I would like to tell
+you what the K Means Algorithm is and how it works.
+The K means clustering algorithm is best illustrated in pictures.
+Let's say I want to take
+an unlabeled data set like
+the one shown here, and I
+want to group the data into two clusters.
+If I run the K Means clustering
+algorithm, here is what
+I'm going to do. The first step is to randomly initialize two
+points, called the cluster centroids.
+So, these two crosses here,
+these are called the Cluster Centroids
+and I have two of them
+because I want to group my data into two clusters.
+K Means is an iterative algorithm and it does two things.
+First is a cluster assignment
+step, and second is a move centroid step.
+So, let me tell you what those things mean.
+The first of the two steps in the
+loop of K means, is this cluster assignment step.
+What that means is that, it's
+going through each of the
+examples, each of these green
+dots shown here and depending
+on whether it's closer to the
+red cluster centroid or the
+blue cluster centroid, it is going
+to assign each of the
+data points to one of the two cluster centroids.
+Specifically, what I mean
+by that, is to go through your
+data set and color each
+of the points either red or
+blue, depending on whether
+it is closer to the red
+cluster centroid or the blue
+cluster centroid, and I've done that in this diagram here.
+So, that was the cluster assignment step.
+The other part of K means, in the
+loop of K means, is the move
+centroid step, and what
+we are going to do is, we
+are going to take the two cluster centroids,
+that is, the red cross and
+the blue cross, and we are
+going to move them to the average
+of the points colored the same colour.
+So what we are going
+to do is look at all the
+red points and compute the
+average, really the mean
+of the location of all the red points,
+and we are going to move the red cluster centroid there.
+And the same things for the
+blue cluster centroid, look at all
+the blue dots and compute their
+mean, and then move the blue cluster centroid there.
+So, let me do that now.
+We're going to move the cluster centroids as follows
+and I've now moved them to their new means.
+The red one moved like that
+and the blue one moved
+like that and the red one moved like that.
+And then we go back to another cluster
+assignment step, so we're again
+going to look at all of
+my unlabeled examples and depending
+on whether it's closer the red or the blue cluster centroid,
+I'm going to color them either red or blue.
+I'm going to assign each point
+to one of the two cluster centroids, so let me do that now.
+And so the colors of some of the points just changed.
+And then I'm going to do another move centroid step.
+So I'm going to compute the
+average of all the blue points,
+compute the average of all
+the red points and move my
+cluster centroids like this, and
+so, let's do that again.
+Let me do one more cluster assignment step.
+So colour each point red
+or blue, based on what it's
+closer to and then
+do another move centroid step and we're done.
+And in fact if you
+keep running additional iterations of
+K means from here the
+cluster centroids will not change
+any further and the colours of
+the points will not change any
+further. And so, this is
+the, at this point,
+K means has converged and it's
+done a pretty good job finding
+the two clusters in this data.
+Let's write out the K means algorithm more formally.
+The K means algorithm takes two inputs.
+One is a parameter K,
+which is the number of clusters
+you want to find in the data.
+I'll later say how we might
+go about trying to choose k, but
+for now let's just say that
+we've decided we want a
+certain number of clusters and we're
+going to tell the algorithm how many
+clusters we think there are in the data set.
+And then K means also
+takes as input this sort
+of unlabeled training set of
+just the Xs and
+because this is unsupervised learning, we
+don't have the labels Y anymore.
+And for unsupervised learning of
+the K means I'm going to
+use the convention that XI
+is an RN dimensional vector.
+And that's why my training examples
+are now N dimensional rather N plus one dimensional vectors.
+This is what the K means algorithm does.
+The first step is that it
+randomly initializes k cluster
+centroids which we will
+call mu 1, mu 2, up
+to mu k. And so
+in the earlier diagram, the
+cluster centroids corresponded to the
+location of the red cross
+and the location of the blue cross.
+So there we had two cluster
+centroids, so maybe the red
+cross was mu 1
+and the blue cross was mu
+2, and more generally we would have
+k cluster centroids rather than just 2.
+Then the inner loop
+of k means does the following,
+we're going to repeatedly do the following.
+First for each of
+my training examples, I'm going
+to set this variable CI
+to be the index 1 through
+K of the cluster centroid closest to XI.
+So this was my cluster assignment
+step, where we
+took each of my examples and
+coloured it either red
+or blue, depending on which
+cluster centroid it was closest to.
+So CI is going to be
+a number from 1 to
+K that tells us, you
+know, is it closer to the
+red cross or is it
+closer to the blue cross,
+and another way of writing this
+is I'm going to,
+to compute Ci, I'm
+going to take my Ith
+example Xi and and
+I'm going to measure it's distance
+to each of my cluster centroids,
+this is mu and then
+lower-case k, right, so
+capital K is the total
+number centroids and I'm going
+to use lower case k here
+to index into the different centroids.
+But so, Ci is going to, I'm going
+to minimize over my values
+of k and find the
+value of K that minimizes this
+distance between Xi and the
+cluster centroid, and then,
+you know, the
+value of k that minimizes
+this, that's what gets set in
+Ci. So, here's
+another way of writing out what Ci is.
+If I write the norm between
+Xi minus Mu-k,
+then this is the distance between
+my ith training example
+Xi and the cluster centroid
+Mu subscript K, this is--this
+here, that's a lowercase K. So uppercase
+K is going to be
+used to denote the total
+number of cluster centroids,
+and this lowercase K's
+a number between one and
+capital K. I'm just using
+lower case K to index
+into my different cluster centroids.
+Next is lower case k. So
+that's the distance between the example and the cluster centroid
+and so what I'm going to
+do is find the value
+of K, of lower case
+k that minimizes this, and
+so the value of
+k that minimizes you know,
+that's what I'm going to
+set as Ci, and
+by convention here I've written
+the distance between Xi and
+the cluster centroid, by convention
+people actually tend to write this as the squared distance.
+So we think of Ci as picking
+the cluster centroid with the smallest
+squared distance to my training example Xi.
+But of course minimizing squared distance,
+and minimizing distance that should
+give you the same value of Ci,
+but we usually put in the
+square there, just as the
+convention that people use for K means.
+So that was the cluster assignment step.
+The other in the loop
+of K means does the move centroid step.
+And what that does is for
+each of my cluster centroids, so
+for lower case k equals 1 through
+K, it sets Mu-k equals
+to the average of the points assigned to cluster.
+So as a concrete example, let's say
+that one of my cluster
+centroids, let's say cluster centroid
+two, has training examples,
+you know, 1, 5, 6, and 10 assigned to it.
+And what this means is,
+really this means that C1 equals
+to C5 equals to
+C6 equals to and
+similarly well c10 equals, too, right?
+If we got that
+from the cluster assignment step, then
+that means examples 1,5,6 and
+10 were assigned to the cluster centroid two.
+Then in this move centroid step,
+what I'm going to do is just
+compute the average of these four things.
+So X1 plus X5 plus X6
+plus X10.
+And now I'm going
+to average them so here I
+have four points assigned to
+this cluster centroid, just take
+one quarter of that.
+And now Mu2 is going to
+be an n-dimensional vector.
+Because each of these
+example x1, x5, x6, x10
+each of them were an n-dimensional
+vector, and I'm going to
+add up these things and, you
+know, divide by four because I
+have four points assigned to this
+cluster centroid, I end up
+with my move centroid step,
+for my cluster centroid mu-2.
+This has the effect of moving
+mu-2 to the average of
+the four points listed here.
+One thing that I've asked is, well here we said, let's
+let mu-k be the average of the points assigned to the cluster.
+But what if there is
+a cluster centroid no points
+with zero points assigned to it.
+In that case the more common
+thing to do is to just
+eliminate that cluster centroid.
+And if you do that, you end
+up with K minus one clusters
+instead of k clusters.
+Sometimes if you really need
+k clusters, then the other
+thing you can do if you
+have a cluster centroid with no
+points assigned to it is you can
+just randomly reinitialize that cluster
+centroid, but it's more
+common to just eliminate a
+cluster if somewhere during
+K means it with no points
+assigned to that cluster centroid, and
+that can happen, altthough in practice
+it happens not that often.
+So that's the K means Algorithm.
+Before wrapping up this video
+I just want to tell you
+about one other common application
+of K Means and that's
+to the problems with non well separated clusters.
+Here's what I mean.
+So far we've been picturing K Means
+and applying it to data
+sets like that shown here where
+we have three pretty
+well separated clusters, and we'd
+like an algorithm to find maybe the 3 clusters for us.
+But it turns out that
+very often K Means is also
+applied to data sets that
+look like this where there may
+not be several very
+well separated clusters.
+Here is an example application, to t-shirt sizing.
+Let's say you are a t-shirt
+manufacturer you've done is you've gone
+to the population that you
+want to sell t-shirts to, and
+you've collected a number of
+examples of the height and weight
+of these people in your
+population and so, well I
+guess height and weight tend to
+be positively highlighted so maybe
+you end up with a data
+set like this, you know, with
+a sample or set of
+examples of different peoples heights and weight.
+Let's say you want to size your t shirts.
+Let's say I want to design
+and sell t shirts of three
+sizes, small, medium and large.
+So how big should I make my small one?
+How big should I my medium?
+And how big should I make my large t-shirts.
+One way to do that would
+to be to run my k means
+clustering logarithm on this data
+set that I have shown on
+the right and maybe what
+K Means will do is group
+all of these points into one
+cluster and group all
+of these points into a
+second cluster and group
+all of those points into a third cluster.
+So, even though the data, you
+know, before hand it didn't
+seem like we had 3
+well separated clusters, K Means will
+kind of separate out the data
+into multiple pluses for you.
+And what you can do is then
+look at this first population of
+people and look at
+them and, you know, look
+at the height and weight, and
+try to design a small
+t-shirt so that it kind
+of fits this first population of
+people well and then design
+a medium t-shirt and design a large t-shirt.
+And this is in fact kind of
+an example of market segmentation
+where you're using K Means to separate your
+market into 3 different segments.
+So you can design a product
+separately that is a small, medium, and large t-shirts,
+that tries to suit
+the needs of each of your
+3 separate sub-populations well.
+So that's the K Means algorithm.
+And by now you should
+know how to implement the K
+Means Algorithm and kind of get it to work for some problems.
+But in the next few videos
+what I want to do is
+really get more deeply into the nuts
+and bolts of K means and
+to talk a bit about how to actually get this to work really well.

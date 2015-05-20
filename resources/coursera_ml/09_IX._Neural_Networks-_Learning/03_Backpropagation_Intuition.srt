@@ -1,0 +1,1475 @@
+1
+00:00:00,260 --> 00:00:03,120
+In the previous video, we talked about the back propagation algorithm.
+
+2
+00:00:04,230 --> 00:00:05,090
+To a lot of people
+
+3
+00:00:05,220 --> 00:00:06,140
+seeing it for the first time,
+
+4
+00:00:06,460 --> 00:00:07,610
+the first impression is often
+
+5
+00:00:08,070 --> 00:00:09,250
+that wow, this is
+
+6
+00:00:09,380 --> 00:00:11,650
+a very complicated algorithm and there are all
+
+7
+00:00:11,970 --> 00:00:12,990
+these different steps. And I'm
+
+8
+00:00:13,130 --> 00:00:13,980
+not quite sure how they fit
+
+9
+00:00:14,180 --> 00:00:15,130
+together and its like kind
+
+10
+00:00:15,400 --> 00:00:17,830
+of a black box with all these complicated steps.
+
+11
+00:00:18,130 --> 00:00:18,830
+In case that 's how you are
+
+12
+00:00:18,870 --> 00:00:20,460
+feeling about back propagation, that's
+
+13
+00:00:20,860 --> 00:00:22,100
+actually okay.
+
+14
+00:00:22,740 --> 00:00:24,100
+Back propagation may be unfortunately
+
+15
+00:00:24,970 --> 00:00:26,920
+is a less mathematically clean or
+
+16
+00:00:27,060 --> 00:00:28,520
+less mathematically simple algorithm
+
+17
+00:00:28,860 --> 00:00:30,680
+compared to linear regression or
+
+18
+00:00:31,130 --> 00:00:32,850
+logistic regression, and I've
+
+19
+00:00:33,020 --> 00:00:35,560
+actually used back propagation, you know, pretty
+
+20
+00:00:36,080 --> 00:00:37,310
+successfully for many years and
+
+21
+00:00:37,530 --> 00:00:39,130
+even today, I still don't sometimes
+
+22
+00:00:39,510 --> 00:00:40,320
+feel like I have a very
+
+23
+00:00:40,430 --> 00:00:41,790
+good sense of just what
+
+24
+00:00:42,130 --> 00:00:43,580
+it's doing most of intuition about
+
+25
+00:00:43,830 --> 00:00:45,980
+what background propagation is doing.
+
+26
+00:00:46,740 --> 00:00:47,850
+For those of you that are doing
+
+27
+00:00:48,250 --> 00:00:49,920
+the programming exercises that will
+
+28
+00:00:50,480 --> 00:00:51,970
+at least mechanically step you
+
+29
+00:00:52,280 --> 00:00:53,710
+through the different steps of
+
+30
+00:00:53,810 --> 00:00:54,910
+how to implement back prop
+
+31
+00:00:55,200 --> 00:00:56,860
+so you will be able to get it to work for yourself.
+
+32
+00:00:57,910 --> 00:00:58,850
+And what I want to do
+
+33
+00:00:58,970 --> 00:01:00,170
+in this video is look a
+
+34
+00:01:00,460 --> 00:01:01,750
+little bit more at the
+
+35
+00:01:02,190 --> 00:01:03,640
+mechanical steps of back propagation
+
+36
+00:01:04,160 --> 00:01:05,620
+and try to give you a little
+
+37
+00:01:05,840 --> 00:01:07,450
+more intuition about what the
+
+38
+00:01:07,930 --> 00:01:09,080
+mechanical steps of back prop
+
+39
+00:01:09,250 --> 00:01:10,590
+is doing to hopefully convince you
+
+40
+00:01:10,790 --> 00:01:12,530
+that, you know, it is at least a reasonable algorithm.
+
+41
+00:01:14,680 --> 00:01:16,240
+In case even after this video, in
+
+42
+00:01:16,380 --> 00:01:18,000
+case back propagation still seems
+
+43
+00:01:18,760 --> 00:01:19,920
+very black box and kind
+
+44
+00:01:20,160 --> 00:01:21,600
+of like, you know, too many complicated
+
+45
+00:01:22,150 --> 00:01:23,230
+steps, a little bit magical to to
+
+46
+00:01:23,330 --> 00:01:24,740
+you, that's actually okay.
+
+47
+00:01:24,930 --> 00:01:26,760
+And even though,
+
+48
+00:01:27,050 --> 00:01:27,840
+you know, I have used back prop
+
+49
+00:01:28,070 --> 00:01:31,590
+for many years, sometimes it's a difficult algorithm to understand.
+
+50
+00:01:32,310 --> 00:01:34,140
+But hopefully this video will help a little bit.
+
+51
+00:01:36,410 --> 00:01:37,970
+In order to better understand back
+
+52
+00:01:38,190 --> 00:01:39,660
+propagation, let's take another
+
+53
+00:01:40,100 --> 00:01:42,290
+closer look at what forward propagation is doing.
+
+54
+00:01:43,170 --> 00:01:44,420
+Here's the neural network with two
+
+55
+00:01:44,770 --> 00:01:46,070
+input units that is not
+
+56
+00:01:46,390 --> 00:01:48,480
+counting the bias unit, and
+
+57
+00:01:48,700 --> 00:01:50,300
+two hidden units in this
+
+58
+00:01:50,500 --> 00:01:51,590
+layer and two hidden units
+
+59
+00:01:52,030 --> 00:01:53,490
+in the next layer, and then
+
+60
+00:01:53,640 --> 00:01:55,090
+finally one output unit.
+
+61
+00:01:55,520 --> 00:01:57,800
+And again, these counts 2,
+
+62
+00:01:57,920 --> 00:02:00,240
+2, 2 are not counting these bias units on top.
+
+63
+00:02:01,520 --> 00:02:03,170
+In order to illustrate forward
+
+64
+00:02:03,430 --> 00:02:04,570
+propagation, I'm going to
+
+65
+00:02:04,690 --> 00:02:06,080
+draw this network a little bit differently.
+
+66
+00:02:08,040 --> 00:02:09,180
+And in particular, I'm going to
+
+67
+00:02:09,370 --> 00:02:10,840
+draw this neural network with the
+
+68
+00:02:10,930 --> 00:02:12,620
+nodes drawn as these very
+
+69
+00:02:12,920 --> 00:02:15,010
+fat ellipses, so that I can write text in them.
+
+70
+00:02:15,840 --> 00:02:16,800
+When performing forward propagation,
+
+71
+00:02:17,600 --> 00:02:18,900
+we might have some particular example,
+
+72
+00:02:19,760 --> 00:02:21,190
+say some example x(i) comma
+
+73
+00:02:21,610 --> 00:02:22,990
+y(i) and it will
+
+74
+00:02:23,080 --> 00:02:24,550
+be this x(i) that we
+
+75
+00:02:24,740 --> 00:02:26,460
+feed into the input layer, so
+
+76
+00:02:27,080 --> 00:02:28,850
+that this may be,
+
+77
+00:02:29,110 --> 00:02:30,290
+x(i)1 and x(i)2 are the
+
+78
+00:02:30,440 --> 00:02:31,360
+values we set the input
+
+79
+00:02:31,510 --> 00:02:32,870
+layer to and when we
+
+80
+00:02:33,010 --> 00:02:34,350
+forward propagate it to the
+
+81
+00:02:34,650 --> 00:02:36,210
+first hidden layer here, what
+
+82
+00:02:36,360 --> 00:02:38,070
+we do is compute z(2)1 and
+
+83
+00:02:39,370 --> 00:02:42,900
+z(2)2, so these are the
+
+84
+00:02:43,770 --> 00:02:45,010
+weighted sum of inputs of the
+
+85
+00:02:45,260 --> 00:02:47,000
+input units and then
+
+86
+00:02:47,230 --> 00:02:48,680
+we apply the sigmoid of
+
+87
+00:02:48,940 --> 00:02:50,670
+the logistic function and the
+
+88
+00:02:51,940 --> 00:02:53,630
+sigmoid activation function applied
+
+89
+00:02:54,050 --> 00:02:55,670
+to the z value, gives us
+
+90
+00:02:55,960 --> 00:02:57,520
+these activation values.
+
+91
+00:02:57,880 --> 00:02:59,670
+So that gives us a(2)1
+
+92
+00:02:59,870 --> 00:03:01,160
+and a(2)2, and then we
+
+93
+00:03:01,260 --> 00:03:02,500
+forward propagate again to get,
+
+94
+00:03:03,940 --> 00:03:05,570
+you know, here z(3)1,
+
+95
+00:03:06,010 --> 00:03:07,500
+apply the sigmoid of the
+
+96
+00:03:07,690 --> 00:03:09,500
+logistic function, the activation function
+
+97
+00:03:10,080 --> 00:03:11,200
+to that, to get the
+
+98
+00:03:11,240 --> 00:03:14,310
+31 and similarly Like so,
+
+99
+00:03:15,580 --> 00:03:17,850
+until we get z(4)1, apply the
+
+100
+00:03:18,080 --> 00:03:19,450
+activation function this gives
+
+101
+00:03:19,630 --> 00:03:20,940
+us a(4)1 which is the
+
+102
+00:03:21,630 --> 00:03:23,030
+finer output value of the network.
+
+103
+00:03:24,860 --> 00:03:25,920
+Let's erase this arrow to
+
+104
+00:03:26,040 --> 00:03:28,490
+give myself some space, and if
+
+105
+00:03:28,620 --> 00:03:30,170
+you look at what this
+
+106
+00:03:30,610 --> 00:03:32,280
+computation really is doing, focusing
+
+107
+00:03:32,780 --> 00:03:33,970
+on this hidden unit
+
+108
+00:03:34,400 --> 00:03:35,860
+lets say we have that
+
+109
+00:03:36,090 --> 00:03:37,770
+this weight, shown in
+
+110
+00:03:37,870 --> 00:03:39,500
+magenta there, is my
+
+111
+00:03:39,700 --> 00:03:42,820
+weight theta 2(1)0 the
+
+112
+00:03:43,090 --> 00:03:45,930
+indexing is not important, and this
+
+113
+00:03:46,140 --> 00:03:47,440
+way here which I guess
+
+114
+00:03:47,570 --> 00:03:49,270
+I am highlighting in red, that
+
+115
+00:03:49,630 --> 00:03:51,290
+is theta 2(1)1 and
+
+116
+00:03:52,870 --> 00:03:53,970
+this weight here, which I'm
+
+117
+00:03:54,050 --> 00:03:55,370
+drawing in green, in a cyan,
+
+118
+00:03:55,720 --> 00:03:59,530
+is theta 2(1)2 so
+
+119
+00:04:00,410 --> 00:04:01,970
+the way the computers value z(3)1
+
+120
+00:04:02,540 --> 00:04:05,230
+is z(3)1 is as
+
+121
+00:04:05,410 --> 00:04:09,120
+equal to this Weight,
+
+122
+00:04:10,430 --> 00:04:11,840
+times this value so that's
+
+123
+00:04:13,070 --> 00:04:14,970
+theta 2(1)0 times 1,
+
+124
+00:04:16,240 --> 00:04:19,190
+plus this red
+
+125
+00:04:19,410 --> 00:04:21,480
+weight times this value, so
+
+126
+00:04:21,670 --> 00:04:23,690
+that's theta 2(1)1 times
+
+127
+00:04:25,270 --> 00:04:28,520
+a(2)1, and finally this
+
+128
+00:04:28,860 --> 00:04:30,140
+cyan red times this value,
+
+129
+00:04:30,660 --> 00:04:33,950
+which is therefore, plus theta
+
+130
+00:04:35,120 --> 00:04:37,300
+2(1)2 times a(2)1.
+
+131
+00:04:38,870 --> 00:04:40,170
+And so that's forward propagation.
+
+132
+00:04:42,410 --> 00:04:43,680
+And it turns out that, as
+
+133
+00:04:43,870 --> 00:04:44,730
+we see later on in this
+
+134
+00:04:44,790 --> 00:04:46,140
+video, what back propagation
+
+135
+00:04:46,530 --> 00:04:47,730
+is doing, is doing a
+
+136
+00:04:47,780 --> 00:04:49,120
+process very similar to
+
+137
+00:04:49,300 --> 00:04:50,860
+this, except that instead of
+
+138
+00:04:50,950 --> 00:04:53,120
+the computations flowing from the
+
+139
+00:04:53,360 --> 00:04:54,270
+left to the right of this network,
+
+140
+00:04:55,250 --> 00:04:56,510
+the computations is there flow
+
+141
+00:04:56,940 --> 00:04:58,070
+from the right to the
+
+142
+00:04:58,220 --> 00:04:59,720
+left of the network, and using
+
+143
+00:05:00,050 --> 00:05:02,170
+a very similar computation as this,
+
+144
+00:05:02,430 --> 00:05:03,710
+and I'll say in two
+
+145
+00:05:03,920 --> 00:05:05,260
+slides exactly what I mean by that.
+
+146
+00:05:06,400 --> 00:05:07,880
+To better understand what back
+
+147
+00:05:08,070 --> 00:05:09,710
+propagation is doing, let's look
+
+148
+00:05:09,780 --> 00:05:10,920
+at the cost function, it's just the
+
+149
+00:05:11,070 --> 00:05:12,270
+cost function that we had for
+
+150
+00:05:12,670 --> 00:05:14,950
+when we have only one output unit.
+
+151
+00:05:15,350 --> 00:05:16,300
+If we have more than
+
+152
+00:05:16,400 --> 00:05:17,410
+one output unit, we just
+
+153
+00:05:17,820 --> 00:05:19,850
+have a summation, you know, over the
+
+154
+00:05:19,930 --> 00:05:22,170
+output units index, if only
+
+155
+00:05:22,370 --> 00:05:25,990
+one output unit then this
+
+156
+00:05:26,190 --> 00:05:27,490
+is a cost function operation and
+
+157
+00:05:27,610 --> 00:05:30,340
+we do forward propagation and back propagation on one example at a time.
+
+158
+00:05:30,560 --> 00:05:31,440
+So, let's just focus on the
+
+159
+00:05:31,770 --> 00:05:34,770
+single example x(i)y(i), and focus
+
+160
+00:05:35,360 --> 00:05:36,480
+on the case of having one output
+
+161
+00:05:36,810 --> 00:05:38,390
+unit so y(i) here
+
+162
+00:05:38,660 --> 00:05:40,390
+is just a real number, and
+
+163
+00:05:40,680 --> 00:05:42,790
+let's ignore regularization, so lambda
+
+164
+00:05:43,010 --> 00:05:44,300
+equals zero, and this final
+
+165
+00:05:44,640 --> 00:05:46,480
+term, that regularization term goes away.
+
+166
+00:05:47,320 --> 00:05:48,220
+Now, if you look inside
+
+167
+00:05:48,730 --> 00:05:50,480
+this summation, you find that
+
+168
+00:05:50,780 --> 00:05:53,290
+the cost term associated with
+
+169
+00:05:53,450 --> 00:05:54,980
+the I'f training example, that
+
+170
+00:05:55,190 --> 00:05:57,230
+is, the cost associated with training
+
+171
+00:05:58,040 --> 00:06:00,420
+example x(i)y(i), that's
+
+172
+00:06:00,540 --> 00:06:01,820
+going to be given by this expression, that the
+
+173
+00:06:02,030 --> 00:06:03,270
+cost, sort of, of training example
+
+174
+00:06:03,810 --> 00:06:04,910
+i is written as follows.
+
+175
+00:06:06,080 --> 00:06:07,320
+And what this cost
+
+176
+00:06:07,650 --> 00:06:08,650
+function does, is it plays
+
+177
+00:06:09,080 --> 00:06:10,580
+a role similar to the square error.
+
+178
+00:06:10,750 --> 00:06:11,530
+So, rather than looking at this
+
+179
+00:06:12,190 --> 00:06:14,050
+complicated expression, if you
+
+180
+00:06:14,170 --> 00:06:15,380
+want you can think of cos
+
+181
+00:06:15,620 --> 00:06:17,600
+of i being approximately, you know, the square of
+
+182
+00:06:18,020 --> 00:06:19,310
+difference between or the
+
+183
+00:06:19,430 --> 00:06:20,870
+neural network outputs versus what
+
+184
+00:06:21,170 --> 00:06:22,980
+is the actual value. Just as
+
+185
+00:06:23,150 --> 00:06:24,340
+in logistic regression, we actually
+
+186
+00:06:24,620 --> 00:06:25,510
+prefer to use this slightly
+
+187
+00:06:25,830 --> 00:06:27,060
+more complicated cost function using
+
+188
+00:06:27,370 --> 00:06:28,580
+the log, but for the
+
+189
+00:06:28,640 --> 00:06:30,230
+purpose of intuition, feel free
+
+190
+00:06:30,570 --> 00:06:31,440
+to think of the cost function
+
+191
+00:06:32,000 --> 00:06:32,750
+as being sort of the squared
+
+192
+00:06:33,250 --> 00:06:35,000
+error cost function, and so
+
+193
+00:06:35,220 --> 00:06:36,870
+this cos of i measures how
+
+194
+00:06:37,110 --> 00:06:38,780
+well is the network doing on
+
+195
+00:06:38,880 --> 00:06:40,600
+correctly predicting example i.
+
+196
+00:06:40,840 --> 00:06:42,000
+How close is the output
+
+197
+00:06:42,810 --> 00:06:44,640
+to the actually observed label y(i).
+
+198
+00:06:45,590 --> 00:06:47,610
+Now let's look at what back propagation is doing.
+
+199
+00:06:48,420 --> 00:06:50,170
+One useful intuition is that
+
+200
+00:06:51,190 --> 00:06:52,940
+back propagation is computing these
+
+201
+00:06:53,610 --> 00:06:54,840
+delta superscript l
+
+202
+00:06:55,050 --> 00:06:57,440
+subscript j terms, and we
+
+203
+00:06:57,730 --> 00:06:58,520
+can think of these as
+
+204
+00:06:58,650 --> 00:07:00,070
+the quote error of the
+
+205
+00:07:00,300 --> 00:07:02,460
+activation value that we
+
+206
+00:07:02,620 --> 00:07:03,980
+got for unit j in
+
+207
+00:07:04,440 --> 00:07:05,750
+the layer, in the
+
+208
+00:07:07,130 --> 00:07:07,400
+lth layer.
+
+209
+00:07:07,660 --> 00:07:09,070
+More formally, and this is
+
+210
+00:07:09,340 --> 00:07:10,280
+maybe only for those of
+
+211
+00:07:10,360 --> 00:07:11,480
+you that are familiar with calculus,
+
+212
+00:07:12,690 --> 00:07:14,080
+more formally, what the delta
+
+213
+00:07:14,260 --> 00:07:15,820
+terms actually are is this:
+
+214
+00:07:15,950 --> 00:07:17,810
+they're the partial derivative with respect
+
+215
+00:07:18,240 --> 00:07:20,000
+to z(l)j, that is
+
+216
+00:07:20,150 --> 00:07:21,460
+the weighted sum of inputs that
+
+217
+00:07:21,650 --> 00:07:22,700
+we're computing the z terms,
+
+218
+00:07:23,410 --> 00:07:25,760
+partial derivative respect of these things of the cost function.
+
+219
+00:07:27,000 --> 00:07:28,650
+So concretely the cost function
+
+220
+00:07:28,900 --> 00:07:30,000
+is a function of the label
+
+221
+00:07:30,250 --> 00:07:31,350
+y and of the
+
+222
+00:07:31,470 --> 00:07:32,680
+value, this h of
+
+223
+00:07:32,780 --> 00:07:35,060
+x output value neural network. And
+
+224
+00:07:35,180 --> 00:07:36,430
+if we could go inside the neural network
+
+225
+00:07:37,340 --> 00:07:39,200
+and just change those z(l)j
+
+226
+00:07:39,860 --> 00:07:41,450
+values a little bit, then
+
+227
+00:07:41,640 --> 00:07:44,250
+that would affect these values that the neural net.
+
+228
+00:07:44,990 --> 00:07:47,290
+And so that will end up changing the cost function.
+
+229
+00:07:48,340 --> 00:07:50,120
+And again really this
+
+230
+00:07:50,210 --> 00:07:51,690
+is only for those of you expert in calculus.
+
+231
+00:07:52,960 --> 00:07:55,580
+If you are familiar with comfortable with partial derivatives.
+
+232
+00:07:56,540 --> 00:07:57,860
+What these delta terms are,
+
+233
+00:07:57,950 --> 00:07:59,270
+is they're, they turn out to
+
+234
+00:07:59,370 --> 00:08:00,800
+be the partial derivative of the
+
+235
+00:08:00,870 --> 00:08:04,010
+cos function with respect to these intermediate terms that we're computing.
+
+236
+00:08:05,500 --> 00:08:07,250
+And so their measure of
+
+237
+00:08:07,910 --> 00:08:08,940
+how much would we like to
+
+238
+00:08:09,140 --> 00:08:11,090
+change the neural network's weights in
+
+239
+00:08:11,250 --> 00:08:13,620
+order to affect these intermediate values
+
+240
+00:08:14,150 --> 00:08:16,110
+of the computation, so as
+
+241
+00:08:16,240 --> 00:08:17,430
+to affect the final output the
+
+242
+00:08:17,470 --> 00:08:18,980
+neural network h of x and
+
+243
+00:08:19,160 --> 00:08:20,770
+therefore affect the overall cost.
+
+244
+00:08:21,510 --> 00:08:22,820
+In case this last part of
+
+245
+00:08:23,030 --> 00:08:25,290
+this partial derivative intuition, in case
+
+246
+00:08:25,530 --> 00:08:26,920
+that didn't make sense, don't worry
+
+247
+00:08:27,070 --> 00:08:28,230
+about it, the rest of this
+
+248
+00:08:28,390 --> 00:08:29,770
+we can do without really
+
+249
+00:08:30,280 --> 00:08:32,400
+talking partial derivatives but let's
+
+250
+00:08:32,660 --> 00:08:33,780
+look in more detail at what
+
+251
+00:08:34,100 --> 00:08:36,020
+back propagation is doing.
+
+252
+00:08:36,250 --> 00:08:37,440
+For the output layer, if first
+
+253
+00:08:37,890 --> 00:08:39,630
+sets this delta term, we say
+
+254
+00:08:39,830 --> 00:08:41,400
+delta 4(1), as y(i)
+
+255
+00:08:41,700 --> 00:08:44,430
+if we're doing forward propagation
+
+256
+00:08:44,890 --> 00:08:48,010
+and back propagation on this
+
+257
+00:08:48,210 --> 00:08:50,180
+training example i. It says it's y(i)
+
+258
+00:08:51,030 --> 00:08:52,970
+minus a(4)1,
+
+259
+00:08:53,250 --> 00:08:54,370
+so it's really the error, it's
+
+260
+00:08:54,560 --> 00:08:55,680
+the difference between the actual value
+
+261
+00:08:56,000 --> 00:08:57,210
+of y minus what was
+
+262
+00:08:57,630 --> 00:08:58,020
+the value predicted.
+
+263
+00:08:58,530 --> 00:09:00,160
+And so we're going to compute delta
+
+264
+00:09:00,670 --> 00:09:01,880
+4(1) like so.
+
+265
+00:09:03,510 --> 00:09:06,200
+Next we're going to do propagate these values backwards.
+
+266
+00:09:06,910 --> 00:09:07,820
+I explain this in a second
+
+267
+00:09:08,510 --> 00:09:10,810
+and end up computing the delta terms of the previous layer.
+
+268
+00:09:11,350 --> 00:09:12,450
+We're going to end up
+
+269
+00:09:12,560 --> 00:09:13,720
+with delta 3(1); delta 3(2);
+
+270
+00:09:13,990 --> 00:09:15,210
+and then we're going to
+
+271
+00:09:15,600 --> 00:09:17,940
+propagate this further
+
+272
+00:09:18,380 --> 00:09:19,340
+backward and end up
+
+273
+00:09:19,470 --> 00:09:21,960
+computing delta 2(1) and
+
+274
+00:09:22,690 --> 00:09:23,800
+delta 2(2).
+
+275
+00:09:25,190 --> 00:09:27,290
+Now the back propagation calculation
+
+276
+00:09:28,730 --> 00:09:30,050
+is a lot like running the
+
+277
+00:09:30,140 --> 00:09:32,870
+forward propagation algorithm, but doing it backwards.
+
+278
+00:09:33,260 --> 00:09:33,890
+So here's what I mean.
+
+279
+00:09:34,160 --> 00:09:35,300
+Let's look at how we end
+
+280
+00:09:35,460 --> 00:09:37,370
+up with this value of Delta 2(2).
+
+281
+00:09:38,060 --> 00:09:39,280
+So we have Delta
+
+282
+00:09:39,480 --> 00:09:42,330
+2(2) and similar to
+
+283
+00:09:42,600 --> 00:09:44,760
+forward propagation, let me label a couple of the weights.
+
+284
+00:09:45,000 --> 00:09:47,620
+So this weight should be one cyan--let's say
+
+285
+00:09:47,890 --> 00:09:50,680
+that weight is theta 2
+
+286
+00:09:51,190 --> 00:09:54,190
+of 1, 2 and this
+
+287
+00:09:54,450 --> 00:09:55,970
+weight down here, let me highlight
+
+288
+00:09:56,280 --> 00:09:57,740
+this in red. That's going to be, let's say,
+
+289
+00:09:58,030 --> 00:09:59,760
+theta 2 of 2, 2.
+
+290
+00:10:01,510 --> 00:10:03,410
+So if we
+
+291
+00:10:03,500 --> 00:10:05,450
+look at how Delta 2(2)
+
+292
+00:10:05,800 --> 00:10:07,540
+is computed. How it's computed for this note. It turns
+
+293
+00:10:08,390 --> 00:10:09,690
+out that what we're
+
+294
+00:10:09,800 --> 00:10:10,830
+going to do is
+
+295
+00:10:10,970 --> 00:10:12,030
+we're going to take this value and
+
+296
+00:10:12,350 --> 00:10:14,340
+multiply it by this weight and
+
+297
+00:10:14,630 --> 00:10:16,770
+add it to this value
+
+298
+00:10:17,580 --> 00:10:18,660
+multiplied by that weight.
+
+299
+00:10:18,930 --> 00:10:19,850
+So it's really a weighted sum
+
+300
+00:10:20,800 --> 00:10:22,880
+of the new, these delta values.
+
+301
+00:10:23,280 --> 00:10:25,570
+weighted by the corresponding edge strength.
+
+302
+00:10:25,960 --> 00:10:27,270
+So concretely, let me fill this in.
+
+303
+00:10:28,430 --> 00:10:29,550
+This delta 2,2 is going to
+
+304
+00:10:30,270 --> 00:10:32,610
+be equal to theta 2(1)2,
+
+305
+00:10:33,110 --> 00:10:34,660
+which is that magenta weight,
+
+306
+00:10:34,980 --> 00:10:38,850
+times delta 3(1) plus, and
+
+307
+00:10:38,990 --> 00:10:40,080
+then the thing I have in red, that's
+
+308
+00:10:41,230 --> 00:10:43,530
+theta 2(2)2
+
+309
+00:10:43,860 --> 00:10:46,230
+times Delta 3(2).
+
+310
+00:10:46,700 --> 00:10:48,550
+So it is really, literally this red
+
+311
+00:10:48,800 --> 00:10:51,340
+weight times this value, plus this
+
+312
+00:10:51,570 --> 00:10:52,690
+magenta weight times it's value
+
+313
+00:10:53,540 --> 00:10:55,820
+and that's how we wind up with that value of delta.
+
+314
+00:10:56,880 --> 00:10:59,490
+And just as another example, let's look at this value.
+
+315
+00:10:59,870 --> 00:11:00,750
+How did we get that value?
+
+316
+00:11:01,320 --> 00:11:02,660
+Well, it's a similar
+
+317
+00:11:02,890 --> 00:11:04,490
+process, if this weight,
+
+318
+00:11:05,530 --> 00:11:07,000
+which I'm going to highlight in
+
+319
+00:11:07,100 --> 00:11:08,310
+green, if this weight is
+
+320
+00:11:08,440 --> 00:11:09,860
+equal to, say, delta
+
+321
+00:11:10,450 --> 00:11:12,990
+3(1)2, then we have
+
+322
+00:11:13,920 --> 00:11:15,360
+that, delta 3(2) is
+
+323
+00:11:15,630 --> 00:11:17,010
+going to be equal to
+
+324
+00:11:17,910 --> 00:11:19,860
+that green weight, theta 3(1)2
+
+325
+00:11:20,800 --> 00:11:22,260
+times delta 4(1).
+
+326
+00:11:22,930 --> 00:11:25,520
+And by the
+
+327
+00:11:25,610 --> 00:11:26,560
+way, so far I've been
+
+328
+00:11:26,670 --> 00:11:28,310
+writing the delta values only
+
+329
+00:11:28,660 --> 00:11:30,390
+for the hidden units and
+
+330
+00:11:30,560 --> 00:11:32,750
+not, but not, excluding the bias units.
+
+331
+00:11:33,620 --> 00:11:34,610
+Depending on how you define
+
+332
+00:11:35,030 --> 00:11:37,170
+the back propagation algorithm or depending on
+
+333
+00:11:37,330 --> 00:11:38,610
+how you implement it, you know,
+
+334
+00:11:38,710 --> 00:11:40,510
+you may end up implementing something
+
+335
+00:11:40,850 --> 00:11:42,390
+to compute delta values for
+
+336
+00:11:42,900 --> 00:11:43,950
+these bias units as well.
+
+337
+00:11:44,960 --> 00:11:46,230
+The bias unit is always output
+
+338
+00:11:46,620 --> 00:11:47,880
+the values plus one and they
+
+339
+00:11:47,990 --> 00:11:48,980
+are just what they are and there's
+
+340
+00:11:49,220 --> 00:11:50,060
+no way for us to change
+
+341
+00:11:50,210 --> 00:11:51,960
+the value and so, depending
+
+342
+00:11:52,340 --> 00:11:53,440
+on your implementation of back prop,
+
+343
+00:11:53,770 --> 00:11:54,960
+the way I usually implement it,
+
+344
+00:11:55,090 --> 00:11:56,180
+I do end up computing these
+
+345
+00:11:56,340 --> 00:11:57,670
+delta values, but we
+
+346
+00:11:57,760 --> 00:11:58,900
+just discard them and we
+
+347
+00:11:58,990 --> 00:12:00,560
+don't use them, because they don't
+
+348
+00:12:00,800 --> 00:12:02,130
+end up being part of
+
+349
+00:12:02,220 --> 00:12:04,130
+the calculation needed to compute the derivatives.
+
+350
+00:12:04,990 --> 00:12:06,720
+So, hopefully, that gives
+
+351
+00:12:06,990 --> 00:12:08,360
+you a little bit of intuition
+
+352
+00:12:08,750 --> 00:12:10,380
+about what back propagation is doing.
+
+353
+00:12:12,480 --> 00:12:13,290
+In case of all this, they
+
+354
+00:12:13,440 --> 00:12:14,670
+still seem so magical and
+
+355
+00:12:14,760 --> 00:12:16,090
+so black box, in a
+
+356
+00:12:16,240 --> 00:12:17,560
+later video, in the
+
+357
+00:12:17,770 --> 00:12:19,880
+putting it together video, I'll try
+
+358
+00:12:20,150 --> 00:12:22,650
+to give a little more intuition about what that back propagation is doing.
+
+359
+00:12:23,250 --> 00:12:24,360
+But, unfortunately, this is, you
+
+360
+00:12:24,450 --> 00:12:26,370
+know, a difficult algorithm to
+
+361
+00:12:26,510 --> 00:12:28,770
+try to visualize and understand what it is really doing.
+
+362
+00:12:29,500 --> 00:12:30,790
+But fortunately, you know,
+
+363
+00:12:30,990 --> 00:12:32,280
+often I guess, many people
+
+364
+00:12:32,940 --> 00:12:33,930
+have been using it very successfully
+
+365
+00:12:34,420 --> 00:12:35,640
+for many years and if
+
+366
+00:12:35,730 --> 00:12:37,810
+you infer the algorithm, you have
+
+367
+00:12:37,990 --> 00:12:40,090
+a very effective learning algorithm, even
+
+368
+00:12:40,340 --> 00:12:41,400
+though the inner workings of exactly
+
+369
+00:12:41,900 --> 00:12:43,190
+how it works can be harder to visualize.

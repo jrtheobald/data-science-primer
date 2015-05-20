@@ -1,0 +1,429 @@
+in earlier videos, I have
+said over and over that, when
+you are developing machine learning system,
+one of the most valuable resources is
+your time as the developer
+in terms of picking what
+to work on next.
+Or, you have a team of developers
+or a team of engineers working together
+on a machine learning system, again
+one of the most valuable resources is
+the time of the engineers or the developers working on the system.
+And what you really want to
+avoid is that you or
+your colleagues or your friends spend
+a lot of time working on
+some component, only to realize
+after weeks or months of
+time spent, that all that
+work, you know, just doesn't
+make a huge difference on the performance of the final system.
+In this video, what I'd
+like to to is, to talk about something called ceiling analysis.
+When you or your team
+are working on a pipeline
+machine learning system, this can
+sometimes give you a very
+strong signal, a very strong
+guidance, on what parts
+of the pipeline might be the best use of your time to work on.
+To talk about ceiling analysis, I'm
+going to keep on using the
+example of the photo
+OCR pipeline and I said
+earlier each of these
+boxes text detection, character
+segmentation, character recognition, each
+of these boxes can have even
+a small engineering team working
+on it, or maybe the
+entire system is just built
+by you, either way, but
+the question is, where should you allocate resources?
+Which of these boxes is
+most worth your efforts, trying
+to improve the performance of.
+In order to explain the idea
+of ceiling analysis, I'm going
+to keep using the example of our photo OCR pipeline.
+As I mentioned earlier, each of
+these boxes here, each of
+these machine learning components could be
+the work of even a
+small team of engineers, or
+maybe the whole system could be built by just one person.
+But the question is, where should
+you allocate scarce resources?
+Now this, which of these
+components, or which one or
+two or maybe all three of these components
+is most worth your time
+to try to improve the performance of.
+So here's the idea of ceiling analysis.
+As in the development process for
+other machine learning systems as
+well, in order to make
+decisions on what to do
+for developing the system
+is going to be
+very helpful to have a
+single road number evaluation metric for this learning system.
+So let's say we pick characters level accuracy.
+So if, you know, given a
+test set image, while just
+a fraction of alphabets of
+characters in the testing image that
+we recognize correctly.
+Or you can pick some other single world
+number evaluation metric, if you
+want, but let's say that
+whatever evaluation metric we
+pick, we get that, we
+find that the overall system currently has 72% accuracy.
+So, in other
+words, we have some set
+of test set images and for
+each test set images, we
+run it through text section, then
+character 7 nation, then character
+recognition, and we find
+that on our test set, the
+overall accuracy of the
+entire system was 72% on one of the metric you chose.
+Now just the idea behind
+sealing analysis which is that
+we're going to go to let
+see the first module of a
+machinery pipelines text detection.
+And what we are going
+to do is we are going to
+monkey around with the test set.
+We are going to go to the
+test set and for every test example
+we are just going to provide it
+the correct text detection outputs.
+In other words, we are going
+to the test set and just
+manually tell the algorithm
+where the text is
+in each of the test examples.
+So in other words, we
+are going to simulate what happens
+if we have a text detection
+system with a 100%
+accuracy, for the purpose
+of detecting text in an image.
+And really the way you
+do that is very simple right, instead
+of letting your learning algorithm
+detect the text in the images.
+You wouldn't say go to the
+images and just manually label what
+is the location of the text in my test set image.
+And you would then let these
+correct, so let these ground
+true labels of where as
+the text be part of
+your text set and use these
+ground true labels what you
+feed in to the next
+stage of the pipeline, to the character segmentation pipeline.
+So just said it again, by
+putting a checkmark over here,
+what I mean is Im going
+to go to my test set and
+just give it the correct answers,
+give it the correct labels, for
+the text detection part of the pipeline.
+So that, as it, I have
+a perfect text detection system
+on my test One into
+do that run this data
+to the rest of five points
+paper presentation and counter definition.
+And then, use the same
+evaluation metric as before,
+to measure what is the
+overall accuracy of the entire system.
+And with perfect hopefully the performance goes up.
+Let 's say it
+goes up 89% and then
+were going to keep going, next lets
+go to the next selection of
+pipeline, two character segmentation and again were going to go to my test.
+And now going to
+give the correct text detection
+output and give the correct
+character segmentation outputs and
+manually label the correct
+segment orientations of text into individual characters.
+And see how much that helps.
+And let's say it goes up to
+90% accuracy for the overall system.
+Alright so as always the accuracy is.
+Accuracy of the overall systems.
+So whatever the final output
+of the character recognition system is.
+Whatever the final output of
+the overall pipeline is, it's going
+to measure the accuracy of that.
+And then finally like character recognition
+system and give that the correct label as well.
+And if I do that too then, no surprise that I should get a 100% accuracy.
+Now, the nice thing about having
+done this analysis analysis is we
+can now understand what is
+the upside potential for improving each of these components.
+So we see that if we get perfect text detection.
+Our performance went up from
+72 to 89 percent, so
+that's' a 17 percent performance gain.
+So this means that you've
+to take your current system you
+spend a lot of time improving text detection.
+That means that we could potentially improve
+our system's performance by 17 percent.
+This seems like it's well worth our while.
+Whereas in contrast, when going
+from text detection When we
+gave it perfect character segmentation, performance went up only by one percent.
+So, that's a more sobering message.
+It means that no matter how
+much time you spend character segmentation,
+maybe the upside potential is
+going to be pretty small, and maybe
+you do not want to
+have a large team of engineers
+working on character segmentation that
+this sort of analysis shows that
+even when you give it the
+perfect character segmentation, your
+performance goes up by only one percent.
+So right there, this is really estimates.
+What is the ceiling, or what's
+an upper bound on how much
+you can improve the performance of your
+system by working on one of these components?
+And finally, going for character,
+when we get better
+character recognition, the performance went up by ten percent.
+So you know, again you
+can decide, is a ten
+percent improvement, how much is that working out?
+It tells you that maybe
+with more efforts spent on the
+last station of the pipeline,
+you can improve the performance
+of the systems as well.
+Another way of thinking about this
+is that, by going through this
+sort of analysis you're trying to
+figure out, you know, what is
+the upside potential, of improving
+each of these components or how
+much could you possibly gain if
+one of these components became absolutely
+perfect and just really
+places an upper bound on the performance of that system.
+So, the idea of ceiling analysis is pretty important.
+Let me just illustrate this idea again, but with a different example but a more complex one.
+Let's say that you want to
+do face recognition from images,
+so unless you want to look at
+the picture and recognize whether or
+not the person in this picture
+is a particular friend of yours,
+trying to recognize the person shown in this image.
+This is a slightly artificial example.
+This isn't actually how face
+recognition is done in
+practice, but I want to step through an example of what a
+pipeline might look like to
+give you another example of how
+a ceiling analysis process might look.
+So, we have a
+camera image and let's say that we design a pipeline as follows.
+Let's say the first thing you want
+to do is do pre-processing of
+the image, so let's take those
+images like I have shown on
+the upper right, and let's say we
+want to remove the background, so
+through pre-processing the background disappears.
+Next we want to say detect the face of the person.
+That's usually done with a learning algorithm.
+So we'll run a sliding
+windows crossfire to draw a box around the person's face.
+Having detected the face it
+turns out that if you
+want to recognize people it turns
+out that the eyes is a highly useful cue.
+We actually, in terms
+ofrecognizing your friends, the
+appearance of their eyes is actually
+one of the most important cues that you use.
+So let's run another crossfire to detect the eyes of the person.
+So, segment out the eyes,
+and then and since this
+will give us useful features to
+recognize a person, and then
+other parts of the face of physical interest.
+Maybe segment out the nose,
+segment out the mouth, and
+then, having found the
+eyes, the nose and the mouth,
+all of these give us useful
+features to maybe feed into
+a logistic regression crossfire.
+And it's the job of the
+crossfire to then give us the
+overall label to find the
+label for who we think
+is the identity of this person.
+So this is a kind of complicated pipeline.
+It's actually probably more complicated
+than you should be using, if you actually want to recognize people.
+But there's an illustrative example that's useful to think about for ceiling analysis.
+So how do you go through ceiling analysis for this pipeline?
+Well, we'll step through these pieces one at a time.
+Let's say your overall system has
+85 percent accuracy, the first
+thing I do is go to
+my test set and manually
+give it a ground foreground, background,
+segmentations, and then manually go to
+the test set, and use Photoshop
+or something, to just tell it
+where's the background, and just
+manually remove the background, so
+ground true background, and see how much the accuracy changes.
+In this example, the accuracy
+goes up by 0.1%  so
+this is a strong sign that
+even if you had perfect background
+segmentation your performance, even
+if perfect background removal, the
+performance of your system isn't going to go up that much.
+So this is maybe not worth a
+huge effort to work on pre-processing, on background removal.
+Then, everything goes to the
+test set, given the correct
+face detection images, then again
+step through the eyes, nose, mouth segmentations in some order.
+Pick one order.
+Let's give the correct location
+of the eyes, correct location of
+the nose, correct location of
+the mouth, and then finally
+if I just give it the correct overall label, I get 100% accuracy.
+And so, you know, as
+I go through the system
+and just give more and more
+components the correct labels
+in the test set, the performance
+So if the overall system goes up,
+and you can look at how much
+the performance went up on
+different steps, so, you know, from
+giving it the perfect face detection,
+and it looks like the overall
+performance of this system went up by 5.9 percent.
+So that's a pretty big jump,
+means that maybe it's worth quite
+a bit of effort on better face detection.
+Went four percent there, went
+one percent there, one percent
+there and three percent there.
+So it looks like the
+components that most worth
+our while are, when
+I gave it perfect face detection,
+system went up.
+By 5.9 performance, might give
+it perfect eye segmentation, went up
+by 4%, and then my final logistical
+crossfire, well there's another 3 percent gap there maybe.
+And so, this tells us
+maybe one of the components that are most worth our while working on.
+And by the way, I
+want to tell you, it's a true cautionary story.
+The reason I put in this
+pre-processing background removal is
+because I actually know
+of a true story where there
+was a research team that actually
+literally had two people spend
+about a year and a half,
+spend 18 months, working on
+better background removal.
+We are rushing here... I am
+obscuring the details for obvious
+reasons, but there was a
+computer vision application where there
+was a team of two engineers
+who literally spent I think
+about a year and a half, working
+on better background removal.
+Actually they worked out
+really complicated algorithms, so I ended up publishing I think, one research paper.
+But after all that work they
+found that, it just did
+not make a huge difference to
+the overall performance of the
+actual application they were working on.
+And if only, you know if
+only someone were to do a [xx] analysis
+beforehand, maybe we could have realized this.
+And one of them said to me
+afterward, you know, if only they
+had done the sort of analysis
+like this, maybe they could
+have realized before that 18 months
+of work, that they
+should have spent their effort focusing
+on some different component than literally
+spending 18 months working on background removal.
+So to summarize, pipelines are
+pretty pervasive and complex machine learning applications.
+And when you are working on
+a big machine learning application, I
+mean I think your time as a developer is so valuable.
+So just don't waste your
+time working on something that ultimately isn't going to matter.
+And in this video, we talked
+about this idea of ceiling analysis,
+which I've often found to
+be a very good tool for
+identifying the component, and if
+you actually put a focused effort
+on that component, and make a
+big difference, it would actually
+have a huge effect on the
+overall performance of your final system.
+So, over the years, working
+with machine learning, I've actually learned
+to not trust my own gut
+feeling about what component to work on.
+So, very often, when you have
+worked with machine learning for a
+long time, but often, our local
+machine learning problem, and I
+may have some gut feeling about,
+oh, let's, you know, jump on that component, and just spend more time on that.
+That over the years that I
+have come to even trust my
+own gut feelings and knowing not
+to trust gut feelings that much
+and instead really have a
+solid machine learning problem, where it's
+possible to structure things.
+To do a ceiling analysis often
+does a much better and much
+more reliable way for deciding
+where to put a focused effort
+into, to really improve this,
+the performance of some component and
+we kind of be sure that when
+do that it will actually have
+a huge effect on the final performance of your process system.

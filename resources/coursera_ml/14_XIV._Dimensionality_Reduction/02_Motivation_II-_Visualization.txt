@@ -1,0 +1,151 @@
+In the last video, we talked
+about dimensionality reduction for
+the purpose of compressing the data.
+In this video, I'd like
+to tell you about a second application
+of dimensionality reduction and that is to visualize the data.
+For a lot of machine learning
+applications, it really helps
+us to develop effective learning
+algorithms, if we can understand our data better.
+If there is some way of visualizing
+the data better, and so,
+dimensionality reduction offers us,
+often, another useful tool to do so.
+Let's start with an example.
+Let's say we've collected a large
+data set of many statistics
+and facts about different countries around the world.
+So, maybe the first feature, X1
+is the country's GDP, or the
+Gross Domestic Product, and
+X2 is a per capita, meaning
+the per person GDP, X3
+human development index, life
+expectancy, X5, X6 and so on.
+And we may have a huge data set
+like this, where, you know,
+maybe 50 features for
+every country, and we have a huge set of countries.
+So is there something
+we can do to try to understand our data better?
+I've given this huge table of numbers.
+How do you visualize this data?
+If you have 50 features, it's
+very difficult to plot 50-dimensional
+data.
+What is a good way to examine this data?
+Using dimensionality reduction, what
+we can do is, instead of
+having each country represented by
+this featured vector, xi, which
+is 50-dimensional, so instead
+of, say, having a country
+like Canada, instead of
+having 50 numbers to represent the features
+of Canada, let's say we
+can come up with a different feature
+representation that is these
+z vectors, that is in R2.
+If that's the case, if we
+can have just a pair of
+numbers, z1 and z2 that
+somehow, summarizes my 50
+numbers, maybe what we
+can do  [xx] is to plot
+these countries in R2 and
+use that to try to
+understand the space in
+[xx] of features of different
+countries [xx]  the better and
+so, here, what you
+can do is reduce the
+data from 50
+D, from 50 dimensions
+to 2D, so you can
+plot this as a 2
+dimensional plot, and, when
+you do that, it turns out
+that, if you look at the
+output of the Dimensionality Reduction algorithms,
+It usually doesn't astride a
+physical meaning to these new features you want [xx] to.
+It's often up to us to figure out you know, roughly what these features means.
+But, And if you plot those features, here is what you might find.
+So, here, every country
+is represented by a point
+ZI, which is an R2
+and so each of those.
+Dots, and this figure
+represents a country, and so,
+here's Z1 and here's
+Z2, and [xx] [xx] of these.
+So, you might find,
+for example, That the horizontial
+axis the Z1 axis
+corresponds roughly to the
+overall country size, or
+the overall economic activity of a country.
+So the overall GDP, overall
+economic size of a country.
+Whereas the vertical axis in our
+data might correspond to the
+per person GDP.
+Or the per person well being,
+or the per person economic activity, and,
+you might find that, given these
+50 features, you know, these
+are really the 2 main dimensions
+of the deviation, and so, out
+here you may have a country
+like the U.S.A., which
+is a relatively large GDP,
+you know, is a very
+large GDP and a relatively
+high per-person GDP as well.
+Whereas here you might have
+a country like Singapore, which
+actually has a very
+high per person GDP as well,
+but because Singapore is a much
+smaller country the overall
+economy size of Singapore
+is much smaller than the US.
+And, over here, you would
+have countries where individuals
+are unfortunately some are less
+well off, maybe shorter life expectancy,
+less health care, less economic
+maturity that's why smaller
+countries, whereas a point
+like this will correspond to
+a country that has a
+fair, has a substantial amount of
+economic activity, but where individuals
+tend to be somewhat less well off.
+So you might find that
+the axes Z1 and Z2
+can help you to most succinctly
+capture really what are the
+two main dimensions of the variations
+amongst different countries.
+Such as the overall economic
+activity of the country projected
+by the size of the
+country's overall economy as well
+as the per-person individual
+well-being, measured by per-person
+GDP, per-person healthcare, and things like that.
+So that's how you can
+use dimensionality reduction, in
+order to reduce data from
+50 dimensions or whatever, down
+to two dimensions, or maybe
+down to three dimensions, so that
+you can plot it and understand your data better.
+In the next video, we'll start
+to develop a specific algorithm,
+called PCA, or Principal Component
+Analysis, which will allow
+us to do this and also
+do the earlier application I talked about of compressing the data.

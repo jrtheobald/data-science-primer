@@ -1,0 +1,1139 @@
+1
+00:00:00,310 --> 00:00:02,286
+In this video, we'll figure out
+
+2
+00:00:02,300 --> 00:00:03,903
+a slightly simpler way to
+
+3
+00:00:03,910 --> 00:00:06,513
+write the cost function than we have been using so far.
+
+4
+00:00:06,520 --> 00:00:08,252
+And we'll also figure out
+
+5
+00:00:08,252 --> 00:00:10,779
+how to apply gradient descent to fit
+
+6
+00:00:10,779 --> 00:00:13,321
+the parameters of logistic regression.
+
+7
+00:00:13,321 --> 00:00:14,210
+So by the end of this
+
+8
+00:00:14,210 --> 00:00:15,589
+video you know how to
+
+9
+00:00:15,589 --> 00:00:19,201
+implement a fully working version of logistic regression.
+
+10
+00:00:19,201 --> 00:00:24,802
+Here's our cost function for logistic regression.
+
+11
+00:00:24,802 --> 00:00:27,613
+Our overall cost function
+
+12
+00:00:27,613 --> 00:00:29,477
+is 1 over M times sum
+
+13
+00:00:29,477 --> 00:00:31,003
+of the training set of the
+
+14
+00:00:31,003 --> 00:00:32,797
+cost of making different
+
+15
+00:00:32,797 --> 00:00:34,580
+predictions on the different examples
+
+16
+00:00:34,580 --> 00:00:36,408
+of labels Y I. And
+
+17
+00:00:36,408 --> 00:00:39,492
+this is a cost for a single example that we worked out earlier.
+
+18
+00:00:39,492 --> 00:00:40,604
+And I just want to remind
+
+19
+00:00:40,604 --> 00:00:43,514
+you that for classification problems
+
+20
+00:00:43,514 --> 00:00:45,778
+in our training and in fact
+
+21
+00:00:45,778 --> 00:00:47,076
+even for examples known in
+
+22
+00:00:47,076 --> 00:00:48,915
+our training set, Y is
+
+23
+00:00:48,915 --> 00:00:51,056
+always equal to 0 or 1.
+
+24
+00:00:51,056 --> 00:00:51,056
+Right?
+
+25
+00:00:51,056 --> 00:00:52,150
+That's sort of part of the
+
+26
+00:00:52,150 --> 00:00:55,700
+mathematical definition of Y.
+
+27
+00:00:55,720 --> 00:00:57,430
+Because Y is either 0 or 1.
+
+28
+00:00:57,430 --> 00:00:59,453
+We'll be able to
+
+29
+00:00:59,460 --> 00:01:00,735
+come up with a simpler
+
+30
+00:01:00,760 --> 00:01:03,001
+way to write this cost function.
+
+31
+00:01:03,001 --> 00:01:04,980
+And in particular, rather than writing
+
+32
+00:01:04,980 --> 00:01:06,394
+out this cost function on two
+
+33
+00:01:06,410 --> 00:01:07,966
+separate lines with two separate
+
+34
+00:01:07,966 --> 00:01:09,519
+cases for Y equals 1 and Y equals
+
+35
+00:01:09,519 --> 00:01:11,123
+0, I am going to show
+
+36
+00:01:11,130 --> 00:01:12,687
+you a way take these
+
+37
+00:01:12,687 --> 00:01:16,241
+two lines and compress them into one equation.
+
+38
+00:01:16,241 --> 00:01:17,743
+And this will make it more convenient
+
+39
+00:01:17,743 --> 00:01:19,250
+to write out the cost function
+
+40
+00:01:19,250 --> 00:01:21,493
+and derive gradient descent.
+
+41
+00:01:21,493 --> 00:01:24,492
+Concretely, we can write out the cost function as follows.
+
+42
+00:01:24,492 --> 00:01:27,304
+We'll say the cost of H
+
+43
+00:01:27,304 --> 00:01:29,269
+of X comma Y. I'm going
+
+44
+00:01:29,269 --> 00:01:31,750
+to write this as minus Y
+
+45
+00:01:31,770 --> 00:01:34,201
+times log H of
+
+46
+00:01:34,201 --> 00:01:37,730
+X minus 1
+
+47
+00:01:38,060 --> 00:01:41,615
+minus Y times log 1
+
+48
+00:01:41,660 --> 00:01:44,655
+minus H of X.
+
+49
+00:01:44,670 --> 00:01:45,824
+And I'll show you in a
+
+50
+00:01:45,824 --> 00:01:48,062
+second that this expression, or
+
+51
+00:01:48,062 --> 00:01:51,038
+this equation is an equivalent
+
+52
+00:01:51,038 --> 00:01:52,354
+way or more compact way
+
+53
+00:01:52,354 --> 00:01:54,195
+of writing out this definition
+
+54
+00:01:54,195 --> 00:01:56,353
+of the cost function that we had up here.
+
+55
+00:01:56,353 --> 00:02:00,243
+Let's see why that's the case.
+
+56
+00:02:03,730 --> 00:02:06,190
+We know that there are only 2 possible cases.
+
+57
+00:02:06,190 --> 00:02:07,210
+Y must be 0 or 1.
+
+58
+00:02:07,230 --> 00:02:10,857
+So let's suppose Y equals 1.
+
+59
+00:02:10,857 --> 00:02:12,480
+If Y is equal
+
+60
+00:02:12,480 --> 00:02:14,822
+to 1 then this equation
+
+61
+00:02:14,822 --> 00:02:17,603
+is saying that the cost
+
+62
+00:02:18,573 --> 00:02:20,172
+is equal to.
+
+63
+00:02:20,172 --> 00:02:23,895
+Well if Y is equal to one, then this thing here is equal to one.
+
+64
+00:02:23,900 --> 00:02:26,631
+And one minus Y is going to be equal to zero, right?
+
+65
+00:02:26,631 --> 00:02:27,852
+So if Y is equal
+
+66
+00:02:27,860 --> 00:02:29,348
+to one, then one minus Y
+
+67
+00:02:29,370 --> 00:02:32,336
+is one minus one, which is therefore zero.
+
+68
+00:02:32,336 --> 00:02:34,076
+So the second term gets multiplied
+
+69
+00:02:34,076 --> 00:02:36,047
+by zero and goes away,
+
+70
+00:02:36,047 --> 00:02:37,380
+and we're left with only this
+
+71
+00:02:37,420 --> 00:02:38,631
+first term which is Y
+
+72
+00:02:38,650 --> 00:02:40,654
+times log, minus Y times
+
+73
+00:02:40,654 --> 00:02:42,174
+log H of X. Y is
+
+74
+00:02:42,174 --> 00:02:43,621
+1 so that's equal to minus
+
+75
+00:02:43,630 --> 00:02:46,313
+log H of X.
+
+76
+00:02:46,320 --> 00:02:48,300
+And this equation is
+
+77
+00:02:48,300 --> 00:02:50,050
+exactly what we have
+
+78
+00:02:50,060 --> 00:02:53,276
+up here for if Y is equal to one.
+
+79
+00:02:53,276 --> 00:02:55,566
+The other case is if
+
+80
+00:02:55,566 --> 00:02:57,275
+Y is equal to 0.
+
+81
+00:02:57,290 --> 00:02:58,718
+And if that is
+
+82
+00:02:58,718 --> 00:03:01,430
+the case then, writing of
+
+83
+00:03:01,500 --> 00:03:03,584
+the cost function is saying that
+
+84
+00:03:03,600 --> 00:03:05,500
+if Y is equal to zero,
+
+85
+00:03:05,500 --> 00:03:08,381
+then this term here, will be equal to zero.
+
+86
+00:03:08,381 --> 00:03:10,111
+Whereas 1 minus Y, if
+
+87
+00:03:10,111 --> 00:03:11,270
+Y equals zero, would be
+
+88
+00:03:11,280 --> 00:03:12,528
+equal to 1, because 1 minus
+
+89
+00:03:12,530 --> 00:03:14,556
+Y becomes 1 minus 0,
+
+90
+00:03:14,556 --> 00:03:16,650
+which is just equal to 1.
+
+91
+00:03:16,650 --> 00:03:18,643
+And so the cost function
+
+92
+00:03:18,643 --> 00:03:22,583
+simplifies to just this last term here.
+
+93
+00:03:22,583 --> 00:03:22,583
+Right?
+
+94
+00:03:22,583 --> 00:03:24,724
+Because the first term
+
+95
+00:03:24,724 --> 00:03:27,493
+over here gets multiplied by zero, and so it disappears.
+
+96
+00:03:27,493 --> 00:03:28,802
+So we're just left with this last
+
+97
+00:03:28,802 --> 00:03:30,486
+term, which is minus
+
+98
+00:03:30,510 --> 00:03:32,566
+log, 1 minus H of
+
+99
+00:03:32,590 --> 00:03:34,243
+X. And you can
+
+100
+00:03:34,260 --> 00:03:36,013
+verify that this term here
+
+101
+00:03:36,013 --> 00:03:40,434
+is just exactly what we had for when Y is equal to 0.
+
+102
+00:03:40,450 --> 00:03:42,260
+So this shows that this
+
+103
+00:03:42,260 --> 00:03:43,628
+definition for the cost is
+
+104
+00:03:43,628 --> 00:03:45,423
+just a more compact way of
+
+105
+00:03:45,423 --> 00:03:47,376
+taking both of these expressions,
+
+106
+00:03:47,376 --> 00:03:48,757
+the cases Y equals 1 and
+
+107
+00:03:48,757 --> 00:03:50,284
+Y equals 0, and writing
+
+108
+00:03:50,284 --> 00:03:52,014
+them in one, in a
+
+109
+00:03:52,030 --> 00:03:54,580
+more convenient form with just one line.
+
+110
+00:03:54,600 --> 00:03:56,449
+We can, therefore, write
+
+111
+00:03:56,449 --> 00:03:59,898
+all of our cost function for logistic regression as follows.
+
+112
+00:03:59,898 --> 00:04:00,628
+It is this
+
+113
+00:04:00,628 --> 00:04:01,746
+one of m of the sum
+
+114
+00:04:01,746 --> 00:04:03,856
+of this cost functions, and plugging
+
+115
+00:04:03,856 --> 00:04:05,123
+in the definition for the
+
+116
+00:04:05,123 --> 00:04:07,255
+cost that we worked out earlier, we end up with this.
+
+117
+00:04:07,255 --> 00:04:09,767
+And we just brought the minus sign outside.
+
+118
+00:04:09,767 --> 00:04:12,214
+And why do we choose this particular cost function?
+
+119
+00:04:12,230 --> 00:04:16,250
+When it looks like there could be other cost functions that we could have chosen.
+
+120
+00:04:16,250 --> 00:04:17,427
+Although I won't have time to
+
+121
+00:04:17,430 --> 00:04:19,171
+go into great detail of this
+
+122
+00:04:19,171 --> 00:04:21,345
+in this course, this cost function
+
+123
+00:04:21,345 --> 00:04:23,566
+can be derived from statistics using
+
+124
+00:04:23,566 --> 00:04:25,416
+the principle of maximum likelihood
+
+125
+00:04:25,440 --> 00:04:26,816
+estimation, which is an
+
+126
+00:04:26,820 --> 00:04:28,754
+idea statistics for how
+
+127
+00:04:28,770 --> 00:04:33,014
+to efficiently find parameters data for different models.
+
+128
+00:04:33,014 --> 00:04:35,843
+And it also has a nice property that it is convex.
+
+129
+00:04:35,860 --> 00:04:37,666
+So this is the cost function
+
+130
+00:04:37,666 --> 00:04:40,003
+that, you know, essentially everyone uses
+
+131
+00:04:40,040 --> 00:04:42,736
+when putting Logistic Regression models.
+
+132
+00:04:42,740 --> 00:04:44,264
+If we don't understand the terms
+
+133
+00:04:44,264 --> 00:04:45,731
+I just say and you don't
+
+134
+00:04:45,731 --> 00:04:47,280
+know what the principle of maximum
+
+135
+00:04:47,280 --> 00:04:49,706
+likelihood estimation is, don't worry about.
+
+136
+00:04:49,706 --> 00:04:51,240
+There's just a deeper
+
+137
+00:04:51,250 --> 00:04:53,780
+rational and justification behind this
+
+138
+00:04:53,790 --> 00:04:55,617
+particular cost function then I
+
+139
+00:04:55,630 --> 00:04:58,203
+have time to go into in this class.
+
+140
+00:04:58,203 --> 00:05:00,683
+Given this cost function, in
+
+141
+00:05:00,683 --> 00:05:02,601
+order to fit the parameters,
+
+142
+00:05:02,601 --> 00:05:04,541
+what we're going to do then is
+
+143
+00:05:04,541 --> 00:05:07,896
+try to find the parameters theta that minimizes J of theta.
+
+144
+00:05:07,910 --> 00:05:10,716
+So if we, you know, try to minimize this.
+
+145
+00:05:10,716 --> 00:05:15,006
+This would give us some set of parameters theta.
+
+146
+00:05:15,006 --> 00:05:17,157
+Finally, if we're given a new
+
+147
+00:05:17,157 --> 00:05:18,549
+example with some set
+
+148
+00:05:18,549 --> 00:05:20,164
+of features X. We can
+
+149
+00:05:20,164 --> 00:05:21,640
+then take the thetas that we
+
+150
+00:05:21,640 --> 00:05:23,980
+fit our training set and output
+
+151
+00:05:23,980 --> 00:05:25,793
+our prediction as this, and
+
+152
+00:05:25,800 --> 00:05:27,336
+just to remind you the output
+
+153
+00:05:27,336 --> 00:05:28,842
+of my hypothesis, I am
+
+154
+00:05:28,850 --> 00:05:30,253
+going to interpret as the
+
+155
+00:05:30,253 --> 00:05:33,001
+probability that Y is equal to 1.
+
+156
+00:05:33,001 --> 00:05:34,656
+And this is given the
+
+157
+00:05:34,670 --> 00:05:36,900
+implement X and parameters by theta.
+
+158
+00:05:36,900 --> 00:05:38,070
+But think of this
+
+159
+00:05:38,070 --> 00:05:40,613
+as just my hypothesis is
+
+160
+00:05:40,613 --> 00:05:43,873
+estimating the probability that Y is equal to 1.
+
+161
+00:05:43,880 --> 00:05:45,579
+So all that remains to
+
+162
+00:05:45,590 --> 00:05:47,143
+be done is figure out
+
+163
+00:05:47,150 --> 00:05:49,520
+how to actually minimize J
+
+164
+00:05:49,520 --> 00:05:51,005
+of theta as a function
+
+165
+00:05:51,010 --> 00:05:52,519
+of theta so we can actually
+
+166
+00:05:52,519 --> 00:05:55,625
+fit the parameters to our training set.
+
+167
+00:05:56,390 --> 00:05:57,819
+The way we're going to minimize the
+
+168
+00:05:57,819 --> 00:06:00,599
+cost function is using gradient descent.
+
+169
+00:06:00,600 --> 00:06:02,225
+Here's our cost function.
+
+170
+00:06:02,250 --> 00:06:05,307
+And if we want to minimize it as a function of theta.
+
+171
+00:06:05,340 --> 00:06:08,070
+Here's our usual template for gradient descent.
+
+172
+00:06:08,070 --> 00:06:09,880
+Where we repeatedly update each
+
+173
+00:06:09,880 --> 00:06:12,398
+parameter by taking updating
+
+174
+00:06:12,398 --> 00:06:14,099
+it as itself minus a
+
+175
+00:06:14,099 --> 00:06:17,684
+learning rate alpha times this derivative term.
+
+176
+00:06:17,684 --> 00:06:19,219
+If you know some calculus feel
+
+177
+00:06:19,219 --> 00:06:20,739
+free to take this term and
+
+178
+00:06:20,739 --> 00:06:22,788
+try to compute a derivative yourself
+
+179
+00:06:22,788 --> 00:06:24,592
+and see if you can simplify
+
+180
+00:06:24,592 --> 00:06:26,664
+it to the same answer that I get.
+
+181
+00:06:26,664 --> 00:06:30,538
+But even if you don't know calculus don't worry about it.
+
+182
+00:06:30,538 --> 00:06:32,355
+If you actually compute this,
+
+183
+00:06:32,370 --> 00:06:34,811
+what you get is this equation.
+
+184
+00:06:34,811 --> 00:06:37,634
+And just write it out here.
+
+185
+00:06:37,634 --> 00:06:39,047
+The sum from I equals 1
+
+186
+00:06:39,047 --> 00:06:41,386
+through M of the,
+
+187
+00:06:41,386 --> 00:06:43,722
+essentially the error, times
+
+188
+00:06:43,722 --> 00:06:46,378
+X I J. So if
+
+189
+00:06:46,390 --> 00:06:48,504
+you take this partial derivative
+
+190
+00:06:48,504 --> 00:06:49,716
+term and plug it back
+
+191
+00:06:49,716 --> 00:06:51,210
+in here, we can then
+
+192
+00:06:51,230 --> 00:06:55,203
+write out our gradient descent algorithm as follows.
+
+193
+00:06:55,203 --> 00:06:56,393
+And all I've done is I
+
+194
+00:06:56,393 --> 00:06:57,633
+took the derivative term from
+
+195
+00:06:57,633 --> 00:07:00,163
+the previous line and plugged it in there.
+
+196
+00:07:00,170 --> 00:07:01,454
+So if you have N
+
+197
+00:07:01,454 --> 00:07:03,856
+features, you would have, you know, a
+
+198
+00:07:03,856 --> 00:07:06,865
+parameter vector theta, which parameters
+
+199
+00:07:06,865 --> 00:07:08,417
+theta zero, theta one, theta
+
+200
+00:07:08,417 --> 00:07:10,031
+two, down to theta
+
+201
+00:07:10,031 --> 00:07:11,324
+N and you will
+
+202
+00:07:11,340 --> 00:07:13,930
+use this update to simultaneously
+
+203
+00:07:13,930 --> 00:07:15,920
+update all of your values of theta.
+
+204
+00:07:15,950 --> 00:07:17,378
+Now if you take this
+
+205
+00:07:17,378 --> 00:07:19,498
+update rule and compare it
+
+206
+00:07:19,498 --> 00:07:21,175
+to what we were doing
+
+207
+00:07:21,180 --> 00:07:23,364
+for linear regression, you might
+
+208
+00:07:23,370 --> 00:07:25,679
+be surprised to realize that,
+
+209
+00:07:25,710 --> 00:07:28,958
+well, this equation was exactly
+
+210
+00:07:28,970 --> 00:07:30,529
+what we had for linear regression.
+
+211
+00:07:30,550 --> 00:07:31,678
+In fact, if you look
+
+212
+00:07:31,678 --> 00:07:33,234
+at the earlier videos and look
+
+213
+00:07:33,240 --> 00:07:35,123
+at the update rule, the
+
+214
+00:07:35,123 --> 00:07:36,543
+gradient descent rule for linear
+
+215
+00:07:36,550 --> 00:07:38,418
+regression, it looked exactly
+
+216
+00:07:38,418 --> 00:07:41,268
+like what I drew here inside the blue box.
+
+217
+00:07:41,268 --> 00:07:43,280
+So are linear regression and
+
+218
+00:07:43,280 --> 00:07:45,875
+logistic regression different algorithms or not?
+
+219
+00:07:45,900 --> 00:07:47,415
+Well, this is resolved by
+
+220
+00:07:47,415 --> 00:07:49,468
+observing that for logistic
+
+221
+00:07:49,500 --> 00:07:51,376
+regression, what has changed
+
+222
+00:07:51,380 --> 00:07:54,723
+is that the definition for this hypothesis has changed.
+
+223
+00:07:54,723 --> 00:07:56,788
+So whereas for linear regression
+
+224
+00:07:56,800 --> 00:07:58,586
+we had H of X equals
+
+225
+00:07:58,620 --> 00:08:01,093
+theta transpose X, now the
+
+226
+00:08:01,093 --> 00:08:02,633
+definition of H of
+
+227
+00:08:02,633 --> 00:08:04,060
+X has changed and is
+
+228
+00:08:04,060 --> 00:08:05,460
+instead now 1 over 1
+
+229
+00:08:05,460 --> 00:08:07,897
+plus e to the negative theta transpose X.
+
+230
+00:08:07,910 --> 00:08:09,326
+So even though the update
+
+231
+00:08:09,340 --> 00:08:12,213
+rule looks cosmetically identical, because
+
+232
+00:08:12,230 --> 00:08:13,872
+the definition of the hypothesis
+
+233
+00:08:13,872 --> 00:08:15,826
+has changed, this is actually
+
+234
+00:08:15,826 --> 00:08:19,445
+not the same thing as gradient descent for linear regression.
+
+235
+00:08:19,445 --> 00:08:21,063
+In an earlier video, when
+
+236
+00:08:21,090 --> 00:08:22,889
+we were talking about gradient descent
+
+237
+00:08:22,900 --> 00:08:24,514
+for linear regression, we had
+
+238
+00:08:24,514 --> 00:08:26,128
+talked about how to monitor
+
+239
+00:08:26,160 --> 00:08:29,630
+gradient descent to make sure that it is converging.
+
+240
+00:08:29,630 --> 00:08:31,463
+I usually apply that same
+
+241
+00:08:31,463 --> 00:08:33,354
+method to logistic regression too
+
+242
+00:08:33,354 --> 00:08:37,193
+to monitor gradient descent to make sure it's conversion correctly.
+
+243
+00:08:37,220 --> 00:08:38,612
+And hopefully you can figure
+
+244
+00:08:38,612 --> 00:08:40,306
+out how to apply that technique
+
+245
+00:08:40,306 --> 00:08:43,984
+to logistic regression yourself.
+
+246
+00:08:43,984 --> 00:08:46,603
+When implementing logistic regression with
+
+247
+00:08:46,610 --> 00:08:48,229
+gradient descent, we have
+
+248
+00:08:48,229 --> 00:08:50,404
+all of these different parameter
+
+249
+00:08:50,404 --> 00:08:52,093
+values, you know, theta
+
+250
+00:08:52,130 --> 00:08:55,816
+0 down to theta N that we need to update using this expression.
+
+251
+00:08:55,816 --> 00:08:58,770
+And one thing we could do is have a for loop.
+
+252
+00:08:58,770 --> 00:09:00,926
+So for I equals 0 to
+
+253
+00:09:00,926 --> 00:09:03,658
+N of i equals 1 to N plus 1.
+
+254
+00:09:03,658 --> 00:09:07,217
+So update each of these parameter values in turn.
+
+255
+00:09:07,217 --> 00:09:08,653
+But of course, rather than using
+
+256
+00:09:08,653 --> 00:09:10,588
+a folder, ideally we would
+
+257
+00:09:10,600 --> 00:09:13,163
+also use a vectorized implementation.
+
+258
+00:09:13,170 --> 00:09:15,072
+And so that a vectorized
+
+259
+00:09:15,072 --> 00:09:16,899
+implementation can update, you
+
+260
+00:09:16,899 --> 00:09:18,310
+know, all of these N plus
+
+261
+00:09:18,310 --> 00:09:21,110
+1 parameters all in one fell swoop.
+
+262
+00:09:21,110 --> 00:09:22,233
+And to check your own
+
+263
+00:09:22,233 --> 00:09:23,675
+understanding, you might see
+
+264
+00:09:23,690 --> 00:09:25,223
+if you can figure out how
+
+265
+00:09:25,223 --> 00:09:27,763
+to do the vectorized implementation
+
+266
+00:09:27,763 --> 00:09:31,020
+of this algorithm as well.
+
+267
+00:09:31,030 --> 00:09:32,331
+So now you know how
+
+268
+00:09:32,350 --> 00:09:35,079
+to implement gradient descents for logistic aggression.
+
+269
+00:09:35,079 --> 00:09:36,706
+There was one last idea
+
+270
+00:09:36,706 --> 00:09:40,753
+that we had talked about earlier for which was feature scaling.
+
+271
+00:09:40,753 --> 00:09:42,946
+We saw how feature scaling can
+
+272
+00:09:42,946 --> 00:09:46,502
+help gradient descents converge faster for linear regression.
+
+273
+00:09:46,502 --> 00:09:48,827
+The idea of feature scaling also
+
+274
+00:09:48,850 --> 00:09:51,712
+applies to gradient descent for logistic regression.
+
+275
+00:09:51,730 --> 00:09:54,874
+And if you have features that are on very different scales.
+
+276
+00:09:54,890 --> 00:09:56,857
+Then applying feature scaling can also
+
+277
+00:09:56,857 --> 00:09:58,941
+make it, gradient descent, run
+
+278
+00:09:58,941 --> 00:10:01,550
+faster for logistic regression.
+
+279
+00:10:01,550 --> 00:10:02,699
+So, that's it.
+
+280
+00:10:02,699 --> 00:10:04,552
+You now know how to implement
+
+281
+00:10:04,552 --> 00:10:06,549
+logistic regression, and this
+
+282
+00:10:06,549 --> 00:10:08,918
+is a very powerful and
+
+283
+00:10:08,918 --> 00:10:10,441
+probably even most widely used
+
+284
+00:10:10,441 --> 00:10:11,982
+classification algorithm in the world.
+
+285
+00:10:11,982 --> 00:10:14,130
+And you now know how we get to work with yourself.

@@ -1,0 +1,1288 @@
+1
+00:00:00,780 --> 00:00:01,870
+In this video, I want
+
+2
+00:00:02,070 --> 00:00:03,210
+to start telling you about how
+
+3
+00:00:03,470 --> 00:00:04,970
+we represent Neural Networks,
+
+4
+00:00:05,520 --> 00:00:06,690
+in other words how we represent
+
+5
+00:00:07,050 --> 00:00:08,130
+our hypotheses or how
+
+6
+00:00:08,350 --> 00:00:11,270
+we represent our model when using your Neural Networks.
+
+7
+00:00:12,050 --> 00:00:13,750
+Neural Networks were developed at
+
+8
+00:00:14,320 --> 00:00:17,650
+simulating neurons or networks of neurons in the brain.
+
+9
+00:00:18,540 --> 00:00:19,830
+So, to explain the hypotheses
+
+10
+00:00:20,400 --> 00:00:22,330
+representation. Let's start by
+
+11
+00:00:22,580 --> 00:00:23,590
+looking at what a single
+
+12
+00:00:24,050 --> 00:00:25,250
+neuron in the brain looks like.
+
+13
+00:00:26,390 --> 00:00:27,630
+Your brain and mine is jam-packed
+
+14
+00:00:28,160 --> 00:00:29,610
+full of neurons like these
+
+15
+00:00:30,170 --> 00:00:31,300
+and neurons are cells in
+
+16
+00:00:31,380 --> 00:00:32,740
+the brain and the two
+
+17
+00:00:33,000 --> 00:00:34,740
+things to draw attention to are
+
+18
+00:00:34,970 --> 00:00:36,590
+that first that the
+
+19
+00:00:36,780 --> 00:00:37,820
+neuron has a cell body
+
+20
+00:00:38,360 --> 00:00:40,320
+like so and moreover, the
+
+21
+00:00:40,500 --> 00:00:41,480
+neuron has a number of
+
+22
+00:00:41,680 --> 00:00:43,060
+input wires and these are
+
+23
+00:00:43,260 --> 00:00:44,360
+called the dendrites who think of
+
+24
+00:00:44,670 --> 00:00:47,370
+them as input wires and
+
+25
+00:00:48,180 --> 00:00:49,500
+these receive inputs from other
+
+26
+00:00:49,660 --> 00:00:51,330
+locations and the neuron
+
+27
+00:00:51,600 --> 00:00:54,270
+also has an output wire called the axon.
+
+28
+00:00:55,140 --> 00:00:56,710
+And this output wire
+
+29
+00:00:57,290 --> 00:00:58,910
+is what it uses to send
+
+30
+00:00:59,140 --> 00:01:00,690
+signal to other neurons
+
+31
+00:01:01,290 --> 00:01:04,130
+or to send messages to other neurons.
+
+32
+00:01:05,280 --> 00:01:07,220
+So, at a simplistic level, what
+
+33
+00:01:07,410 --> 00:01:08,740
+a neuron is is a computational
+
+34
+00:01:09,430 --> 00:01:10,470
+unit that gets a number
+
+35
+00:01:10,650 --> 00:01:13,220
+of inputs through its input wires, does some computation.
+
+36
+00:01:14,430 --> 00:01:15,700
+and then it sends outputs, via its
+
+37
+00:01:15,830 --> 00:01:17,640
+axon to other nodes
+
+38
+00:01:18,150 --> 00:01:19,540
+or other neurons in the brain.
+
+39
+00:01:20,460 --> 00:01:23,370
+Here's an illustration of a group of neurons.
+
+40
+00:01:24,260 --> 00:01:25,350
+The way that neurons communicate
+
+41
+00:01:26,120 --> 00:01:28,410
+with each other is with little pulses of electricities.
+
+42
+00:01:29,230 --> 00:01:31,820
+They're also called spikes, but they're just means of little pulse of electricity.
+
+43
+00:01:33,140 --> 00:01:35,000
+So, here's one neuron and what
+
+44
+00:01:35,680 --> 00:01:37,060
+it does is if it
+
+45
+00:01:37,190 --> 00:01:38,260
+wants to send a message,
+
+46
+00:01:38,500 --> 00:01:39,280
+what it does is it sends
+
+47
+00:01:39,710 --> 00:01:41,190
+the little pulse of electricity via its
+
+48
+00:01:41,820 --> 00:01:44,110
+axon to some difference
+
+49
+00:01:44,970 --> 00:01:46,610
+neuron and here this axon.
+
+50
+00:01:47,250 --> 00:01:48,310
+There is this open wire.
+
+51
+00:01:49,190 --> 00:01:50,840
+Connects to the input wire or
+
+52
+00:01:51,030 --> 00:01:52,270
+connects to the dendrite of this
+
+53
+00:01:52,550 --> 00:01:54,300
+second neuron over here, which
+
+54
+00:01:54,560 --> 00:01:55,860
+then accepts this incoming message
+
+55
+00:01:56,830 --> 00:01:58,510
+does some computation and may
+
+56
+00:01:58,720 --> 00:01:59,710
+in turn decide to send
+
+57
+00:02:00,030 --> 00:02:01,450
+out its O messages on its
+
+58
+00:02:02,020 --> 00:02:04,090
+axon to other neurons.
+
+59
+00:02:04,400 --> 00:02:05,740
+And this is the process by
+
+60
+00:02:05,940 --> 00:02:07,570
+which all human thought
+
+61
+00:02:08,060 --> 00:02:09,540
+happens as these neurons doing
+
+62
+00:02:09,730 --> 00:02:11,150
+computations and passing messages
+
+63
+00:02:11,630 --> 00:02:13,120
+to other neurons as a
+
+64
+00:02:13,380 --> 00:02:15,560
+result of what other inputs they've got.
+
+65
+00:02:16,530 --> 00:02:17,560
+And by the way, this is how
+
+66
+00:02:18,340 --> 00:02:21,030
+our senses and our muscles work as well.
+
+67
+00:02:21,680 --> 00:02:23,340
+If you want to move one
+
+68
+00:02:23,500 --> 00:02:24,460
+of your muscles, the way that
+
+69
+00:02:24,760 --> 00:02:26,110
+works is that a neuron may
+
+70
+00:02:26,240 --> 00:02:27,370
+send these pulses of electricities
+
+71
+00:02:28,470 --> 00:02:29,590
+to your muscle and that causes
+
+72
+00:02:30,160 --> 00:02:32,440
+your muscles to contract and your
+
+73
+00:02:32,710 --> 00:02:34,030
+eyes - if some
+
+74
+00:02:34,330 --> 00:02:35,510
+sensor like your eye
+
+75
+00:02:35,650 --> 00:02:36,710
+wants to send a message to
+
+76
+00:02:36,950 --> 00:02:37,810
+your brain, what it does
+
+77
+00:02:38,360 --> 00:02:39,900
+is it sends its pulses of
+
+78
+00:02:40,670 --> 00:02:42,670
+electricity to a neuron in your brain like so.
+
+79
+00:02:43,460 --> 00:02:45,490
+In a neural network, or
+
+80
+00:02:46,040 --> 00:02:47,700
+rather in an artificial neural
+
+81
+00:02:48,040 --> 00:02:49,250
+network that we implement in
+
+82
+00:02:49,290 --> 00:02:50,980
+a computer, we're going to
+
+83
+00:02:51,200 --> 00:02:52,560
+use a very simple model
+
+84
+00:02:53,160 --> 00:02:54,380
+of what a neuron does.
+
+85
+00:02:54,510 --> 00:02:57,720
+We're going to model a neuron as just a logistic unit.
+
+86
+00:02:58,590 --> 00:02:59,480
+So, when I draw a yellow
+
+87
+00:02:59,770 --> 00:03:01,130
+circle like that, you should hink of
+
+88
+00:03:01,240 --> 00:03:03,130
+that as playing a
+
+89
+00:03:03,280 --> 00:03:04,710
+role analogous to maybe the
+
+90
+00:03:04,870 --> 00:03:06,480
+body of a neuron, and
+
+91
+00:03:07,210 --> 00:03:08,840
+we then feed the neuron a
+
+92
+00:03:09,670 --> 00:03:11,670
+few inputs via its dendrites or
+
+93
+00:03:11,910 --> 00:03:16,150
+its input wires and the neuron does some computation
+
+94
+00:03:17,390 --> 00:03:19,050
+and output some value on
+
+95
+00:03:19,200 --> 00:03:21,260
+this output wire or in
+
+96
+00:03:21,820 --> 00:03:23,400
+a biological neuron that sorts
+
+97
+00:03:23,530 --> 00:03:25,160
+the axon and whenever I
+
+98
+00:03:25,310 --> 00:03:26,660
+draw a diagram like this, what
+
+99
+00:03:26,830 --> 00:03:28,020
+this means is that this represents
+
+100
+00:03:28,550 --> 00:03:30,040
+a computations of, you know, h of x equals 1
+
+101
+00:03:32,780 --> 00:03:34,290
+over 1 + e to
+
+102
+00:03:35,290 --> 00:03:37,590
+the negative theta transpose x where, as
+
+103
+00:03:37,930 --> 00:03:39,330
+usual, x and theta
+
+104
+00:03:39,650 --> 00:03:42,610
+are our parameter vectors like so.
+
+105
+00:03:42,920 --> 00:03:44,410
+So, this is a very simple maybe
+
+106
+00:03:44,780 --> 00:03:46,490
+a vastly over simplified model of
+
+107
+00:03:46,670 --> 00:03:48,050
+the computation that the neuron
+
+108
+00:03:48,320 --> 00:03:49,200
+does where it gets the
+
+109
+00:03:49,260 --> 00:03:50,790
+number of inputs, x1, x2,
+
+110
+00:03:51,650 --> 00:03:54,150
+x3 and it outputs some value computed like so.
+
+111
+00:03:59,960 --> 00:04:01,250
+When I draw a neural network,
+
+112
+00:04:01,900 --> 00:04:03,430
+usually I draw only the
+
+113
+00:04:03,720 --> 00:04:04,770
+input nose x1, x2, x3,
+
+114
+00:04:06,330 --> 00:04:07,740
+sometimes when it's useful to do so.
+
+115
+00:04:08,170 --> 00:04:09,780
+I draw an extra node for x zero.
+
+116
+00:04:11,050 --> 00:04:12,200
+This x zero node is
+
+117
+00:04:12,370 --> 00:04:13,960
+sometimes called the bias unit
+
+118
+00:04:14,960 --> 00:04:17,970
+or the bias neuron but because
+
+119
+00:04:18,500 --> 00:04:21,350
+x0 is already equal to 1.
+
+120
+00:04:21,530 --> 00:04:22,320
+Sometimes, I draw with it, sometimes
+
+121
+00:04:22,820 --> 00:04:24,280
+I won't just depending on whether
+
+122
+00:04:24,800 --> 00:04:27,560
+there's more the rotationally convenient for that example.
+
+123
+00:04:28,080 --> 00:04:32,810
+Finally, one last
+
+124
+00:04:33,270 --> 00:04:34,800
+bit of terminology when we
+
+125
+00:04:34,900 --> 00:04:36,690
+talk about neural networks, sometimes
+
+126
+00:04:36,810 --> 00:04:38,500
+we'll say that this
+
+127
+00:04:38,790 --> 00:04:40,330
+is a neuron - an
+
+128
+00:04:40,440 --> 00:04:42,720
+artificial neuron  with a sigmoid or a logistic
+
+129
+00:04:43,090 --> 00:04:44,250
+activation function.
+
+130
+00:04:44,760 --> 00:04:48,030
+So this activation function in the neuronetro
+
+131
+00:04:48,140 --> 00:04:49,200
+terminology, this is just
+
+132
+00:04:49,540 --> 00:04:51,210
+another term for that
+
+133
+00:04:51,560 --> 00:04:53,190
+function for that non-linearity g
+
+134
+00:04:53,430 --> 00:04:55,170
+of z, equals 1
+
+135
+00:04:55,260 --> 00:04:56,020
+over 1 plus e to the negative z.
+
+136
+00:04:56,660 --> 00:04:58,410
+And whereas so far
+
+137
+00:04:58,930 --> 00:05:00,090
+I've been calling theta the parameters
+
+138
+00:05:00,600 --> 00:05:02,500
+of the model are mostly continued
+
+139
+00:05:02,940 --> 00:05:04,790
+to use that terminology to conjugate
+
+140
+00:05:05,480 --> 00:05:06,480
+to the parameters, but the neural networks.
+
+141
+00:05:07,680 --> 00:05:08,960
+In the neural networks literature and
+
+142
+00:05:09,400 --> 00:05:10,290
+sometimes you might hear people
+
+143
+00:05:10,620 --> 00:05:12,160
+talk about weights of a
+
+144
+00:05:12,400 --> 00:05:13,760
+model and weights just means
+
+145
+00:05:13,950 --> 00:05:15,490
+exactly the same thing as
+
+146
+00:05:15,750 --> 00:05:17,470
+parameters of the model.
+
+147
+00:05:17,830 --> 00:05:18,890
+But almost to use the terminology
+
+148
+00:05:19,900 --> 00:05:21,010
+parameters in these videos,
+
+149
+00:05:21,620 --> 00:05:24,180
+but sometimes you may hear others use the weights terminology.
+
+150
+00:05:27,890 --> 00:05:29,290
+So, this little
+
+151
+00:05:29,430 --> 00:05:31,340
+diagram represents a single neuron.
+
+152
+00:05:34,470 --> 00:05:35,790
+What a neural network is
+
+153
+00:05:36,560 --> 00:05:38,590
+Is just a proof of
+
+154
+00:05:38,780 --> 00:05:40,500
+these different neurons strung together.
+
+155
+00:05:41,630 --> 00:05:42,770
+Concretely, here we have
+
+156
+00:05:43,530 --> 00:05:45,070
+input units x1, x2, and x3
+
+157
+00:05:45,410 --> 00:05:47,170
+and once again,
+
+158
+00:05:47,540 --> 00:05:49,070
+sometimes can draw this
+
+159
+00:05:49,370 --> 00:05:50,760
+extra node x0 or sometimes
+
+160
+00:05:51,340 --> 00:05:52,490
+not. So, I just draw that in here.
+
+161
+00:05:53,620 --> 00:05:54,950
+And here we have
+
+162
+00:05:55,300 --> 00:05:56,800
+three neurons, which I
+
+163
+00:05:56,930 --> 00:05:58,890
+have written, you know, a(2)1, a(2)2 and
+
+164
+00:05:59,060 --> 00:06:00,250
+a(2)3 around top bottles indices
+
+165
+00:06:00,700 --> 00:06:02,140
+later and once again,
+
+166
+00:06:02,730 --> 00:06:03,790
+we can if we want
+
+167
+00:06:04,500 --> 00:06:05,440
+adding this a0 and
+
+168
+00:06:05,620 --> 00:06:08,840
+add an extra bias unit there.
+
+169
+00:06:10,240 --> 00:06:12,030
+It always outputs the value of 1.
+
+170
+00:06:12,390 --> 00:06:13,680
+Then finally we have this
+
+171
+00:06:13,880 --> 00:06:15,450
+third node at the final
+
+172
+00:06:15,710 --> 00:06:16,800
+layer, and it's this
+
+173
+00:06:16,990 --> 00:06:18,600
+third node that opens the value
+
+174
+00:06:19,210 --> 00:06:21,020
+that the hypotheses h of x computes.
+
+175
+00:06:22,330 --> 00:06:23,480
+To introduce a bit
+
+176
+00:06:23,610 --> 00:06:25,250
+more terminology in a neural
+
+177
+00:06:25,530 --> 00:06:27,340
+network, the first layer, this
+
+178
+00:06:27,480 --> 00:06:28,610
+is also called the input
+
+179
+00:06:29,040 --> 00:06:30,160
+layer because this is where
+
+180
+00:06:30,400 --> 00:06:33,510
+we input our features, x1 x2 x3.
+
+181
+00:06:33,770 --> 00:06:35,560
+The final layer is
+
+182
+00:06:35,850 --> 00:06:37,190
+also called the output layer
+
+183
+00:06:37,640 --> 00:06:39,550
+because that layer has
+
+184
+00:06:39,840 --> 00:06:41,010
+the neuron - this one over
+
+185
+00:06:41,150 --> 00:06:42,340
+here - that outputs the
+
+186
+00:06:42,400 --> 00:06:43,980
+final value computed by a
+
+187
+00:06:44,370 --> 00:06:46,180
+hypotheses and then layer
+
+188
+00:06:46,420 --> 00:06:48,900
+two in between, this is called the hidden layer.
+
+189
+00:06:49,830 --> 00:06:51,300
+The term hidden layer isn't a
+
+190
+00:06:51,450 --> 00:06:53,290
+great terminology, but the
+
+191
+00:06:54,160 --> 00:06:55,680
+intuition is that, you know, in
+
+192
+00:06:56,020 --> 00:06:57,450
+supervised learning where you
+
+193
+00:06:57,530 --> 00:06:59,820
+get to see the inputs, and you get to see the correct outputs.
+
+194
+00:07:00,640 --> 00:07:02,530
+Whereas the hidden layer are values you
+
+195
+00:07:02,660 --> 00:07:04,260
+don't get to observe in the training set.
+
+196
+00:07:04,520 --> 00:07:07,280
+If it's not x and it's not y and so we call those hidden.
+
+197
+00:07:08,170 --> 00:07:09,860
+and later on we'll see neural
+
+198
+00:07:10,050 --> 00:07:11,260
+networks with more than
+
+199
+00:07:11,370 --> 00:07:12,690
+one hidden layer, but in
+
+200
+00:07:13,020 --> 00:07:14,290
+this example we have one
+
+201
+00:07:14,480 --> 00:07:16,010
+input layer, layer 1; one hidden
+
+202
+00:07:16,260 --> 00:07:18,900
+layer, layer 2; and one output layer, layer 3.
+
+203
+00:07:19,390 --> 00:07:20,530
+But basically anything that isn't
+
+204
+00:07:20,990 --> 00:07:22,260
+an input layer and isn't a
+
+205
+00:07:22,410 --> 00:07:24,480
+output layer is called a hidden layer.
+
+206
+00:07:26,710 --> 00:07:29,620
+So, I
+
+207
+00:07:29,710 --> 00:07:30,610
+want to be really clear
+
+208
+00:07:31,090 --> 00:07:33,130
+about what this neural network is doing.
+
+209
+00:07:33,970 --> 00:07:34,840
+Let's step through the computational
+
+210
+00:07:35,760 --> 00:07:37,600
+steps that are embodied
+
+211
+00:07:38,050 --> 00:07:40,410
+by this, represented by this diagram.
+
+212
+00:07:41,560 --> 00:07:42,800
+To explain the specific computations
+
+213
+00:07:43,660 --> 00:07:44,960
+represented by a neural network,
+
+214
+00:07:45,580 --> 00:07:46,910
+here's a little bit more notation.
+
+215
+00:07:47,270 --> 00:07:48,400
+I'm going to use a superscript
+
+216
+00:07:48,950 --> 00:07:50,520
+j subscript i to denote
+
+217
+00:07:51,090 --> 00:07:53,640
+the activation of neuron i
+
+218
+00:07:54,060 --> 00:07:55,390
+or of unit i in layer
+
+219
+00:07:55,720 --> 00:07:58,290
+j.  So concretely, this
+
+220
+00:07:59,390 --> 00:08:01,280
+a superscript 2 subscript 1
+
+221
+00:08:01,380 --> 00:08:03,930
+does the activation of the
+
+222
+00:08:04,010 --> 00:08:05,320
+first unit in layer 2,
+
+223
+00:08:05,450 --> 00:08:07,140
+in our hidden layer.
+
+224
+00:08:07,280 --> 00:08:08,640
+And by activation, I just mean,
+
+225
+00:08:08,970 --> 00:08:10,360
+you know, the value that is computed
+
+226
+00:08:10,710 --> 00:08:12,530
+by and that is output by a specific.
+
+227
+00:08:13,200 --> 00:08:14,320
+In addition, our neural network
+
+228
+00:08:14,850 --> 00:08:17,050
+is parametrized by these matrices,
+
+229
+00:08:17,470 --> 00:08:19,520
+theta superscript j where
+
+230
+00:08:19,690 --> 00:08:20,600
+our theta j is going to
+
+231
+00:08:20,820 --> 00:08:21,820
+be a matrix of waves
+
+232
+00:08:22,140 --> 00:08:23,770
+controlling the function mapping from
+
+233
+00:08:24,130 --> 00:08:25,780
+one layer, maybe the first
+
+234
+00:08:25,990 --> 00:08:28,360
+layer to the second layer or from the second layer to the third layer.
+
+235
+00:08:29,580 --> 00:08:32,990
+So, here are the computations that are represented by this diagram.
+
+236
+00:08:34,520 --> 00:08:35,770
+This first hidden unit here,
+
+237
+00:08:37,060 --> 00:08:38,600
+has its value computed as
+
+238
+00:08:38,840 --> 00:08:40,020
+follows: is a a(2)1 is
+
+239
+00:08:40,260 --> 00:08:41,980
+equal to the sigmoid
+
+240
+00:08:42,400 --> 00:08:44,240
+function, or the sigmoid activation function
+
+241
+00:08:45,210 --> 00:08:46,550
+also called the logistic activation function,
+
+242
+00:08:47,760 --> 00:08:49,730
+applied to this sort
+
+243
+00:08:49,990 --> 00:08:52,360
+of linear combination of its inputs.
+
+244
+00:08:53,840 --> 00:08:56,560
+And then this second hidden
+
+245
+00:08:56,820 --> 00:08:58,330
+unit has this activation
+
+246
+00:08:59,010 --> 00:09:01,400
+value computed as sigmoid of this.
+
+247
+00:09:02,470 --> 00:09:04,110
+And similarly, for this
+
+248
+00:09:04,260 --> 00:09:07,010
+third hidden unit, it's computed by that formula.
+
+249
+00:09:08,330 --> 00:09:10,060
+So here, we have three
+
+250
+00:09:10,780 --> 00:09:13,960
+input units and the three hidden units.
+
+251
+00:09:16,830 --> 00:09:18,840
+And so the dimension
+
+252
+00:09:19,590 --> 00:09:21,530
+of theta one which the
+
+253
+00:09:22,060 --> 00:09:23,590
+matrix of parameters governing our
+
+254
+00:09:23,740 --> 00:09:24,870
+mapping from all three input
+
+255
+00:09:25,170 --> 00:09:26,530
+units, about three hidden units
+
+256
+00:09:27,080 --> 00:09:28,210
+theta 1 is going to
+
+257
+00:09:29,880 --> 00:09:35,390
+be a 3,
+
+258
+00:09:35,640 --> 00:09:36,870
+theta 1 is going to
+
+259
+00:09:38,130 --> 00:09:39,640
+be a 3 by 4 dimensional
+
+260
+00:09:40,650 --> 00:09:42,620
+matrix and more generally,
+
+261
+00:09:43,870 --> 00:09:45,440
+if a network has Sj
+
+262
+00:09:45,710 --> 00:09:46,710
+units and their j
+
+263
+00:09:47,210 --> 00:09:48,440
+and Sj + 1 units
+
+264
+00:09:48,650 --> 00:09:49,980
+in their j + 1 then
+
+265
+00:09:50,310 --> 00:09:51,700
+the matrix theta j which
+
+266
+00:09:52,010 --> 00:09:53,560
+governs the function mapping from
+
+267
+00:09:53,780 --> 00:09:55,390
+layer j to layer j +
+
+268
+00:09:55,640 --> 00:09:56,660
+1 that we'll have to mention
+
+269
+00:09:57,280 --> 00:10:00,160
+Sj + 1 by Sj + 1.
+
+270
+00:10:00,580 --> 00:10:02,390
+Just be clear about this notation, right?
+
+271
+00:10:02,580 --> 00:10:04,440
+This is S subscript j
+
+272
+00:10:04,440 --> 00:10:05,810
++ 1 and that's S
+
+273
+00:10:06,100 --> 00:10:07,260
+subscript j, and then
+
+274
+00:10:07,380 --> 00:10:09,060
+this whole thing, plus 1.
+
+275
+00:10:09,430 --> 00:10:11,860
+Of this whole thing, that's j + 1, okay?
+
+276
+00:10:12,260 --> 00:10:13,730
+So that's S subscript j plus
+
+277
+00:10:14,080 --> 00:10:22,400
+1 plus, by So,
+
+278
+00:10:22,560 --> 00:10:24,090
+that's S subscript j plus
+
+279
+00:10:24,400 --> 00:10:26,230
+1 by Sj
+
+280
+00:10:27,220 --> 00:10:30,460
++ 1 where as plus 1 is not part of the subscript.
+
+281
+00:10:32,400 --> 00:10:33,520
+So, we talked about what
+
+282
+00:10:33,690 --> 00:10:36,120
+the three hidden units do to compute their values.
+
+283
+00:10:37,180 --> 00:10:41,240
+Finally, this last, the spinal in optimal
+
+284
+00:10:41,370 --> 00:10:42,280
+layer, we have one more
+
+285
+00:10:42,540 --> 00:10:44,270
+units which computes h of
+
+286
+00:10:44,350 --> 00:10:46,090
+x and that's equal, can
+
+287
+00:10:46,230 --> 00:10:47,210
+also be written as a(3)1
+
+288
+00:10:47,270 --> 00:10:50,830
+and that's equal to this.
+
+289
+00:10:52,030 --> 00:10:53,110
+And you notice that I've
+
+290
+00:10:53,290 --> 00:10:54,480
+written this with a superscript
+
+291
+00:10:54,670 --> 00:10:56,380
+2 here because theta superscript
+
+292
+00:10:57,130 --> 00:10:58,340
+2 is the matrix of parameters,
+
+293
+00:10:59,080 --> 00:11:01,170
+or the matrix of weights that
+
+294
+00:11:01,380 --> 00:11:02,830
+controls the function that maps
+
+295
+00:11:03,240 --> 00:11:05,090
+from the hidden units, that
+
+296
+00:11:05,600 --> 00:11:06,850
+is the layer 2 units,
+
+297
+00:11:07,720 --> 00:11:09,230
+to the 1 layer 3
+
+298
+00:11:09,590 --> 00:11:10,840
+unit that is the output
+
+299
+00:11:12,360 --> 00:11:12,360
+unit.
+
+300
+00:11:12,550 --> 00:11:13,460
+To summarize, what we've done
+
+301
+00:11:13,830 --> 00:11:14,900
+is shown how a picture
+
+302
+00:11:15,230 --> 00:11:16,670
+like this over here defines
+
+303
+00:11:17,350 --> 00:11:20,280
+an artificial neural network which defines
+
+304
+00:11:20,920 --> 00:11:22,160
+a function h that maps
+
+305
+00:11:23,090 --> 00:11:24,880
+your x's input values to hopefully
+
+306
+00:11:25,140 --> 00:11:26,650
+to some space and provisions y?
+
+307
+00:11:27,500 --> 00:11:29,430
+And these hypotheses after parametrized
+
+308
+00:11:30,190 --> 00:11:31,600
+by parameters that I
+
+309
+00:11:31,690 --> 00:11:33,070
+am denoting with a capital
+
+310
+00:11:33,460 --> 00:11:35,020
+theta so that as
+
+311
+00:11:35,170 --> 00:11:36,920
+we be vary theta we get different hypotheses.
+
+312
+00:11:37,650 --> 00:11:38,930
+So we get different functions mapping
+
+313
+00:11:39,490 --> 00:11:42,490
+say from x to y.  
+So
+
+314
+00:11:42,940 --> 00:11:44,000
+this gives us a mathematical
+
+315
+00:11:44,790 --> 00:11:45,980
+definition of how to
+
+316
+00:11:46,140 --> 00:11:48,400
+represent the hypotheses in the neural network.
+
+317
+00:11:49,430 --> 00:11:50,750
+In the next few videos, what
+
+318
+00:11:50,780 --> 00:11:51,930
+I'd like to do is give
+
+319
+00:11:52,090 --> 00:11:53,580
+you more intuition about what
+
+320
+00:11:53,760 --> 00:11:56,280
+these hypotheses representations do, as
+
+321
+00:11:56,410 --> 00:11:57,290
+well as go through a
+
+322
+00:11:57,370 --> 00:12:00,280
+few examples and talk about how to compute them efficiently.

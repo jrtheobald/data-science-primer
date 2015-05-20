@@ -1,0 +1,510 @@
+I've seen over and over that
+one of the most reliable ways to
+get a high performance machine learning
+system is to take
+a low bias learning algorithm
+and to train it on a massive training set.
+But where did you get so much training data from?
+Turns out that the machine earnings
+there's a fascinating idea called artificial
+data synthesis, this doesn't
+apply to every single problem, and
+to apply to a specific
+problem, often takes some thought and innovation and insight.
+But if this idea applies
+to your machine, only problem, it
+can sometimes be a an
+easy way to get a
+huge training set to give to your learning algorithm.
+The idea of artificial
+data synthesis comprises of two
+variations, main the first
+is if we are essentially creating
+data from [xx], creating new data from scratch.
+And the second is if
+we already have it's small
+label training set and we
+somehow have amplify that training
+set or use a small training
+set to turn that into
+a larger training set and in
+this video we'll go over both those ideas.
+To talk about the artificial data
+synthesis idea, let's use
+the character portion of
+the photo OCR pipeline, we
+want to take it's input image
+and recognize what character it is.
+If we go out and collect
+a large label data set,
+here's what it is and what it look like.
+For this particular example, I've chosen a square aspect ratio.
+So we're taking square image patches.
+And the goal is to take
+an image patch and recognize the
+character in the middle of that image patch.
+And for the sake of simplicity,
+I'm going to treat these images
+as grey scale images, rather than color images.
+It turns out that using color
+doesn't seem to help that much for this particular problem.
+So given this image patch, we'd
+like to recognize that that's a
+T. Given this image patch,
+we'd like to recognize that it's an 'S'.
+Given that image patch we
+would like to recognize that as an 'I' and so on.
+So all of these, our
+examples of row images, how
+can we come up with a much larger training set?
+Modern computers often have a
+huge font library and
+if you use a word processing
+software, depending on what word
+processor you use, you might
+have all of these fonts and
+many, many more Already stored inside.
+And, in fact, if you go different websites, there
+are, again, huge, free font
+libraries on the internet we
+can download many, many different
+types of fonts, hundreds or perhaps thousands of different fonts.
+So if you want more
+training examples, one thing you
+can do is just take
+characters from different fonts
+and paste these characters against
+different random backgrounds.
+So you might take this ----  and paste that c against a random background.
+If you do that you now have
+a training example of an
+image of the character C.
+So after some amount of
+work, you know this,
+and it is a little bit of
+work to synthisize realistic looking data.
+But after some amount of work,
+you can get a synthetic training set like that.
+Every image shown on the right was actually a synthesized image.
+Where you take a font,
+maybe a random font downloaded off
+the web and you paste
+an image of one character
+or a few characters from that font
+against this other random background image.
+And then apply maybe a little
+blurring operators  -----of app
+finder, distortions that app
+finder, meaning just the sharing
+and scaling and little rotation
+operations and if you
+do that you get a synthetic
+training set, on what the one shown here.
+And this is work,
+grade, it is, it takes
+thought at work, in order to
+make the synthetic data look realistic,
+and if you do a sloppy
+job in terms of how
+you create the synthetic data then it actually won't work well.
+But if you look at
+the synthetic data looks remarkably similar to the real data.
+And so by using synthetic data
+you have essentially an unlimited
+supply of training examples for
+artificial training synthesis And
+so, if you use this
+source synthetic data, you have
+essentially unlimited supply of
+label data to create
+a improvised learning algorithm
+for the character recognition problem.
+So this is an example of
+artificial data synthesis where youre
+basically creating new data from
+scratch, you just generating brand new images from scratch.
+The other main approach to artificial data
+synthesis is where you
+take a examples that you
+currently have, that we take
+a real example, maybe from
+real image, and you create
+additional data, so as to
+amplify your training set.
+So here is an image of a compared
+to a from a real image,
+not a synthesized image, and
+I have overlayed this with
+the grid lines just for the purpose of illustration.
+Actually have these ----.
+So what you
+can do is then take this
+alphabet here, take this image
+and introduce artificial warpings[sp?]
+or artificial distortions into the
+image so they can
+take the image a and turn
+that into 16 new examples.
+So in this way you can
+take a small label training set
+and amplify your training set
+to suddenly get a lot
+more examples, all of it.
+Again, in order to do
+this for application, it does
+take thought and it does
+take insight to figure out
+what our reasonable sets of
+distortions, or whether these
+are ways that amplify and multiply
+your training set, and for
+the specific example of
+character recognition, introducing these
+warping seems like a natural
+choice, but for a
+different learning machine application, there may
+be different the distortions that might make more sense.
+Let me just show one example
+from the totally different domain of speech recognition.
+So the speech recognition, let's say
+you have audio clips and you
+want to learn from the audio
+clip to recognize what were
+the words spoken in that clip.
+So let's see how one labeled training example.
+So let's say you have one
+labeled training example, of someone
+saying a few specific words.
+So let's play that audio clip here.
+0 -1-2-3-4-5.
+Alright, so someone
+counting from 0 to 5,
+and so you want to
+try to apply a learning algorithm
+to try to recognize the words said in that.
+So, how can we amplify the data set?
+Well, one thing we do is
+introduce additional audio distortions into the data set.
+So here I'm going to
+add background sounds to simulate a bad cell phone connection.
+When you hear beeping sounds, that's
+actually part of the audio
+track, that's nothing wrong with the speakers, I'm going to play this now.
+0-1-2-3-4-5.
+Right, so you can listen
+to that sort of audio clip and
+recognize the sounds,
+that seems like another useful training
+example to have, here's another example, noisy background.
+Zero, one, two, three
+four five you know
+of cars driving past, people walking
+in the background, here's another
+one, so taking the original
+clean audio clip so
+taking the clean audio of
+someone saying 0 1 2 3
+4 5 we can then automatically
+synthesize these additional training
+examples and thus amplify
+one training example into maybe four different training examples.
+So let me play this final
+example, as well.
+0-1 3-4-5 So by
+taking just one labelled example,
+we have to go through the effort
+to collect just one labelled example
+fall of the 01205, and by
+synthesizing additional distortions,
+by introducing different background sounds,
+we've now multiplied this one
+example into many more examples.
+Much work by just automatically
+adding these different background sounds
+to the clean audio Just
+one word of warning about synthesizing
+data by introducing distortions: if
+you try to do this
+yourself, the distortions you
+introduce should be representative the source
+of noises, or distortions, that
+you might see in the test set.
+So, for the character recognition example,
+you know, the working things
+begin introduced are actually kind
+of reasonable, because an image
+A that looks like that, that's,
+could be an image that
+we could actually see in a test set.Reflect
+a fact And, you know, that
+image on the upper-right, that
+could be an image that we could imagine seeing.
+And for audio, well, we do
+wanna recognize speech, even against
+a bad self internal connection, against
+different types of background noise, and
+so for the audio, we're again
+synthesizing examples are actually
+representative of the sorts of
+examples that we want to
+classify, that we want to recognize correctly.
+In contrast, usually it does
+not help perhaps you actually
+a meaning as noise to your data.
+I'm not sure you can see
+this, but what we've done
+here is taken the image, and
+for each pixel, in each
+of these 4 images, has just
+added some random Gaussian noise to each pixel.
+To each pixel, is the
+pixel brightness, it would
+just add some, you know, maybe Gaussian random noise to each pixel.
+So it's just a totally meaningless noise, right?
+And so, unless you're expecting
+to see these sorts of pixel
+wise noise in your test
+set, this sort of
+purely random meaningless noise is less likely to be useful.
+But the process of artificial
+data synthesis it is you
+know a little bit of
+an art as well and sometimes
+you just have to try it and see if it works.
+But if you're trying to
+decide what sorts of distortions
+to add, you know, do
+think about what other meaningful
+distortions you might add that
+will cause you to generate additional
+training examples that are at
+least somewhat representative of the
+sorts of images you expect to see in your test sets.
+Finally, to wrap up this
+video, I just wanna say
+a couple of words, more about
+this idea of getting loss
+of data via artificial data synthesis.
+As always, before expending a lot
+of effort, you know, figuring out
+how to create artificial training
+examples, it's often a good
+practice is to make sure
+that you really have a low biased
+crossfire, and having a
+lot more training data will be of help.
+And standard way to do
+this is to plot the learning
+curves, and make sure that
+you only have a low
+as well, high variance falsifier.
+Or if you don't have a low
+bias falsifier, you know,
+one other thing that's worth trying
+is to keep increasing the number
+of features that your classifier
+has, increasing the number of
+hidden units in your network,
+saying, until you actually have a
+low bias falsifier, and only
+then, should you put
+the effort into creating a
+large, artificial training set, so
+what you really want to avoid
+is to, you know, spend
+a whole week or spend a few
+months figuring out how
+to get a great artificially
+synthesized data set.
+Only to realize afterward, that,
+you know, your learning algorithm, performance
+doesn't improve that much, even when you're given a huge training set.
+So that's about my usual advice
+about of a testing that
+you really can make use
+of a large training set before
+spending a lot of effort going out to get that large training set.
+Second is, when i'm working
+on machine learning problems, one question
+I often ask the team
+I'm working with, often ask my
+students, which is, how much work
+would it be to get 10 times as much date as we currently had.
+When I face a new machine
+learning application very often I
+will sit down with a team
+and ask exactly this question,
+I've asked this question over and
+over and over and I've
+been very surprised how often
+this answer has been that.
+You know, it's really not that hard,
+maybe a few days of work
+at most, to get ten times
+as much data as we currently
+have for a machine
+running application and very
+often if you can get
+ten times as much data there
+will be a way to make your algorithm do much better.
+So, you know, if you
+ever join the product team
+working on some machine learning
+application product this is
+a very good questions ask yourself
+ask the team don't be
+too surprised if after a
+few minutes of brainstorming if your
+team comes up with a
+way to get literally ten
+times this much data, in
+which case, I think you would
+be a hero to that team,
+because with 10 times as
+much data, I think you'll really
+get much better performance, just from learning from so much data.
+So there are several waysand
+that comprised both the ideas
+of generating data from
+scratch using random fonts and so on.
+As well as the second idea
+of taking an existing example and
+and introducing distortions that amplify
+to enlarge the training set A
+couple of other examples of
+ways to get a lot more
+data are to collect the
+data or to label them yourself.
+So one useful calculation that
+I often do is, you know,
+how many minutes, how many
+hours does it take to
+get a certain number of
+examples, so actually sit down and
+figure out, you know, suppose it
+takes me ten seconds to
+label one example then
+and, suppose that, for
+our application, currently we
+have 1000 labeled examples examples
+so ten times as
+much of that would be
+if n were equal to ten thousand.
+A second way to
+get a lot of data is
+to just collect the data and you label it yourself.
+So what I mean by this is
+I will often set down and
+do a calculation to figure
+out how much time, you
+know just like how many hours
+will it take, how many
+hours or how many days will
+it take for me or
+for someone else to just sit
+down and collect ten times
+as much data, as we have
+currently, by collecting the data ourselves and labeling them ourselves.
+So, for example, that, for
+our machine learning application, currently
+we have 1,000 examples, so M 1,000.
+That what we do is sit
+down and ask, how long does
+it take me really to collect and label one example.
+And sometimes maybe it will
+take you, you know ten
+seconds to label
+one new example, and so
+if I want 10 X as many examples, I'd do a calculation.
+If it takes me 10 seconds to get one training example.
+If I wanted to get 10
+times as much data, then I need 10,000 examples.
+So I do the calculation, how long
+is it gonna take to label,
+to manually label 10,000 examples,
+if it takes me 10 seconds to label 1 example.
+So when you do this calculation,
+often I've seen many you
+would be surprised, you know,
+how little, or sometimes a
+few days at work, sometimes a
+small number of days of work,
+well I've seen many teams be very
+surprised that sometimes how
+little work it could be,
+to just get a lot more
+data, and let that be
+a way to give your learning
+app to give you a huge boost
+in performance, and necessarily, you
+know, sometimes when you've just
+managed to do this, you
+will be a hero and whatever product
+development, whatever team you're working
+on, because this can
+be a great way to get much better performance.
+Third and finally, one sometimes
+good way to get a
+lot of data is to use
+what's now called crowd sourcing.
+So today, there are a
+few websites or a few
+services that allow you
+to hire people on
+the web to, you know, fairly
+inexpensively label large training sets for you.
+So this idea of crowd
+sourcing, or crowd sourced
+data labeling, is something
+that has, is obviously, like
+an entire academic literature,
+has some of it's own complications and
+so on, pertaining to labeler reliability.
+Maybe, you know, hundreds of thousands
+of labelers, around the
+world, working fairly inexpensively to
+help label data for you,
+and that I've just had mentioned,
+there's this one alternative as well.
+And probably Amazon Mechanical Turk
+systems is probably the most
+popular crowd sourcing option right now.
+This is often quite a
+bit of work to
+get to work, if you want
+to get very high quality labels,
+but is sometimes an
+option worth considering as well.
+If you want to try to
+hire many people, fairly inexpensively
+on the web, our labels launch miles of data for you.
+So this video, we
+talked about the idea of
+artificial data synthesis of
+either creating new data
+from scratch, looking, using
+the ramming funds as an example,
+or by amplifying an
+existing training set, by taking
+existing label examples and
+introducing distortions to it,
+to sort of create extra label examples.
+And finally, one thing that
+I hope you remember from this
+video this idea of if
+you are facing a machine learning
+problem, it is often worth doing two things.
+One just a sanity check,
+with learning curves, that having more data would help.
+And second, assuming that that's the case,
+I will often seat down and
+ask yourself seriously: what would
+it take to get ten times as
+much creative data as you
+currently have, and not always,
+but sometimes, you may be
+surprised by how easy that
+turns out to be, maybe
+a few days, a few weeks at
+work, and that can be
+a great way to give your learning algorithm a huge boost in performance

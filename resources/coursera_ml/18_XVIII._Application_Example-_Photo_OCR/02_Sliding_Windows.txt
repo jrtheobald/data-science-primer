@@ -1,0 +1,458 @@
+In the previous video, we talked
+about the photo OCR pipeline and how that worked.
+In which we would take an image
+and pass the Through a
+sequence of machine learning
+components in order to
+try to read the text that appears in an image.
+In this video I like to.
+A little bit more about how the
+individual components of the pipeline works.
+In particular most of this video will center around the discussion.
+of whats called a sliding windows.
+The first stage
+of the filter was the
+Text detection where we look
+at an image like this and try
+to find the regions of text that appear in this image.
+Text detection is an unusual problem in computer vision.
+Because depending on the length
+of the text you're trying to
+find, these rectangles that you're
+trying to find can have different aspect.
+So in order to talk
+about detecting things in images
+let's start with a simpler example
+of pedestrian detection and we'll then later go back to.
+Ideas that were developed
+in pedestrian detection and apply them to text detection.
+So in pedestrian detection you want
+to take an image that looks
+like this and the whole
+idea is the individual pedestrians that appear in the image.
+So there's one pedestrian that we
+found, there's a second
+one, a third one a fourth one, a fifth one.
+And a one.
+This problem is maybe slightly
+simpler than text detection just
+for the reason that the aspect
+ratio of most pedestrians are pretty similar.
+Just using a fixed aspect
+ratio for these rectangles that we're trying to find.
+So by aspect ratio I mean
+the ratio between the height and the width of these rectangles.
+They're all the same.
+for different pedestrians but for
+text detection the height
+and width ratio is different
+for different lines of text
+Although for pedestrian detection, the
+pedestrians can be different distances
+away from the camera and
+so the height of these rectangles
+can be different depending on how far away they are.
+but the aspect ratio is the same.
+In order to build a pedestrian
+detection system here's how you can go about it.
+Let's say that we decide to
+standardize on this aspect
+ratio of 82 by 36
+and we could
+have chosen some rounded number
+like 80 by 40 or something, but 82 by 36 seems alright.
+What we would do is then go
+out and collect large training sets of positive and negative examples.
+Here are examples of 82
+X 36 image patches that do
+contain pedestrians and here are
+examples of images that do not.
+On this slide I show 12
+positive examples of y1
+and 12 examples of y0.
+In a more typical pedestrian detection
+application, we may have
+anywhere from a 1,000 training
+examples up to maybe
+10,000 training examples, or
+even more if you can
+get even larger training sets.
+And what you can do, is then train
+in your network or some
+other learning algorithm to
+take this input, an MS
+patch of dimension 82 by
+36, and to classify  'y'
+and to classify that image patch
+as either containing a pedestrian or not.
+So this gives you a way
+of applying supervised learning in
+order to take an image
+patch can determine whether or not a pedestrian appears in that image capture.
+Now, lets say we get
+a new image, a test set
+image like this and we
+want to try to find a pedestrian's picture image.
+What we would do is start
+by taking a rectangular patch of this image.
+Like that shown up here, so
+that's maybe a 82 X
+36 patch of this image,
+and run that image patch through
+our classifier to determine whether
+or not there is a
+pedestrian in that image patch,
+and hopefully our classifier will
+return y equals 0 for that patch, since there is no pedestrian.
+Next, we then take that green
+rectangle and we slide it
+over a bit and then
+run that new image patch
+through our classifier to decide if there's a pedestrian there.
+And having done that, we then
+slide the window further to the
+right and run that patch
+through the classifier again.
+The amount by which you shift
+the rectangle over each time
+is a parameter, that's sometimes
+called the step size of the
+parameter, sometimes also called
+the slide parameter, and if
+you step this one pixel at a time.
+So you can use the step size
+or stride of 1, that usually
+performs best, that is
+more cost effective, and
+so using a step size of
+maybe 4 pixels at a
+time, or eight pixels at a
+time or some large number of
+pixels might be more common,
+since you're then moving the
+rectangle a little bit
+more each time.
+So, using this process, you continue
+stepping the rectangle over to
+the right a bit at a
+time and running each of
+these patches through a classifier,
+until eventually, as you
+slide this window over the
+different locations in the image,
+first starting with the first
+row and then we
+go further rows in
+the image, you would
+then run all of
+these different image patches at
+some step size or some
+stride through your classifier.
+Now, that was a pretty
+small rectangle, that would only
+detect pedestrians of one specific size.
+What we do next is
+start to look at larger image patches.
+So now let's take larger images
+patches, like those shown here
+and run those through the crossfire as well.
+And by the way when I say
+take a larger image patch, what
+I really mean is when you
+take an image patch like this,
+what you're really doing is taking
+that image patch, and resizing
+it down to 82 X 36, say.
+So you take this larger
+patch and re-size it to
+be smaller image and then
+it would be the smaller size image
+that is what you
+would pass through your classifier to try and decide if there is a pedestrian in that patch.
+And finally you can do
+this at an even larger
+scales and run
+that side of Windows to
+the end And after
+this whole process hopefully your algorithm
+will detect whether theres pedestrian
+appears in the image, so
+thats how you train a
+the classifier, and then
+use a sliding windows classifier,
+or use a sliding windows detector in
+order to find pedestrians in the image.
+Let's have a turn to the
+text detection example and talk
+about that stage in our
+photo OCR pipeline, where our
+goal is to find the text regions in unit.
+similar to pedestrian detection you
+can come up with a label
+training set with positive examples
+and negative examples with examples
+corresponding to regions where text appears.
+So instead of trying to detect pedestrians, we're now trying to detect texts.
+And so positive examples are going
+to be patches of images where there is text.
+And negative examples is going
+to be patches of images where there isn't text.
+Having trained this we can
+now apply it to a
+new image, into a test
+set image.
+So here's the image that we've been using as example.
+Now, last time we run,
+for this example we are going
+to run a sliding windows at
+just one fixed scale just
+for purpose of illustration, meaning that
+I'm going to use just one rectangle size.
+But lets say I run my little
+sliding windows classifier on lots
+of little image patches like
+this if I
+do that, what Ill end
+up with is a result
+like this where the white
+region show where my
+text detection system has found
+text and so the axis' of these two figures are the same.
+So there is a region
+up here, of course also
+a region up here, so the
+fact that this black up here
+represents that the classifier
+does not think it's found any
+texts up there, whereas the
+fact that there's a lot
+of white stuff here, that reflects that
+classifier thinks that it's found a bunch of texts.
+over there on the image.
+What i have done on this
+image on the lower left is
+actually use white to
+show where the classifier thinks it has found text.
+And different shades of grey
+correspond to the probability that
+was output by the classifier,
+so like the shades of grey
+corresponds to where it
+thinks it might have found text
+but has lower confidence the bright
+white response to whether the classifier,
+up with a very high
+probability, estimated probability of
+there being pedestrians in that location.
+We aren't quite done yet because
+what we actually want to do
+is draw rectangles around all
+the region where this text
+in the image, so were
+going to take one more step
+which is we take the output
+of the classifier and apply
+to it what is called an expansion operator.
+So what that does is, it
+take the image here,
+and it takes each of
+the white blobs, it takes each
+of the white regions and it expands that white region.
+Mathematically, the way you
+implement that is, if you
+look at the image on the right, what
+we're doing to create the
+image on the right is, for every
+pixel we are going
+to ask, is it withing
+some distance of a
+white pixel in the left image.
+And so, if a specific pixel
+is within, say, five pixels
+or ten pixels of a white
+pixel in the leftmost image, then
+we'll also color that pixel white in the rightmost image.
+And so, the effect of this
+is, we'll take each of the
+white blobs in the leftmost
+image and expand them a
+bit, grow them a little
+bit, by seeing whether the
+nearby pixels, the white pixels,
+and then coloring those nearby pixels in white as well.
+Finally, we are just about done.
+We can now look at this
+right most image and just
+look at the connecting components
+and look at the as white
+regions and draw bounding boxes around them.
+And in particular, if we look at
+all the white regions, like
+this one, this one, this
+one, and so on, and
+if we use a simple heuristic
+to rule out rectangles whose aspect
+ratios look funny because we
+know that boxes around text
+should be much wider than they are tall.
+And so if we ignore the
+thin, tall blobs like this one
+and this one, and
+we discard these ones because
+they are too tall and thin, and
+we then draw a the rectangles
+around the ones whose aspect
+ratio thats a height
+to what ratio looks like for
+text regions, then we
+can draw rectangles, the bounding
+boxes around this text
+region, this text region, and
+that text region, corresponding to
+the Lula B's antique mall logo,
+the Lula B's, and this little open sign.
+Of over there.
+This example by the actually misses one piece of text.
+This is very hard to read, but there is actually one piece of text there.
+That says [xx] are corresponding
+to this but the aspect ratio
+looks wrong so we discarded that one.
+So you know it's ok
+on this image, but in
+this particular example the classifier
+actually missed one piece of text.
+It's very hard to read because
+there's a piece of text
+written against a transparent window.
+So that's text detection
+using sliding windows.
+And having found these rectangles
+with the text in it, we
+can now just cut out
+these image regions and then
+use later stages of pipeline to try to meet the texts.
+Now, you recall that the
+second stage of pipeline was
+character segmentation, so given an
+image like that shown on top,
+how do we segment out the individual characters in this image?
+So what we can do is
+again use a supervised learning
+algorithm with some set of
+positive and some set of
+negative examples, what were
+going to do is look in
+the image patch and try
+to decide if there
+is split between two characters
+right in the middle of that image match.
+So for initial positive examples.
+This first cross example, this image
+patch looks like the
+middle of it is indeed
+the middle has splits between two
+characters and the second example
+again this looks like a
+positive example, because if I split
+two characters by putting a
+line right down the middle, that's the right thing to do.
+So, these are positive examples, where
+the middle of the image represents
+a gap or a split
+between two distinct characters, whereas
+the negative examples, well, you
+know, you don't want to split
+two characters right in the
+middle, and so
+these are negative examples because
+they don't represent the midpoint between two characters.
+So what we will do
+is, we will train a classifier,
+maybe using new network, maybe
+using a different learning algorithm, to
+try to classify between the positive and negative examples.
+Having trained such a classifier,
+we can then run this on
+this sort of text that our
+text detection system has pulled out.
+As we start by looking at
+that rectangle, and we ask,
+"Gee, does it look
+like the middle of
+that green rectangle, does it
+look like the midpoint between two characters?".
+And hopefully, the classifier will
+say no, then we slide
+the window over and this
+is a one dimensional sliding
+window classifier, because were
+going to slide the window only
+in one straight line from
+left to right, theres no different rows here.
+There's only one row here.
+But now, with the classifier in
+this position, we ask, well,
+should we split those two characters
+or should we put a split right down the middle of this rectangle.
+And hopefully, the classifier will
+output y equals one, in
+which case we will decide to
+draw a line down there, to try to split two characters.
+Then we slide the window over
+again, optic process, don't
+close the gap, slide over again,
+optic says yes, do split
+there and so
+on, and we slowly slide the
+classifier over to the
+right and hopefully it will
+classify this as another positive example and
+so on.
+And we will slide this window
+over to the right, running the
+classifier at every step, and
+hopefully it will tell us,
+you know, what are the right locations
+to split these characters up into,
+just split this image up into individual characters.
+And so thats 1D sliding
+windows for character segmentation.
+So, here's the overall photo OCR pipe line again.
+In this video we've talked about
+the text detection step, where
+we use sliding windows to detect text.
+And we also use a one-dimensional
+sliding windows to do character
+segmentation to segment out,
+you know, this text image in division of characters.
+The final step through the
+pipeline is the character qualification
+step and that step you might
+already be much more familiar
+with the early videos
+on supervised learning
+where you can apply a standard
+supervised learning within maybe
+on your network or maybe something
+else in order to
+take it's input, an image
+like that and classify which alphabet
+or which 26 characters A
+to Z, or maybe we should
+have 36 characters if you
+have the numerical digits as
+well, the multi class
+classification problem where you
+take it's input and image
+contained a character and decide
+what is the character that appears in that image?
+So that was the photo OCR
+pipeline and how you can
+use ideas like sliding windows
+classifiers in order to
+put these different components to
+develop a photo OCR system.
+In the next few videos we
+keep on using the problem of
+photo OCR to explore somewhat
+interesting issues surrounding building an application like this.

@@ -1,0 +1,238 @@
+In the last few videos, we
+talked about a collaborative filtering algorithm.
+In this video I'm going to
+say a little bit about the
+vectorization implementation of this algorithm.
+And also talk a little bit about other things you can do with this algorithm.
+For example, one of the
+things you can do is, given
+one product can you find
+other products that are related
+to this so that for
+example, a user has recently been looking at one product.
+Are there other related products
+that you could recommend to this user?
+So let's see what we could do about that.
+What I'd like to do is work
+out an alternative way of
+writing out the predictions of the collaborative filtering algorithm.
+To start, here is our
+data set with our
+five movies and what I'm
+going to do is take
+all the ratings by all the
+users and group them into
+a matrix. So, here we have
+five movies and four
+users, and so this
+matrix y is going to be
+a 5 by 4 matrix. It's just you know, taking all
+of the elements, all of this data.
+Including question marks, and grouping them into this matrix.
+And of course the elements of this
+matrix of the (i, j) element of
+this matrix is really what
+we were previously writing as y
+superscript i, j. It's
+the rating given to movie i
+by user j. Given this
+matrix y of all the
+ratings that we have, there's
+an alternative way of writing
+out all the predictive ratings of the algorithm.
+And, in particular if you
+look at what a certain
+user predicts on a
+certain movie, what user j
+predicts on movie i is given by this formula.
+And so, if you have
+a matrix of the predicted
+ratings, what you would
+have is the following
+matrix where the i, j entry.
+So this corresponds to the rating
+that we predict using j
+will give to movie i
+is exactly equal to that
+theta j transpose
+XI, and so, you know, this is a matrix
+where this first element
+the one-one element is a
+predictive rating of user one
+or movie one and this
+element, this is the one-two
+element is the predicted rating
+of user two on movie
+one, and so on,
+and this is the
+predicted rating of user one
+on the last movie and
+if you want, you know,
+this rating is what we
+would have predicted for this value
+and this rating is
+what we would have predicted for that
+value, and so on.
+Now, given this matrix of
+predictive ratings there is then
+a simpler or vectorized way of writing these out.
+In particular if I define
+the matrix x, and this
+is going to be just
+like the matrix we had earlier for linear regression to be
+sort of x1 transpose x2
+transpose down to
+x of nm transpose.
+So I'm take all the features
+for my movies and stack
+them in rows.
+So if you think of
+each movie as one example
+and stack all of the features
+of the different movies and rows.
+And if we also to
+find a matrix capital theta,
+and what I'm going to
+do is take each of
+the per user parameter
+vectors, and stack them in rows, like so.
+So that's theta 1, which
+is the parameter vector for the first user.
+And, you know, theta 2, and
+so, you must stack
+them in rows like this to
+define a matrix capital
+theta and so I have
+nu parameter vectors all stacked in rows like this.
+Now given this definition
+for the matrix x and this
+definition for the matrix theta
+in order to have a
+vectorized way of computing the
+matrix of all the predictions
+you can just compute x times
+the matrix theta transpose, and
+that gives you a vectorized way
+of computing this matrix over here.
+To give the collaborative filtering
+algorithm that you've been using another name.
+The algorithm that we're using
+is also called low rank
+matrix factorization.
+And so if you hear
+people talk about low rank matrix
+factorization that's essentially exactly
+the algorithm that we have been talking about.
+And this term comes from the
+property that this matrix
+x times theta transpose has a
+mathematical property in linear
+algebra called that this
+is a low rank matrix and
+so that's what gives
+rise to this name low
+rank matrix factorization for these
+algorithms, because of this low
+rank property of this matrix x theta transpose.
+In case you don't know what
+low rank means or in case you don't
+know what a low rank matrix is, don't worry about it.
+You really don't need to know that in order to use this algorithm.
+But if you're an expert in
+linear algebra, that's what gives
+this algorithm, this other name
+of low rank matrix factorization.
+Finally, having run the
+collaborative filtering algorithm here's
+something else that you can do
+which is use the learned
+features in order to find related movies.
+Specifically for each product i
+really for each movie i, we've
+learned a feature vector xi.
+So, you know, when you learn a
+certain features without really know
+that can the advance what the
+different features are going to be, but if you
+run the algorithm and perfectly the features
+will tend to capture what are
+the important aspects of these
+different movies or different products or what have you.
+What are the important aspects that cause
+some users to like certain
+movies and cause some users
+to like different sets of movies.
+So maybe you end up
+learning a feature, you know, where x1
+equals romance, x2 equals
+action similar to
+an earlier video and maybe you
+learned a different feature x3 which
+is a degree to which this is a comedy.
+Then some feature x4 which is, you know, some other thing.
+And you have N
+features all together and after
+you have learned features it's actually often
+pretty difficult to go in
+to the learned features and come
+up with a human understandable
+interpretation of what these features really are.
+But in practice, you know, the
+features even though these features can be hard to visualize.
+It can be hard to figure out just what these features are.
+Usually, it will learn
+features that are very meaningful
+for capturing whatever are the
+most important or the most salient
+properties of a movie
+that causes you to like or dislike it.
+And so now let's say we want to address the following problem.
+Say you have some specific movie
+i and you want
+to find other movies j
+that are related to that movie.
+And so well, why would you want to do this?
+Right, maybe you have a
+user that's browsing movies, and they're
+currently watching movie j, than
+what's a reasonable movie to recommend
+to them to watch after they're done with movie j?
+Or if someone's recently purchased movie
+j, well, what's a different
+movie that would be reasonable to recommend to them for them to consider purchasing.
+So, now that you have
+learned these feature vectors, this gives
+us a very convenient way to
+measure how similar two movies are.
+In particular, movie i
+has a feature vector xi.
+and so if you can find
+a different movie, j, so
+that the distance between
+xi and xj is small,
+then this is a pretty
+strong indication that, you know, movies
+j and i are somehow similar.
+At least in the sense that some of them
+likes movie i, maybe more likely to like movie j as well.
+So, just to recap, if
+your user is looking
+at some movie i and if
+you want to find the 5
+most similar movies to that
+movie in order to recommend
+5 new movies to them, what
+you do is find the five
+movies j, with the
+smallest distance between the
+features between these different movies.
+And this could give you a few different movies to recommend to your user.
+So with that, hopefully, you
+now know how to use
+a vectorized implementation to compute
+all the predicted ratings of
+all the users and all the
+movies, and also how to do
+things like use learned features
+to find what might be movies
+and what might be products that aren't related to each other.

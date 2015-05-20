@@ -1,0 +1,201 @@
+Most of the supervised learning algorithms
+we've seen, things like linear
+regression, logistic regression and
+so on. All of those
+algorithms have an optimization objective
+or some cost function that the algorithm was trying to minimize.
+It turns out that K-means also
+has an optimization objective or
+a cost function that is trying to minimize.
+And in this video, I'd like to tell
+you what that optimization objective is.
+And the reason I want to do so
+is because this will be useful to us for two purposes.
+First, knowing what is the
+optimization objective of K-means
+will help us to
+debug the learning algorithm and
+just make sure that K-means is
+running correctly, and second,
+and perhaps even more importantly, in
+a later video we'll talk
+about how we can use this to
+help K-means find better clusters
+and avoid local optima, but we'll do that in a later video that follows this one.
+Just as a quick reminder, while K-means is
+running we're going to be
+keeping track of two sets of variables.
+First is the CI's and
+that keeps track of the
+index or the number of the cluster
+to which an example x(i) is currently assigned.
+And then, the other set of variables
+we use as Mu subscript
+K, which is the location
+of cluster centroid K. And,
+again, for K-means
+we use capital K to denote the total number of clusters.
+And here lower case K,
+you know, is going to be an
+index into the cluster
+centroids, and so lower
+case k is going to be
+a number between 1 and
+capital K. Now, here's
+one more bit of notation which
+is going to use Mu
+subscript c(i) to denote
+the cluster centroid of the
+cluster to which example x(i)
+has been assigned and
+to explain that notation
+a little bit more, let's
+say that x(i) has been
+assigned to cluster number five.
+What that means is that c(i),
+that is the index of x(i),
+that that is equal to 5.
+Right? Because you know, having c(i) equals 5,
+that's what it means for the
+example x(i) to be
+assigned to cluster number 5.
+And so Mu subscript
+c(i) is going to
+be equal to Mu subscript
+5 because c(i) is equal
+to 5.
+This Mu substitute c(i) is the
+cluster centroid of cluster number
+5, which is the cluster
+to which my example x(i) has been assigned.
+With this notation, we're now
+ready to write out what
+is the optimization objective of
+the K Mu clustering algorithm.
+And here it is.
+The cost function that K-means
+is minimizing is the
+function J of all of
+these parameters c1 through
+cM, Mu1 through MuK, that
+K-means is varying as the algorithm runs.
+And the optimization objective is shown
+on the right, is the average of
+one over M of the sum
+of i equals one through M of this term here
+that I've just drawn the red box around.
+The squared distance between
+each example x(i) and the
+location of the cluster
+centroid to which x(i)
+has been assigned.
+So let me just draw this in, let me explain this.
+Here is the location of training
+example x(i), and here's the location
+of the cluster centroid to which
+example x(i) has been assigned.
+So to explain this in pictures, if here is X1, X2.
+And if a point
+here, is my example
+x(i), so if that
+is equal to my example x(i),
+and if x(i) has been assigned
+to some cluster centroid, and
+I'll denote my cluster centroid with a cross.
+So if that's the location of,
+you know, Mu 5, let's
+say, if x(i) has been
+assigned to cluster centroid 5 in my example up there.
+Then, the squared distance, that's
+the squared of the distance
+between the point x(i) and this
+cluster centroid, to which x(i) has been assigned.
+And what K-means can be shown
+to be doing is that, it
+is trying to find parameters c(i)
+and Mu(i), try to
+find cMU to try to
+minimize this cost function J.
+This cost function is sometimes
+also called the distortion cost
+function or the distortion of
+the K-means algorithm.
+And, just to provide a little bit more
+detail, here's the K-means algorithm,
+Here's exactly the algorithm as we have it, in the real
+form the earlier slide.
+And what this first step
+of this algorithm is, this was
+the cluster assignment step
+where we assign each
+point to the cluster centroid, and
+it's possible to show mathematically that
+what the cluster assignment step
+is doing is exactly minimizing
+J with respect
+to the variables, C1, C2
+and so on, up
+to C(m), while holding the
+closest centroids, MU1 up to
+MUK fixed.
+So, what the first assignment step
+does is you know, it doesn't change
+the cluster centroids, but what it's
+doing is, exactly picking the values of C1, C2, up to CM
+that minimizes the cost
+function or the distortion function,
+J. And it's possible to prove
+that mathematically but, I won't do so here.
+That has a pretty intuitive meaning
+of just, yo know, well let's assign
+these points to the cluster centroid
+that is closest to it, because
+that's what minimizes the square
+of distance between the points and the corresponding cluster centroid.
+And then the other part of
+the second step of K-means, this second step over here.
+This second step was the move
+centroid step and,
+once again, I won't prove it,
+but it can be shown
+mathematically, that what the
+root centroid step does, is
+it chooses the values
+of mu that minimizes J.
+So it minimizes the cost function
+J with respect to,
+where wrt is my
+abbreviation for with respect to.
+But it minimizes J with respect
+to the locations of the cluster centroids, Mu1 through MuK.
+So, what K-means really
+is doing is it's taking the
+two sets of variables and
+partitioning them into two halves right here.
+First the C set of variables and then you have the Mu sets of variables.
+And what it does is it first
+minimizes J with respect
+to the variable C, and then minimizes
+J with respect the variables
+Mu, and then it keeps on iterating.
+And so that's all that K-means does.
+And, now that we understand
+K-means, let's try to
+minimize this cost function J.  We
+can also use this to
+try to debug our learning
+algorithm and just kind
+of make sure that our implementation
+of K-means is running correctly.
+So, we now understand the
+K-means algorithm as trying to
+optimize this cost function J,
+which is also called the dispulsion function.
+We can use that to debug K-means
+and help me show that K-means
+is converging, and that it's
+running properly, and in the
+next video, we'll also see
+how we can us this to
+help K-means find better clusters
+and help K-means to avoid local optima.

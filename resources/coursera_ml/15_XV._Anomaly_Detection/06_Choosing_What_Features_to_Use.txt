@@ -1,0 +1,365 @@
+By now you've seen the anomaly
+detection algorithm and we've
+also talked about how to
+evaluate an anomaly detection
+algorithm. It turns out,
+that when you're applying anomaly
+detection, one of the
+things that has a huge
+effect on how well it
+does, is what features you
+use, and what features you choose,
+to give the anomaly detection algorithm.
+So in this video, what I'd
+like to do is say a few
+words, give some suggestions and
+guidelines for how to
+go about designing or selecting
+features give to an anomaly detection algorithm.
+In our anomaly detection algorithm,
+one of the things we did was
+model the features using this sort of Gaussian distribution.
+With xi to mu
+i, sigma squared i, lets say.
+And so one thing that
+I often do would be to plot the
+data or the histogram of
+the data, to make sure that
+the data looks vaguely
+Gaussian before feeding it
+to my anomaly detection algorithm.
+And, it'll usually work okay,
+even if your data isn't Gaussian,
+but this is sort of a nice sanitary check to run.
+And by the way, in case your data
+looks non-Gaussian, the algorithms will often work just find.
+But, concretely if I
+plot the data like this,
+and if it looks like a histogram like
+this, and the way
+to plot a histogram is to
+use the HIST, or the
+HIST command in Octave,
+but it looks like this, this looks
+vaguely Gaussian, so if
+my features look like this,
+I would be pretty happy feeding into my algorithm.
+But if i were to plot a histogram of my
+data, and it were
+to look like this well, this
+doesn't look at all like a
+bell shaped curve, this is a very asymmetric distribution,
+it has a peak way off to one side.
+If this is what my data
+looks like, what I'll often
+do is play with different
+transformations of the data in order
+to make it look more Gaussian.
+And again the algorithm will usually work okay, even if you don't.
+But if you use these transformations
+to make your data more gaussian, it might work a bit better.
+So given the data set
+that looks like this, what I
+might do is take a
+log transformation of the
+data and if i
+do that and re-plot the
+histogram, what I end up
+with in this particular example,
+is a histogram that looks like this.
+And this looks much more Gaussian, right?
+This looks much more like the classic
+bell shaped curve, that we
+can fit with some mean and variance paramater sigma.
+So what I mean by taking
+a log transform, is really that
+if I have some feature x1 and
+then the histogram of x1 looks
+like this then I might
+take my feature x1
+and replace it with log
+of x1 and this is
+my new x1 that I'll plot
+to the histogram over on the right, and this looks much
+more Guassian.
+Rather than just a log transform some other things you can
+do, might be, let's say
+I have a different feature x2,
+maybe I'll replace that will
+log x plus 1,
+or more generally with log
+x with x2 and
+some constant c and this
+constant could be something
+that I play with, to try to make it look as Gaussian as possible.
+Or for a different feature x3, maybe
+I'll replace it with x3,
+I might take the square root.
+The square root is just x3 to the power of one half, right?
+And this one half
+is another example of a parameter I can play with.
+So, I might have x4 and
+maybe I might instead replace
+that with x4 to the power
+of something else, maybe to the
+power of 1/3.
+And these, all of
+these, this one, this
+exponent parameter, or the
+C parameter, all of these
+are examples of parameters that
+you can play with in order
+to make your data look a little bit more Gaussian.
+So, let me show you a live demo
+of how I actually go about
+playing with my data to make it look more Gaussian.
+So, I have already loaded
+in to octave here a set
+of features x I have a thousand examples
+loaded over there.
+So let's pull up the histogram of my data.
+Use the hist x command.
+So there's my histogram.
+By default, I think this
+uses 10 bins of histograms,
+but I want to see a more fine grid histogram.
+So we do hist to the x, 50,
+so, this plots it in 50 different bins.
+Okay, that looks better.
+Now, this doesn't look very Gaussian, does it?
+So, lets start playing around with the data.
+Lets try a hist of
+x to the 0.5.
+So we take the
+square root of the data, and plot that histogram.
+And, okay, it looks
+a little bit more Gaussian, but not
+quite there, so let's play at the 0.5 parameter.
+Let's see.
+Set this to 0.2.
+Looks a little bit more Gaussian.
+Let's reduce a little bit more 0.1.
+Yeah, that looks pretty good.
+I could actually just use 0.1.
+Well, let's reduce it to 0.05.
+And, you know?
+Okay, this looks pretty Gaussian,
+so I can define a new
+feature which is x mu equals
+x to the 0.05,
+and now my new
+feature x Mu looks more
+Gaussian than my previous one
+and then I might instead use
+this new feature to feed
+into my anomaly detection algorithm.
+And of course, there is more than one way to do this.
+You could also have hist of log of
+x, that's another example of a transformation you can use.
+And, you know, that also look pretty Gaussian.
+So, I can also define x
+mu equals log of x.
+and that would be another
+pretty good choice of a feature to use.
+So to summarize, if you
+plot a histogram with the data,
+and find that it looks pretty
+non-Gaussian, it's worth playing
+around a little bit with
+different transformations like these, to
+see if you can make
+your data look a little bit more
+Gaussian, before you feed it to
+your learning algorithm, although even if
+you don't, it might work okay.
+But I usually do take this step.
+Now, the second thing I want
+to talk about is, how do
+you come up with features for an anomaly detection algorithm.
+And the way I often do
+so, is via an error analysis procedure.
+So what I mean by that,
+is that this is really similar
+to the error analysis procedure that
+we have for supervised learning, where
+we would train a
+complete algorithm, and run the
+algorithm on a cross validation set,
+and look at the examples it gets
+wrong, and see if
+we can come up with extra features
+to help the algorithm do
+better on the examples
+that it got wrong in the cross-validation set.
+So lets try
+to reason through an example of this process.
+In anomaly detection, we are
+hoping that p of x will
+be large for the normal examples
+and it will be small for the anomalous examples.
+And so a pretty common problem
+would be if p of x is comparable,
+maybe both are large for both the normal and the anomalous examples.
+Lets look at a specific example of that.
+Let's say that this is my unlabeled data.
+So, here I have just one
+feature, x1 and so I'm gonna fit a Gaussian to this.
+And maybe my Gaussian that I fit to my data looks like that.
+And now let's say I have an anomalous example,
+and let's say that my anomalous example
+takes on an x value of 2.5.
+So I plot my anomalous example there.
+And you know, it's kind of buried
+in the middle of a bunch
+of normal examples, and so,
+just this anomalous example
+that I've drawn in green, it gets a
+pretty high probability, where it's the
+height of the blue curve,
+and the algorithm fails to
+flag this as an anomalous example.
+Now, if this were maybe aircraft
+engine manufacturing or something, what
+I would do is, I would actually
+look at my training examples and
+look at what went wrong with
+that particular aircraft engine, and
+see, if looking at that
+example can inspire me to
+come up with a new feature
+x2, that helps to distinguish
+between this bad example, compared
+to the rest of my
+red examples, compared to all
+of my normal aircraft engines.
+And if I managed to do
+so, the hope would be then,
+that, if I can create a
+new feature, X2, so that
+when I re-plot my data, if
+I take all my normal examples
+of my training set, hopefully
+I find that all my training
+examples are these red crosses here.
+And hopefully, if I find
+that for my anomalous example, the
+feature x2 takes on the the unusual value.
+So for my green example
+here, this anomaly, right, my
+X1 value, is still 2.5.
+Then maybe my X2 value, hopefully
+it takes on a very large
+value like 3.5 over there,
+or a very small value.
+But now, if I model
+my data, I'll find that
+my anomaly detection algorithm gives
+high probability to data
+in the central regions, slightly lower
+probability to that, sightly lower probability to that.
+An example that's all the
+way out there, my algorithm will
+now give very low probability
+to.
+And so, the process of this
+is, really look at the
+mistakes that it is making.
+Look at the anomaly that the algorithm
+is failing to flag, and see
+if that inspires you to create some new feature.
+So find something unusual about
+that aircraft engine and use
+that to create a new feature,
+so that with this new
+feature it becomes easier to
+distinguish the anomalies from your good examples.
+And so that's the
+process of error analysis
+and using that to create
+new features for anomaly detection.
+Finally, let me share with
+you my thinking on how I
+usually go about choosing features for anomaly detection.
+So, usually, the way I think about choosing features is
+I want to choose features that will
+take on either very, very
+large values, or very, very
+small values, for examples
+that I think might turn out to be anomalies.
+So let's use our example
+again of monitoring the computers in a data center.
+And so you have lots of
+machines, maybe thousands, or tens
+of thousands of machines in a data center.
+And we want to know if one
+of the machines, one of our
+computers is acting up, so doing something strange.
+So here are examples of features you may choose,
+maybe memory used, number of disc accesses, CPU load, network traffic.
+But now, lets say that I
+suspect one of the failure
+cases, let's say that
+in my data set I think
+that CPU load the network traffic
+tend to grow linearly with each other.
+Maybe I'm running a bunch of
+web servers, and so, here
+if one of my servers is
+serving a lot of users,
+I have a very high CPU load, and have a very high network traffic.
+But let's say, I think,
+let's say I have a suspicion, that
+one of the failure cases is
+if one of my computers
+has a job that gets stuck in some infinite loop.
+So if I think one of
+the failure cases, is one of
+my machines, one of my
+web servers--server code--
+gets stuck in some infinite loop,
+and so the CPU load grows,
+but the network traffic doesn't because
+it's just spinning it's
+wheels and doing a lot of CPU work, you know,
+stuck in some infinite loop.
+In that case, to detect
+that type of anomaly, I might
+create a new feature, X5,
+which might be CPU load
+divided by network traffic.
+And so here X5 will take
+on a unusually large value
+if one of the machines has a
+very large CPU load but
+not that much network traffic and
+so this will be a
+feature that will help your
+anomaly detection capture, a certain type of anomaly.
+And you can
+also get creative and come up with other features as well.
+Like maybe I have a feature
+x6 thats CPU load
+squared divided by network traffic.
+And this would be another variant
+of a feature like x5 to try
+to capture anomalies where one
+of your machines has a very
+high CPU load, that maybe
+doesn't have a commensurately large network traffic.
+And by creating features like
+these, you can start to capture
+anomalies that correspond to
+unusual combinations of values of the features.
+So in this video we
+talked about how to and
+take a feature, and maybe transform
+it a little bit, so that
+it becomes a bit more Gaussian,
+before feeding into an anomaly detection algorithm.
+And also the error analysis
+in this process of creating features
+to try to capture different types of anomalies.
+And with these sorts of guidelines hopefully that will help you
+to choose good features, to give to
+your anomaly detection algorithm, to
+help it capture all sorts of anomalies.

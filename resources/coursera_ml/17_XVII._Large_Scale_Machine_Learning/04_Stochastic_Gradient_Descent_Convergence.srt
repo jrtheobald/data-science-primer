@@ -1,0 +1,503 @@
+1
+00:00:00,493 --> 00:00:03,492
+You now know about the stochastic gradient descent algorithm.
+
+2
+00:00:03,492 --> 00:00:09,907
+But when you're running the algorithm, how do you make sure that it's completely debugged and is converging okay?
+
+3
+00:00:09,907 --> 00:00:15,813
+Equally important, how do you tune the learning rate alpha with Stochastic Gradient Descent.
+
+4
+00:00:15,813 --> 00:00:25,950
+In this video we'll talk about some techniques for doing these things, for making sure it's converging and for picking the learning rate alpha.
+
+5
+00:00:25,950 --> 00:00:30,600
+Back when we were using batch gradient descent, our standard way for making sure that
+
+6
+00:00:30,600 --> 00:00:36,493
+gradient descent was converging was we would plot the optimization cost function as a function of the number of iterations.
+
+7
+00:00:36,493 --> 00:00:44,366
+So that was the cost function and we would make sure that this cost function is decreasing on every iteration.
+
+8
+00:00:44,366 --> 00:00:50,438
+When the training set sizes were small, we could do that because we could compute the sum pretty efficiently.
+
+9
+00:00:50,438 --> 00:00:57,950
+But when you have a massive training set size then you don't want to have to pause your algorithm periodically.
+
+10
+00:00:57,950 --> 00:01:04,045
+You don't want to have to pause stochastic gradient descent periodically in order to compute this cost function
+
+11
+00:01:04,045 --> 00:01:07,442
+since it requires a sum of your entire training set size.
+
+12
+00:01:07,442 --> 00:01:12,466
+And the whole point of stochastic gradient was that you wanted to start to make progress
+
+13
+00:01:12,466 --> 00:01:19,130
+after looking at just a single example without needing to occasionally scan through your entire training set
+
+14
+00:01:19,130 --> 00:01:25,583
+right in the middle of the algorithm, just to compute things like the cost function of the entire training set.
+
+15
+00:01:25,583 --> 00:01:32,472
+So for stochastic gradient descent, in order to check the algorithm is converging, here's what we can do instead.
+
+16
+00:01:32,472 --> 00:01:36,367
+Let's take the definition of the cost that we had previously.
+
+17
+00:01:36,367 --> 00:01:42,647
+So the cost of the parameters theta with respect to a single training example is just one half of the square error on that training example.
+
+18
+00:01:42,647 --> 00:01:49,754
+Then, while stochastic gradient descent is learning, right before we train on a specific example.
+
+19
+00:01:49,754 --> 00:01:54,601
+So, in stochastic gradient descent we're going to look at the examples xi, yi, in order, and
+
+20
+00:01:54,601 --> 00:01:57,329
+then sort of take a little update with respect to this example.
+
+21
+00:01:57,329 --> 00:02:04,095
+And we go on to the next example, xi plus 1, yi plus 1, and so on, right?
+
+22
+00:02:04,095 --> 00:02:05,880
+That's what stochastic gradient descent does.
+
+23
+00:02:05,880 --> 00:02:15,024
+So, while the algorithm is looking at the example xi, yi, but before it has updated the parameters theta
+
+24
+00:02:15,024 --> 00:02:20,255
+using that an example, let's compute the cost of that example.
+
+25
+00:02:20,255 --> 00:02:23,577
+Just to say the same thing again, but using slightly different words.
+
+26
+00:02:23,577 --> 00:02:33,294
+A stochastic gradient descent is scanning through our training set right before we have updated theta using a specific training example x(i) comma y(i)
+
+27
+00:02:33,294 --> 00:02:38,198
+let's compute how well our hypothesis is doing on that training example.
+
+28
+00:02:38,198 --> 00:02:43,852
+And we want to do this before updating theta because if we've just updated theta using example,
+
+29
+00:02:43,852 --> 00:02:49,061
+you know, that it might be doing better on that example than what would be representative.
+
+30
+00:02:49,061 --> 00:02:57,438
+Finally, in order to check for the convergence of  stochastic gradient descent, what we can do is every, say, every thousand iterations,
+
+31
+00:02:57,438 --> 00:03:01,511
+we can plot these costs that we've been computing in the previous step.
+
+32
+00:03:01,511 --> 00:03:07,450
+We can plot those costs average over, say, the last thousand examples processed by the algorithm.
+
+33
+00:03:07,450 --> 00:03:12,714
+And if you do this, it kind of gives you a running estimate of how well the algorithm is doing.
+
+34
+00:03:12,714 --> 00:03:17,049
+on, you know, the last 1000 training examples that your algorithm has seen.
+
+35
+00:03:17,049 --> 00:03:23,974
+So, in contrast to computing J<u>train periodically which needed to scan through the entire training set.</u>
+
+36
+00:03:23,974 --> 00:03:27,973
+With this other procedure, well, as part of stochastic gradient descent,
+
+37
+00:03:27,973 --> 00:03:32,965
+it doesn't cost much to compute these costs as well right before updating to parameter theta.
+
+38
+00:03:32,965 --> 00:03:40,276
+And all we're doing is every thousand integrations or so, we just average the last 1,000 costs that we computed and plot that.
+
+39
+00:03:40,276 --> 00:03:47,537
+And by looking at those plots, this will allow us to check if stochastic gradient descent is converging.
+
+40
+00:03:47,537 --> 00:03:51,708
+So here are a few examples of what these plots might look like.
+
+41
+00:03:51,708 --> 00:03:55,519
+Suppose you have plotted the cost average over the last thousand examples,
+
+42
+00:03:55,519 --> 00:04:01,073
+because these are averaged over just a thousand examples, they are going to be a little bit noisy and so,
+
+43
+00:04:01,073 --> 00:04:03,873
+it may not decrease on every single iteration.
+
+44
+00:04:03,873 --> 00:04:07,828
+Then if you get a figure that looks like this, So the plot is noisy
+
+45
+00:04:07,828 --> 00:04:11,721
+because it's average over, you know, just a small subset, say a thousand training examples.
+
+46
+00:04:11,721 --> 00:04:17,283
+If you get a figure that looks like this, you know that would be a pretty decent run with the algorithm,
+
+47
+00:04:17,283 --> 00:04:24,195
+maybe, where it looks like the cost has gone down and then this plateau that looks kind of flattened out, you know, starting from around that point.
+
+48
+00:04:24,195 --> 00:04:29,603
+look like, this is what your cost looks like then maybe your learning algorithm has converged.
+
+49
+00:04:29,603 --> 00:04:34,252
+If you want to try using a smaller learning rate, something you might see is that
+
+50
+00:04:34,252 --> 00:04:39,229
+the algorithm may initially learn more slowly so the cost goes down more slowly.
+
+51
+00:04:39,229 --> 00:04:47,585
+But then eventually you have a smaller learning rate is actually possible for the algorithm to end up at a, maybe very slightly better solution.
+
+52
+00:04:47,585 --> 00:04:53,426
+So the red line may represent the behavior of stochastic gradient descent using a slower, using a smaller leaning rate.
+
+53
+00:04:53,426 --> 00:05:00,594
+And the reason this is the case is because, you remember, stochastic gradient descent doesn't just converge to the global minimum,
+
+54
+00:05:00,594 --> 00:05:05,068
+is that what it does is the parameters will oscillate a bit around the global minimum.
+
+55
+00:05:05,068 --> 00:05:09,231
+And so by using a smaller learning rate, you'll end up with smaller oscillations.
+
+56
+00:05:09,231 --> 00:05:12,896
+And sometimes this little difference will be negligible
+
+57
+00:05:12,896 --> 00:05:19,686
+and sometimes with a smaller than you can get a slightly better value for the parameters.
+
+58
+00:05:19,686 --> 00:05:22,269
+Here are some other things that might happen.
+
+59
+00:05:22,269 --> 00:05:27,986
+Let's say you run stochastic gradient descent and you average over a thousand examples when plotting these costs.
+
+60
+00:05:27,986 --> 00:05:32,369
+So, you know, here might be the result of another one of these plots.
+
+61
+00:05:32,369 --> 00:05:34,353
+Then again, it kind of looks like it's converged.
+
+62
+00:05:34,353 --> 00:05:42,119
+If you were to take this number, a thousand, and increase to averaging over 5 thousand examples.
+
+63
+00:05:42,119 --> 00:05:47,913
+Then it's possible that you might get a smoother curve that looks more like this.
+
+64
+00:05:47,913 --> 00:05:56,547
+And by averaging over, say 5,000 examples instead of 1,000, you might be able to get a smoother curve like this.
+
+65
+00:05:56,547 --> 00:06:00,248
+And so that's the effect of increasing the number of examples you average over.
+
+66
+00:06:00,248 --> 00:06:06,229
+The disadvantage of making this too big of course is that now you get one date point only every 5,000 examples.
+
+67
+00:06:06,229 --> 00:06:12,001
+And so the feedback you get on how well your learning learning algorithm is doing is, sort of, maybe it's more delayed
+
+68
+00:06:12,001 --> 00:06:17,681
+because you get one data point on your plot only every 5,000 examples rather than every 1,000 examples.
+
+69
+00:06:17,681 --> 00:06:23,911
+Along a similar vein some times you may run a gradient descent and end up with a plot that looks like this.
+
+70
+00:06:23,911 --> 00:06:32,079
+And with a plot that looks like this, you know, it looks like the cost just is not decreasing at all.
+
+71
+00:06:32,079 --> 00:06:34,023
+It looks like the algorithm is just not learning.
+
+72
+00:06:34,023 --> 00:06:39,261
+It's just, looks like this here a flat curve and the cost is just not decreasing.
+
+73
+00:06:39,261 --> 00:06:46,260
+But again if you were to increase this to averaging over a larger number of examples
+
+74
+00:06:46,260 --> 00:06:49,729
+it is possible that you see something like this red line
+
+75
+00:06:49,729 --> 00:06:55,127
+it looks like the cost actually is decreasing, it's just that the blue line averaging over 2, 3 examples,
+
+76
+00:06:55,127 --> 00:07:01,374
+the blue line was too noisy so you couldn't see the actual trend in the cost actually decreasing
+
+77
+00:07:01,374 --> 00:07:06,688
+and possibly averaging over 5,000 examples instead of 1,000 may help.
+
+78
+00:07:06,688 --> 00:07:12,358
+Of course we averaged over a larger number examples that we've averaged here over 5,000 examples,
+
+79
+00:07:12,358 --> 00:07:16,998
+I'm just using a different color, it is also possible that you that see a learning curve ends up looking like this.
+
+80
+00:07:16,998 --> 00:07:21,197
+That it's still flat even when you average over a larger number of examples.
+
+81
+00:07:21,197 --> 00:07:25,908
+And as you get that, then that's maybe just a more firm verification that
+
+82
+00:07:25,908 --> 00:07:29,287
+unfortunately the algorithm just isn't learning much for whatever reason.
+
+83
+00:07:29,287 --> 00:07:34,969
+And you need to either change the learning rate or change the features or change something else about the algorithm.
+
+84
+00:07:34,969 --> 00:07:39,235
+Finally, one last thing that you might see would be if you were to plot these curves
+
+85
+00:07:39,235 --> 00:07:43,273
+and you see a curve that looks like this, where it actually looks like it's increasing.
+
+86
+00:07:43,273 --> 00:07:48,066
+And if that's the case then this is a sign that the algorithm is diverging.
+
+87
+00:07:48,066 --> 00:07:53,965
+And what you really should do is use a smaller value of the learning rate alpha.
+
+88
+00:07:53,965 --> 00:07:58,143
+So hopefully this gives you a sense of the range of phenomena you might see
+
+89
+00:07:58,143 --> 00:08:02,946
+when you plot these cost average over some range of examples as well as
+
+90
+00:08:02,946 --> 00:08:07,765
+suggests the sorts of things you might try to do in response to seeing different plots.
+
+91
+00:08:07,765 --> 00:08:15,070
+So if the plots looks too noisy, or if it wiggles up and down too much, then try increasing the number of examples
+
+92
+00:08:15,070 --> 00:08:18,734
+you're averaging over so you can see the overall trend in the plot better.
+
+93
+00:08:18,734 --> 00:08:25,836
+And if you see that the errors are actually increasing, the costs are actually increasing, try using a smaller value of alpha.
+
+94
+00:08:25,836 --> 00:08:31,649
+Finally, it's worth examining the issue of the learning rate just a little bit more.
+
+95
+00:08:31,649 --> 00:08:38,922
+We saw that when we run stochastic gradient descent, the algorithm will start here and sort of meander towards the minimum
+
+96
+00:08:38,922 --> 00:08:43,494
+And then it won't really converge, and instead it'll wander around the minimum forever.
+
+97
+00:08:43,494 --> 00:08:50,225
+And so you end up with a parameter value that is hopefully close to the global minimum that won't be exact at the global minimum.
+
+98
+00:08:50,225 --> 00:08:57,991
+In most typical implementations of stochastic gradient descent, the learning rate alpha is typically held constant.
+
+99
+00:08:57,991 --> 00:09:02,022
+And so what you we end up is exactly a picture like this.
+
+100
+00:09:02,022 --> 00:09:06,523
+If you want stochastic gradient descent to actually converge to the global minimum,
+
+101
+00:09:06,523 --> 00:09:11,825
+there's one thing which you can do which is you can slowly decrease the learning rate alpha over time.
+
+102
+00:09:11,825 --> 00:09:22,240
+So, a pretty typical way of doing that would be to set alpha equals some constant 1 divided by iteration number plus constant 2.
+
+103
+00:09:22,240 --> 00:09:28,169
+So, iteration number is the number of iterations you've run of stochastic gradient descent,
+
+104
+00:09:28,169 --> 00:09:29,519
+so it's really the number of training examples you've seen
+
+105
+00:09:29,519 --> 00:09:34,103
+And const 1 and const 2 are additional parameters of the algorithm
+
+106
+00:09:34,103 --> 00:09:38,160
+that you might have to play with a bit in order to get good performance.
+
+107
+00:09:38,160 --> 00:09:43,004
+One of the reasons people tend not to do this is because you end up needing to spend time
+
+108
+00:09:43,004 --> 00:09:48,122
+playing with these 2 extra parameters, constant 1 and constant 2, and so this makes the algorithm more finicky.
+
+109
+00:09:48,122 --> 00:09:52,113
+You know, it's just more parameters able to fiddle with in order to make the algorithm work well.
+
+110
+00:09:52,113 --> 00:09:57,246
+But if you manage to tune the parameters well, then the picture you can get is that
+
+111
+00:09:57,246 --> 00:10:02,834
+the algorithm will actually around towards the minimum, but as it gets closer
+
+112
+00:10:02,834 --> 00:10:07,024
+because you're decreasing the learning rate the meanderings will get smaller and smaller
+
+113
+00:10:07,024 --> 00:10:12,729
+until it pretty much just to the global minimum. I hope this makes sense, right?
+
+114
+00:10:12,729 --> 00:10:21,608
+And the reason this formula makes sense is because as the algorithm runs, the iteration number becomes large So alpha will slowly become small,
+
+115
+00:10:21,608 --> 00:10:27,506
+and so you take smaller and smaller steps until it hopefully converges to the global minimum.
+
+116
+00:10:27,506 --> 00:10:33,484
+So If you do slowly decrease alpha to zero you can end up with a slightly better hypothesis.
+
+117
+00:10:33,484 --> 00:10:40,078
+But because of the extra work needed to fiddle with the constants and because frankly usually we're pretty happy
+
+118
+00:10:40,078 --> 00:10:43,892
+with any parameter value that is, you know, pretty close to the global minimum.
+
+119
+00:10:43,892 --> 00:10:50,863
+Typically this process of decreasing alpha slowly is usually not done and keeping the learning rate alpha constant
+
+120
+00:10:50,863 --> 00:10:56,983
+is the more common application of stochastic gradient descent although you will see people use either version.
+
+121
+00:10:56,983 --> 00:11:03,595
+To summarize in this video we talk about a way for approximately monitoring
+
+122
+00:11:03,595 --> 00:11:08,256
+how the stochastic gradient descent is doing in terms for optimizing the cost function.
+
+123
+00:11:08,256 --> 00:11:17,043
+And this is a method that does not require scanning over the entire training set periodically to compute the cost function on the entire training set.
+
+124
+00:11:17,043 --> 00:11:20,693
+But instead it looks at say only the last thousand examples or so.
+
+125
+00:11:20,693 --> 00:11:27,592
+And you can use this method both to make sure the stochastic gradient descent is okay and is converging
+
+126
+00:11:27,592 --> 00:11:31,468
+or to use it to tune the learning rate alpha.

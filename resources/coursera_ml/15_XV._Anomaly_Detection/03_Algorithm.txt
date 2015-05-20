@@ -1,0 +1,348 @@
+In the last video, we talked
+about the Gaussian distribution. In
+this video lets apply that
+to develop an anomaly detection algorithm.
+Let's say that we have an
+unlabeled training set of M
+examples, and each of
+these examples is going to
+be a feature in Rn so
+your training set could be,
+feature vectors from the last
+M aircraft engines being manufactured.
+Or it could be features from m
+users or something else.
+The way we are going to address
+anomaly detection, is we are
+going to model p of x
+from the data sets.
+We're going to try to figure out what are high probability features, what
+are lower probability types of features.
+So, x is a
+vector and what we
+are going to do is model p of
+x, as probability of x1,
+that is of the first component
+of x, times the probability
+of x2, that is the probability
+of the second feature, times the
+probability of the third
+feature, and so on up
+to the probability of the final feature
+of Xn.
+Now I'm leaving space here cause I'll fill in something in a minute.
+So, how do we
+model each of these terms,
+p of X1, p of X2, and so on.
+What we're going to do,
+is assume that the feature,
+X1, is distributed according
+to a Gaussian distribution, with
+some mean, which you
+want to write as mu1 and
+some variance, which I'm going
+to write as sigma squared 1,
+and so p of X1 is
+going to be a Gaussian
+probability distribution, with mean
+mu1 and variance sigma squared 1.
+And similarly I'm
+going to assume that X2
+is distributed, Gaussian,
+that's what this little tilda stands for,
+that means distributed Gaussian
+with mean mu2 and Sigma
+squared 2, so it's distributed according
+to a different Gaussian, which has
+a different set of parameters, mu2 sigma square 2.
+And similarly, you know,
+X3 is yet another
+Gaussian, so this
+can have a different mean and
+a different standard deviation than the
+other features, and so on, up to XN.
+And so that's my model.
+Just as a side comment for
+those of you that are experts in
+statistics, it turns out that
+this equation that I just
+wrote out actually corresponds to an
+independence assumption on the
+values of the features x1 through xn.
+But in practice it turns out
+that the algorithm of this fragment, it works just fine,
+whether or not these features are
+anywhere close to independent and
+even if independence assumption doesn't
+hold true this algorithm works just fine.
+But in case you don't know
+those terms I just used independence assumptions and so on,
+don't worry about it.
+You'll be able to understand
+it and implement this algorithm just fine
+and that comment was really meant only for the experts in statistics.
+Finally, in order to
+wrap this up, let me
+take this expression and write it a little bit more compactly.
+So, we're going to
+write this is a product
+from J equals one
+through N, of P
+of XJ parameterized by
+mu j comma sigma squared
+j. So this funny
+symbol here, there is
+capital Greek alphabet pi,
+that funny symbol there corresponds to
+taking the product of a set of values.
+And so, you're familiar with
+the summation notation, so the
+sum from i equals one through
+n, of i. This
+means 1 + 2 + 3 plus
+dot dot dot, up to
+n. Where as this
+funny symbol here, this product
+symbol, right product from i
+equals 1 through n
+of i.  Then this
+means that, it's just like summation except that we're now multiplying.
+This becomes 1 times
+2 times 3 times up
+to N. And so using
+this product notation, this
+product from j equals 1 through n of this expression.
+It's just more compact, it's
+just shorter way for writing
+out this product of
+of all of these terms up there.
+Since we're are taking these p
+of x j given mu j
+comma sigma squared j terms
+and multiplying them together.
+And, by the way the problem
+of estimating this distribution
+p of x, they're sometimes called
+the problem of density estimation.
+Hence the title of the slide.
+So putting everything together, here
+is our anomaly detection algorithm.
+The first step is to choose
+features, or come up with
+features xi that we think
+might be indicative of anomalous examples.
+So what I mean by that,
+is, try to come
+up with features, so that when there's
+an unusual user in your
+system that may be doing
+fraudulent things, or when the
+aircraft engine examples, you know
+there's something funny, something strange about one of the aircraft engines.
+Choose features X I, that
+you think might take on unusually
+large values, or unusually
+small values, for what an
+anomalous example might look like.
+But more generally, just try
+to choose features that describe general
+properties of the things that you're collecting data on.
+Next, given a training set,
+of M, unlabled examples,
+X1 through X M, we
+then fit the parameters,
+mu 1 through mu n, and
+sigma squared 1 through sigma
+squared n, and so these
+were the formulas similar to
+the formulas we have
+in the previous video, that we're
+going to use the estimate
+each of these parameters, and just to give
+some interpretation, mu J,
+that's my average value of the j feature.
+Mu j goes in this term p of xj.
+which is parametrized by mu J
+and sigma squared J. And
+so this says for the
+mu J just take the
+mean over my training
+set of the values of the j feature.
+And, just to mention, that you
+do this, you compute these
+formulas for j equals
+one through n. So use
+these formulas to estimate mu
+1, to estimate mu
+2, and so on up to
+mu n, and similarly for sigma
+squared, and it's also
+possible to come up with vectorized versions of these.
+So if you think of
+mu as a vector, so mu
+if is a vector there's mu 1,
+mu 2, down to mu
+n, then a vectorized
+version of that set
+of parameters can be written
+like so sum from 1
+equals one through n xi.
+So, this formula that I
+just wrote out estimates this
+xi as the feature vectors
+that estimates mu for all the values of n simultaneously.
+And it's also possible to come
+up with a vectorized formula for
+estimating sigma squared j. Finally,
+when you're given a new example, so
+when you have a new aircraft engine
+and you want to know is this aircraft engine anomalous.
+What we need to do is then
+compute p of x, what's the probability of this new example?
+So, p of x is equal
+to this product, and
+what you implement, what you compute,
+is this formula and
+where over here, this thing
+here this is just the
+formula for the Gaussian
+probability, so you compute
+this thing, and finally if
+this probability is very small,
+then you flag this thing as an anomaly.
+Here's an example of an application of this method.
+Let's say we have this data
+set plotted on the upper left of this slide.
+if you look at this, well, lets look the feature of x1.
+If you look at this data set, it
+looks like on average, the features
+x1 has a mean of about 5
+and the standard deviation, if
+you only look at just the x1
+values of this data set
+has the standard deviation of maybe 2.
+So that sigma 1 and
+looks like x2 the
+values of the features as
+measured on the vertical axis,
+looks like it has an average
+value of about 3, and
+a standard deviation of about 1. So if
+you take this data set and if
+you estimate mu1, mu2, sigma1,
+sigma2, this is what you get.
+And again, I'm writing sigma here,
+I'm think about standard deviations, but
+the formula on the previous 5
+actually gave the estimates of the squares
+of theses things, so sigma squared 1 and sigma squared 2.
+So, just be careful whether
+you are using sigma 1, sigma
+2, or sigma squared 1 or sigma squared 2.
+So, sigma squared 1 of course
+would be equal to 4, for
+example, as the square of 2.
+And in pictures what p of
+x1 parametrized by mu1 and
+sigma squared 1 and p
+of x2, parametrized by mu
+2 and sigma squared 2, that
+would look like these two distributions over here.
+And, turns out that
+if were to plot of p
+of x, right, which
+is the product of these two
+things, you can actually get
+a surface plot that looks like this.
+This is a plot of p
+of x, where the height
+above of this, where the
+height of this surface at
+a particular point, so given a
+particular x1 x2
+values of x2 if
+x1 equals 2, x equal 2, that's this point.
+And the height of this 3-D
+surface here, that's p
+of x. So p of x, that is the height
+of this plot, is
+literally just p of x1
+parametrized by mu 1 sigma
+squared 1, times p
+of x2 parametrized by
+mu 2 sigma squared 2.
+Now, so this is
+how we fit the parameters to this data.
+Let's see if we have a couple of new examples.
+Maybe I have a new example there.
+Is this an anomaly or not?
+Or, maybe I have a different
+example, maybe I have a different second example over there.
+So, is that an anomaly or not?
+They way we do that is, we
+would set some value for
+Epsilon, let's say I've chosen
+Epsilon equals 0.02.
+I'll say later how we choose Epsilon.
+But let's take this first
+example, let me call this
+example X1 test.
+And let me call the second example
+X2 test.
+What we do is, we
+then compute p of
+X1 test, so we use
+this formula to compute it and
+this looks like a pretty large value.
+In particular, this is greater
+than, or greater than or equal to epsilon.
+And so this is a pretty
+high probability at least bigger
+than epsilon, so we'll say that
+X1 test is not an anomaly.
+Whereas, if you compute p of
+X2 test, well that is just a much smaller value.
+So this is less than
+epsilon and so we'll say
+that that is indeed an anomaly,
+because it is much smaller than that epsilon that we then chose.
+And in fact, I'd improve it here.
+What this is really saying is that, you look through the 3d surface plot.
+It's saying that all the
+values of x1 and x2
+that have a high height
+above the surface, corresponds to
+an a non-anomalous example of an OK or normal example.
+Whereas all the points far out
+here, all the points out
+here, all of those
+points have very low
+probability, so we are
+going to flag those points
+as anomalous, and so it's gonna define
+some region, that maybe looks
+like this, so that everything
+outside this, it flags
+as anomalous,
+whereas the things inside this
+ellipse I just drew, if it
+considers okay, or non-anomalous, not anomalous examples.
+And so this example x2
+test lies outside
+that region, and so it
+has very small probability, and so we consider it an anomalous example.
+In this video we talked about how to
+estimate p of x, the probability of
+x, for the purpose of
+developing an anomaly detection algorithm.
+And in this video, we also
+stepped through an entire process
+of giving data set, we
+have, fitting the parameters, doing parameter estimations.
+We get mu and sigma parameters, and
+then taking new examples and deciding
+if the new examples are anomalous or not.
+In the next few videos we
+will delve deeper into this algorithm,
+and talk a bit more
+about how to actually get this to work well.

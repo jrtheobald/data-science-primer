@@ -1,0 +1,1173 @@
+1
+00:00:01,060 --> 00:00:02,420
+In this video we'll talk about
+
+2
+00:00:02,620 --> 00:00:03,900
+an approach to building a
+
+3
+00:00:03,970 --> 00:00:06,390
+recommender system that's called collaborative filtering.
+
+4
+00:00:07,540 --> 00:00:08,880
+The algorithm that we're talking
+
+5
+00:00:09,180 --> 00:00:10,400
+about has a very interesting
+
+6
+00:00:10,680 --> 00:00:11,830
+property that it does
+
+7
+00:00:12,120 --> 00:00:13,290
+what is called feature learning and
+
+8
+00:00:13,790 --> 00:00:14,800
+by that I mean that this
+
+9
+00:00:14,960 --> 00:00:16,270
+will be an algorithm that can
+
+10
+00:00:16,450 --> 00:00:19,010
+start to learn for itself what features to use.
+
+11
+00:00:21,130 --> 00:00:22,100
+Here was the data set that
+
+12
+00:00:22,220 --> 00:00:23,440
+we had and we had
+
+13
+00:00:23,720 --> 00:00:25,030
+assumed that for each movie,
+
+14
+00:00:25,690 --> 00:00:27,000
+someone had come and told
+
+15
+00:00:27,320 --> 00:00:28,640
+us how romantic that
+
+16
+00:00:28,840 --> 00:00:30,550
+movie was and how much action there was in that movie.
+
+17
+00:00:31,680 --> 00:00:32,880
+But as you can imagine it
+
+18
+00:00:33,020 --> 00:00:34,320
+can be very difficult and time
+
+19
+00:00:34,500 --> 00:00:36,390
+consuming and expensive to actually try
+
+20
+00:00:36,490 --> 00:00:37,860
+to get someone to, you know,
+
+21
+00:00:38,050 --> 00:00:39,440
+watch each movie and tell
+
+22
+00:00:39,700 --> 00:00:40,880
+you how romantic each movie and
+
+23
+00:00:41,410 --> 00:00:42,570
+how action packed is each
+
+24
+00:00:42,660 --> 00:00:44,270
+movie, and often you'll
+
+25
+00:00:44,390 --> 00:00:46,760
+want even more features than just these two.
+
+26
+00:00:46,980 --> 00:00:48,130
+So where do you get these features from?
+
+27
+00:00:49,890 --> 00:00:50,920
+So let's change the problem
+
+28
+00:00:51,500 --> 00:00:53,220
+a bit and suppose that
+
+29
+00:00:53,980 --> 00:00:55,160
+we have a data set where
+
+30
+00:00:55,410 --> 00:00:57,980
+we do not know the values of these features.
+
+31
+00:00:58,380 --> 00:00:59,280
+So we're given the data set
+
+32
+00:00:59,640 --> 00:01:01,140
+of movies and of
+
+33
+00:01:01,270 --> 00:01:03,550
+how the users rated them, but we
+
+34
+00:01:03,760 --> 00:01:05,190
+have no idea how romantic each
+
+35
+00:01:05,370 --> 00:01:06,140
+movie is and we have no
+
+36
+00:01:06,310 --> 00:01:07,660
+idea how action packed each
+
+37
+00:01:07,820 --> 00:01:09,940
+movie is so I've replaced all of these things with question marks.
+
+38
+00:01:11,310 --> 00:01:12,330
+But now let's make a slightly different assumption.
+
+39
+00:01:13,870 --> 00:01:15,570
+Let's say we've gone to each of our users, and each of our users has told has told us
+
+40
+00:01:15,980 --> 00:01:18,510
+how much they like the
+
+41
+00:01:18,820 --> 00:01:20,040
+romantic movies and how much
+
+42
+00:01:20,220 --> 00:01:22,320
+they like action packed movies.
+
+43
+00:01:22,830 --> 00:01:26,090
+So Alice has associated a current of theta 1.
+
+44
+00:01:26,820 --> 00:01:27,470
+Bob theta 2.
+
+45
+00:01:27,910 --> 00:01:28,440
+Carol theta 3.
+
+46
+00:01:28,970 --> 00:01:30,330
+Dave theta 4.
+
+47
+00:01:30,500 --> 00:01:31,530
+And let's say we also use this
+
+48
+00:01:31,780 --> 00:01:33,040
+and that Alice tells us
+
+49
+00:01:33,380 --> 00:01:35,340
+that she really
+
+50
+00:01:35,610 --> 00:01:36,960
+likes romantic movies and so
+
+51
+00:01:37,140 --> 00:01:38,780
+there's a five there which
+
+52
+00:01:39,280 --> 00:01:41,210
+is the multiplier associated with X1 and lets
+
+53
+00:01:41,570 --> 00:01:42,680
+say that Alice tells us she
+
+54
+00:01:42,840 --> 00:01:45,030
+really doesn't like action movies and so there's a 0 there.
+
+55
+00:01:46,060 --> 00:01:47,190
+And Bob tells us something similar
+
+56
+00:01:48,660 --> 00:01:49,770
+so we have theta 2 over here.
+
+57
+00:01:50,630 --> 00:01:52,460
+Whereas Carol tells us that
+
+58
+00:01:53,570 --> 00:01:54,720
+she really likes action movies
+
+59
+00:01:55,240 --> 00:01:56,450
+which is why there's a 5 there,
+
+60
+00:01:56,900 --> 00:01:58,600
+that's the multiplier associated with X2,
+
+61
+00:01:58,980 --> 00:02:00,160
+and remember there's also
+
+62
+00:02:01,210 --> 00:02:03,490
+X0 equals 1 and let's
+
+63
+00:02:03,770 --> 00:02:05,390
+say that Carol tells us
+
+64
+00:02:05,610 --> 00:02:07,000
+she doesn't like romantic
+
+65
+00:02:07,390 --> 00:02:09,640
+movies and so on, similarly for Dave.
+
+66
+00:02:09,840 --> 00:02:11,030
+So let's assume that somehow
+
+67
+00:02:11,440 --> 00:02:12,830
+we can go to users and
+
+68
+00:02:13,290 --> 00:02:14,600
+each user J just tells
+
+69
+00:02:15,020 --> 00:02:16,160
+us what is the value
+
+70
+00:02:17,090 --> 00:02:18,870
+of theta J for them.
+
+71
+00:02:19,450 --> 00:02:22,190
+And so basically specifies to us of how much they like different types of movies.
+
+72
+00:02:24,060 --> 00:02:25,280
+If we can get these parameters
+
+73
+00:02:25,990 --> 00:02:27,890
+theta from our users then it
+
+74
+00:02:28,050 --> 00:02:29,820
+turns out that it becomes possible to
+
+75
+00:02:29,960 --> 00:02:31,210
+try to infer what are the
+
+76
+00:02:31,310 --> 00:02:33,710
+values of x1 and x2 for each movie.
+
+77
+00:02:34,800 --> 00:02:35,140
+Let's look at an example.
+
+78
+00:02:35,730 --> 00:02:36,560
+Let's look at movie 1.
+
+79
+00:02:38,690 --> 00:02:39,790
+So that movie 1 has associated
+
+80
+00:02:40,580 --> 00:02:42,050
+with it a feature vector x1.
+
+81
+00:02:42,890 --> 00:02:45,420
+And you know this movie is called Love at last but let's ignore that.
+
+82
+00:02:45,770 --> 00:02:46,750
+Let's pretend we don't know what
+
+83
+00:02:46,870 --> 00:02:49,060
+this movie is about, so let's ignore the title of this movie.
+
+84
+00:02:50,180 --> 00:02:52,270
+All we know is that Alice loved this move.
+
+85
+00:02:52,450 --> 00:02:53,110
+Bob loved this movie.
+
+86
+00:02:53,750 --> 00:02:55,370
+Carol and Dave hated this movie.
+
+87
+00:02:56,450 --> 00:02:57,450
+So what can we infer?
+
+88
+00:02:57,830 --> 00:02:58,900
+Well, we know from the
+
+89
+00:02:58,990 --> 00:03:00,510
+feature vectors that Alice
+
+90
+00:03:00,780 --> 00:03:03,190
+and Bob love romantic movies
+
+91
+00:03:03,700 --> 00:03:05,660
+because they told us that there's a 5 here.
+
+92
+00:03:06,290 --> 00:03:07,480
+Whereas Carol and Dave,
+
+93
+00:03:08,380 --> 00:03:10,150
+we know that they hate
+
+94
+00:03:10,510 --> 00:03:11,920
+romantic movies and that
+
+95
+00:03:12,300 --> 00:03:13,990
+they love action movies. So
+
+96
+00:03:14,730 --> 00:03:16,050
+because those are the parameter
+
+97
+00:03:16,340 --> 00:03:18,830
+vectors that you know, uses 3 and 4, Carol and Dave, gave us.
+
+98
+00:03:20,110 --> 00:03:20,950
+And so based on the fact
+
+99
+00:03:21,390 --> 00:03:22,340
+that movie 1 is loved
+
+100
+00:03:22,880 --> 00:03:24,120
+by Alice and Bob and
+
+101
+00:03:24,340 --> 00:03:26,460
+hated by Carol and Dave, we might
+
+102
+00:03:26,910 --> 00:03:30,810
+reasonably conclude that this is probably a romantic movie,
+
+103
+00:03:31,180 --> 00:03:34,240
+it is probably not much of an action movie.
+
+104
+00:03:35,290 --> 00:03:36,360
+this example is a little
+
+105
+00:03:36,520 --> 00:03:38,090
+bit mathematically simplified but what
+
+106
+00:03:38,260 --> 00:03:40,330
+we're really asking is what
+
+107
+00:03:40,590 --> 00:03:42,010
+feature vector should X1 be
+
+108
+00:03:42,840 --> 00:03:45,370
+so that theta 1 transpose
+
+109
+00:03:46,030 --> 00:03:48,940
+x1 is approximately equal to 5,
+
+110
+00:03:49,660 --> 00:03:51,700
+that's Alice's rating, and
+
+111
+00:03:51,920 --> 00:03:55,360
+theta 2 transpose x1 is
+
+112
+00:03:55,510 --> 00:03:56,660
+also approximately equal to 5,
+
+113
+00:03:57,670 --> 00:03:59,100
+and theta 3 transpose x1 is
+
+114
+00:03:59,310 --> 00:04:02,180
+approximately equal to 0,
+
+115
+00:04:03,020 --> 00:04:05,250
+so this would be Carol's rating, and
+
+116
+00:04:06,970 --> 00:04:09,780
+theta 4 transpose X1
+
+117
+00:04:10,740 --> 00:04:11,630
+is approximately equal to 0.
+
+118
+00:04:12,590 --> 00:04:13,520
+And from this it looks
+
+119
+00:04:13,770 --> 00:04:16,000
+like, you know, X1 equals
+
+120
+00:04:16,870 --> 00:04:18,770
+one that's the intercept term, and
+
+121
+00:04:19,080 --> 00:04:20,960
+then 1.0, 0.0, that makes sense
+
+122
+00:04:21,310 --> 00:04:22,390
+given what we know of Alice,
+
+123
+00:04:22,790 --> 00:04:24,110
+Bob, Carol, and Dave's preferences
+
+124
+00:04:24,770 --> 00:04:25,940
+for movies and the way they rated this movie.
+
+125
+00:04:27,700 --> 00:04:29,080
+And so more generally, we can
+
+126
+00:04:29,220 --> 00:04:30,210
+go down this list and try
+
+127
+00:04:30,430 --> 00:04:31,520
+to figure out what might
+
+128
+00:04:31,700 --> 00:04:35,260
+be reasonable features for these other movies as well.
+
+129
+00:04:39,160 --> 00:04:41,890
+Let's formalize this problem of learning the features XI.
+
+130
+00:04:42,410 --> 00:04:44,220
+Let's say that our
+
+131
+00:04:44,340 --> 00:04:45,860
+users have given us their preferences.
+
+132
+00:04:46,580 --> 00:04:47,950
+So let's say that our users have
+
+133
+00:04:48,130 --> 00:04:49,100
+come and, you know, told us
+
+134
+00:04:49,330 --> 00:04:50,800
+these values for theta 1
+
+135
+00:04:50,890 --> 00:04:52,990
+through theta of NU
+
+136
+00:04:53,280 --> 00:04:54,430
+and we want to learn the
+
+137
+00:04:54,790 --> 00:04:56,130
+feature vector XI for movie
+
+138
+00:04:56,540 --> 00:04:58,020
+number I. What we can
+
+139
+00:04:58,200 --> 00:05:00,830
+do is therefore pose the following optimization problem.
+
+140
+00:05:01,220 --> 00:05:02,210
+So we want to sum over
+
+141
+00:05:02,840 --> 00:05:04,600
+all the indices J for
+
+142
+00:05:04,930 --> 00:05:06,280
+which we have a rating
+
+143
+00:05:06,950 --> 00:05:08,340
+for movie I because
+
+144
+00:05:08,750 --> 00:05:10,040
+we're trying to learn the features
+
+145
+00:05:10,950 --> 00:05:13,560
+for movie I that is this feature vector XI.
+
+146
+00:05:14,650 --> 00:05:15,660
+So and then what we
+
+147
+00:05:15,780 --> 00:05:18,450
+want to do is minimize this squared
+
+148
+00:05:19,020 --> 00:05:20,160
+error, so we want to choose
+
+149
+00:05:20,420 --> 00:05:22,430
+features XI, so that,
+
+150
+00:05:22,900 --> 00:05:25,000
+you know, the predictive value of
+
+151
+00:05:25,200 --> 00:05:26,820
+how user J rates movie
+
+152
+00:05:27,110 --> 00:05:28,170
+I will be similar,
+
+153
+00:05:28,900 --> 00:05:30,130
+will be not too far in the
+
+154
+00:05:30,440 --> 00:05:31,910
+squared error sense of the actual
+
+155
+00:05:32,530 --> 00:05:35,330
+value YIJ that we actually observe in
+
+156
+00:05:35,530 --> 00:05:37,130
+the rating of user j
+
+157
+00:05:38,310 --> 00:05:40,790
+on movie I.
+So, just to
+
+158
+00:05:41,040 --> 00:05:42,320
+summarize what this term does
+
+159
+00:05:42,840 --> 00:05:44,060
+is it tries to choose features
+
+160
+00:05:45,040 --> 00:05:46,590
+XI so that for
+
+161
+00:05:46,960 --> 00:05:48,210
+all the users J that
+
+162
+00:05:48,360 --> 00:05:50,190
+have rated that movie, the
+
+163
+00:05:50,860 --> 00:05:52,830
+algorithm also predicts a
+
+164
+00:05:52,900 --> 00:05:55,490
+value for how that user would have rated that movie
+
+165
+00:05:56,170 --> 00:05:57,720
+that is not too far, in
+
+166
+00:05:57,810 --> 00:05:59,730
+the squared error sense, from the
+
+167
+00:06:00,000 --> 00:06:02,310
+actual value that the user had rated that movie.
+
+168
+00:06:03,380 --> 00:06:04,560
+So that's the squared error term.
+
+169
+00:06:05,420 --> 00:06:07,200
+As usual, we can
+
+170
+00:06:07,310 --> 00:06:08,430
+also add this sort of
+
+171
+00:06:08,520 --> 00:06:09,850
+regularization term to prevent
+
+172
+00:06:10,300 --> 00:06:11,870
+the features from becoming too big.
+
+173
+00:06:13,720 --> 00:06:15,610
+So this is how we
+
+174
+00:06:15,760 --> 00:06:16,910
+would learn the features
+
+175
+00:06:17,420 --> 00:06:19,140
+for one specific movie but
+
+176
+00:06:19,690 --> 00:06:20,480
+what we want to do is
+
+177
+00:06:20,740 --> 00:06:22,060
+learn all the features for all
+
+178
+00:06:22,230 --> 00:06:23,820
+the movies and so what
+
+179
+00:06:24,080 --> 00:06:25,050
+I'm going to do is add this
+
+180
+00:06:25,240 --> 00:06:26,620
+extra summation here so
+
+181
+00:06:26,780 --> 00:06:28,840
+I'm going to sum over all Nm
+
+182
+00:06:29,260 --> 00:06:33,140
+movies, N subscript m movies, and minimize
+
+183
+00:06:33,830 --> 00:06:34,670
+this objective on top
+
+184
+00:06:35,010 --> 00:06:37,080
+that sums of all movies.
+
+185
+00:06:37,410 --> 00:06:39,930
+And if you do that, you end up with the following optimization problem.
+
+186
+00:06:40,950 --> 00:06:42,320
+And if you minimize
+
+187
+00:06:42,890 --> 00:06:44,520
+this, you have hopefully a
+
+188
+00:06:44,680 --> 00:06:47,440
+reasonable set of features for all of your movies.
+
+189
+00:06:48,650 --> 00:06:50,080
+So putting everything together, what
+
+190
+00:06:50,210 --> 00:06:51,050
+we, the algorithm we talked
+
+191
+00:06:51,330 --> 00:06:52,730
+about in the previous video and
+
+192
+00:06:53,180 --> 00:06:54,810
+the algorithm that we just talked about in this video.
+
+193
+00:06:55,730 --> 00:06:57,070
+In the previous video, what we
+
+194
+00:06:57,180 --> 00:06:58,710
+showed was that you know,
+
+195
+00:06:58,820 --> 00:06:59,700
+if you have a set of
+
+196
+00:06:59,790 --> 00:07:00,640
+movie ratings, so if you
+
+197
+00:07:00,640 --> 00:07:03,960
+have the data the rij's and
+
+198
+00:07:04,090 --> 00:07:06,100
+then you have the yij's that will be the movie ratings.
+
+199
+00:07:08,500 --> 00:07:09,650
+Then given features for your
+
+200
+00:07:09,800 --> 00:07:11,800
+different movies we can learn these parameters theta.
+
+201
+00:07:12,340 --> 00:07:13,110
+So if you knew the features,
+
+202
+00:07:13,830 --> 00:07:15,000
+you can learn the parameters
+
+203
+00:07:15,650 --> 00:07:16,850
+theta for your different users.
+
+204
+00:07:18,250 --> 00:07:19,770
+And what we showed earlier in
+
+205
+00:07:19,930 --> 00:07:21,400
+this video is that if
+
+206
+00:07:21,790 --> 00:07:22,860
+your users are willing to
+
+207
+00:07:23,000 --> 00:07:25,450
+give you parameters, then you
+
+208
+00:07:25,560 --> 00:07:28,060
+can estimate features for the different movies.
+
+209
+00:07:29,270 --> 00:07:31,490
+So this is kind of a chicken and egg problem.
+
+210
+00:07:31,770 --> 00:07:32,290
+Which comes first?
+
+211
+00:07:32,900 --> 00:07:35,570
+You know, do we want if we can get the thetas, we can know the Xs.
+
+212
+00:07:36,060 --> 00:07:38,160
+If we have the Xs, we can learn the thetas.
+
+213
+00:07:39,500 --> 00:07:40,500
+And what you can
+
+214
+00:07:40,680 --> 00:07:41,790
+do is, and then
+
+215
+00:07:41,910 --> 00:07:43,000
+this actually works, what you
+
+216
+00:07:43,110 --> 00:07:44,530
+can do is in fact randomly
+
+217
+00:07:45,170 --> 00:07:47,160
+guess some value of the thetas.
+
+218
+00:07:48,210 --> 00:07:49,200
+Now based on your initial random
+
+219
+00:07:49,530 --> 00:07:50,630
+guess for the thetas, you can
+
+220
+00:07:50,940 --> 00:07:52,530
+then go ahead and use
+
+221
+00:07:53,160 --> 00:07:54,210
+the procedure that we just talked
+
+222
+00:07:54,460 --> 00:07:55,810
+about in order to
+
+223
+00:07:56,060 --> 00:07:57,740
+learn features for your different movies.
+
+224
+00:07:58,800 --> 00:07:59,990
+Now given some initial set
+
+225
+00:08:00,130 --> 00:08:01,160
+of features for your movies you
+
+226
+00:08:01,240 --> 00:08:02,730
+can then use this first
+
+227
+00:08:03,050 --> 00:08:04,060
+method that we talked about
+
+228
+00:08:04,130 --> 00:08:06,180
+in the previous video to try to get
+
+229
+00:08:06,360 --> 00:08:08,590
+an even better estimate for your parameters theta.
+
+230
+00:08:09,560 --> 00:08:12,420
+Now that you have a better setting of the parameters theta for your users,
+
+231
+00:08:12,860 --> 00:08:13,850
+we can use that to maybe
+
+232
+00:08:14,070 --> 00:08:15,140
+even get a better set of
+
+233
+00:08:15,240 --> 00:08:17,110
+features and so on.
+
+234
+00:08:17,380 --> 00:08:18,400
+We can sort of keep
+
+235
+00:08:18,600 --> 00:08:19,440
+iterating, going back and forth
+
+236
+00:08:19,790 --> 00:08:21,270
+and optimizing theta, x theta,
+
+237
+00:08:21,560 --> 00:08:24,000
+x theta, nd this
+
+238
+00:08:24,270 --> 00:08:25,290
+actually works and if you
+
+239
+00:08:25,410 --> 00:08:26,340
+do this, this will actually
+
+240
+00:08:26,800 --> 00:08:28,360
+cause your album to converge
+
+241
+00:08:28,930 --> 00:08:30,430
+to a reasonable set of
+
+242
+00:08:31,340 --> 00:08:32,650
+features for you movies and a
+
+243
+00:08:32,790 --> 00:08:34,880
+reasonable set of parameters for your different users.
+
+244
+00:08:36,080 --> 00:08:38,870
+So this is a basic collaborative filtering algorithm.
+
+245
+00:08:39,770 --> 00:08:40,850
+This isn't actually the final
+
+246
+00:08:41,020 --> 00:08:42,890
+algorithm that we're going to use. In the next
+
+247
+00:08:43,120 --> 00:08:44,100
+video we are going to be able to improve
+
+248
+00:08:44,790 --> 00:08:45,610
+on this algorithm and make
+
+249
+00:08:45,920 --> 00:08:47,430
+it quite a bit more computationally efficient.
+
+250
+00:08:48,390 --> 00:08:49,510
+But, hopefully this gives you
+
+251
+00:08:49,640 --> 00:08:50,600
+a sense of how you
+
+252
+00:08:50,680 --> 00:08:51,980
+can formulate a
+
+253
+00:08:52,040 --> 00:08:52,990
+problem where you can simultaneously
+
+254
+00:08:53,930 --> 00:08:57,200
+learn the parameters and simultaneously learn the features from the different movies.
+
+255
+00:08:58,440 --> 00:08:59,660
+And for this problem, for the
+
+256
+00:08:59,740 --> 00:09:01,100
+recommender system problem, this is
+
+257
+00:09:01,390 --> 00:09:02,950
+possible only because each user
+
+258
+00:09:03,490 --> 00:09:04,840
+rates multiple movies and hopefully
+
+259
+00:09:05,100 --> 00:09:06,410
+each movie is rated
+
+260
+00:09:06,790 --> 00:09:08,710
+by multiple users. And so
+
+261
+00:09:09,280 --> 00:09:10,150
+you can do this back and
+
+262
+00:09:10,270 --> 00:09:11,150
+forth process to estimate theta
+
+263
+00:09:11,200 --> 00:09:14,400
+and x. 
+So to
+
+264
+00:09:14,830 --> 00:09:15,910
+summarize, in this video we've
+
+265
+00:09:16,140 --> 00:09:18,710
+seen an initial collaborative filtering algorithm.
+
+266
+00:09:19,680 --> 00:09:21,550
+The term collaborative filtering refers
+
+267
+00:09:22,020 --> 00:09:23,620
+to the observation that when
+
+268
+00:09:23,760 --> 00:09:25,020
+you run this algorithm with a
+
+269
+00:09:25,210 --> 00:09:26,790
+large set of users, what all
+
+270
+00:09:26,960 --> 00:09:28,410
+of these users are effectively doing are sort of
+
+271
+00:09:29,070 --> 00:09:31,300
+collaboratively--or collaborating to
+
+272
+00:09:31,490 --> 00:09:32,770
+get better movie ratings for
+
+273
+00:09:33,010 --> 00:09:34,610
+everyone because with every
+
+274
+00:09:34,840 --> 00:09:36,540
+user rating some subset with the movies,
+
+275
+00:09:37,350 --> 00:09:39,040
+every user is helping the
+
+276
+00:09:39,300 --> 00:09:41,490
+algorithm a little bit to learn better features,
+
+277
+00:09:42,900 --> 00:09:44,390
+and then by helping--
+
+278
+00:09:44,490 --> 00:09:46,690
+by rating a few movies myself, I will be helping
+
+279
+00:09:47,810 --> 00:09:49,550
+the system learn better features and
+
+280
+00:09:49,680 --> 00:09:50,750
+then these features can be used
+
+281
+00:09:50,930 --> 00:09:52,610
+by the system to make better
+
+282
+00:09:52,890 --> 00:09:54,380
+movie predictions for everyone else.
+
+283
+00:09:54,640 --> 00:09:55,450
+And so there is a sense of
+
+284
+00:09:55,530 --> 00:09:56,980
+collaboration where every user is
+
+285
+00:09:57,370 --> 00:09:58,980
+helping the system learn better features
+
+286
+00:09:59,360 --> 00:10:00,740
+for the common good. This
+
+287
+00:10:00,810 --> 00:10:03,450
+is this collaborative filtering.
+
+288
+00:10:04,070 --> 00:10:04,990
+And, in the next video what we
+
+289
+00:10:05,140 --> 00:10:07,490
+going to do is take the ideas that
+
+290
+00:10:07,740 --> 00:10:08,850
+have worked out, and try to
+
+291
+00:10:09,090 --> 00:10:09,910
+develop a better an even
+
+292
+00:10:10,170 --> 00:10:11,920
+better algorithm, a slightly better
+
+293
+00:10:12,180 --> 00:10:13,640
+technique for collaborative filtering.

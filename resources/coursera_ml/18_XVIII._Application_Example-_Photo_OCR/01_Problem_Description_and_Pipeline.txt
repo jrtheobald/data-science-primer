@@ -1,0 +1,214 @@
+In this and the next few
+videos, I want to tell
+you about a machine learning application
+example, or a machine
+learning application history centered
+around an application called Photo OCR  .
+There are three reasons
+why I want to do this,
+first I wanted to show you an
+example of how a complex
+machine learning system can be put together.
+Second, once told the concepts of
+a machine learning a type line
+and how to allocate resources when
+you're trying to decide what to do next.
+And this can either be in
+the context of you working
+by yourself on the big
+application Or it can
+be the context of a team
+of developers trying to build
+a complex application together.
+And then finally, the Photo
+OCR problem also gives
+me an excuse to tell you
+about just a couple more interesting
+ideas for machine learning.
+One is some ideas of
+how to apply machine learning to
+computer vision problems, and second
+is the idea of artificial data
+synthesis, which we'll see in a couple of videos.
+So, let's start by talking about what is the Photo OCR problem.
+Photo OCR stands for
+Photo Optical Character Recognition.
+With the growth of digital photography
+and more recently the growth of
+camera in our cell phones
+we now have tons of visual
+pictures that we take all over the place.
+And one of the things that
+has interested many developers is
+how to get our computers to
+understand the content of these pictures a little bit better.
+The photo OCR problem focuses
+on how to get computers to
+read the text to the purest in images that we take.
+Given an image like this it
+might be nice if a computer
+can read the text in this
+image so that if you're
+trying to look for this
+picture again you type in
+the words, lulu bees and
+and have it automatically pull
+up this picture, so that
+you're not spending lots of
+time digging through your photo
+collection Maybe hundreds of
+thousands of pictures in.
+The Photo OCR problem
+does exactly this, and it does so in several steps.
+First, given the picture it
+has to look through the image
+and detect where there is text in the picture.
+And after it has done
+that or if it successfully does
+that it then has to
+look at these text regions and
+actually read the text in
+those regions, and hopefully if
+it reads it correctly, it'll come
+up with these transcriptions of
+what is the text that appears in the image.
+Whereas OCR, or optical
+character recognition of scanned
+documents is relatively easier
+problem, doing OCR from
+photographs today is still a
+very difficult machine learning problem,
+and you can do this.
+Not only can this help
+our computers to understand the
+content of our though
+images better, there are
+also applications like helping blind
+people, for example, if you
+could provide to a blind person
+a camera that can look
+at what's in front of
+them, and just tell them the
+words that my be on
+the street sign in front of them.
+With car navigation systems.
+For example, imagine if your
+car could read the street
+signs and help you navigate to your destination.
+In order to perform photo OCR, here's what we can do.
+First we can go through the
+image and find the regions where there's text and image.
+So, shown here is
+one example of text and
+image that the photo OCR system may find.
+Second, given the rectangle around
+that text region, we can
+then do character segmentation, where
+we might take this text box
+that says "Antique Mall" and
+try to segment it out
+into the locations of the individual characters.
+And finally, having segmented out
+into individual characters, we can
+then run a crossfire, which
+looks at the images of the
+visual characters, and tries to
+figure out the first character's an
+A, the second character's an
+N, the third character is
+a T, and so on,
+so that up by doing all
+this how that hopefully you can then
+figure out that this phrase
+is Rulegee's antique mall
+and similarly for some of
+the other words that appear in that image.
+I should say that there are some photo OCR systems
+that do even more complex things,
+like a bit of spelling correction at the end.
+So if, for example, your
+character segmentation and character
+classification system tells you
+that it sees the
+word c 1 e a
+n i n g. Then,
+you know, a sort of spelling
+correction system might tell
+you that this is probably the
+word 'cleaning', and your
+character classification algorithm had
+just mistaken the l for a 1.
+But for the purpose of what
+we want to do in
+this video, let's ignore this last
+step and just focus on the
+system that does these three
+steps of text detection, character
+segmentation, and character classification.
+A system like this is
+what we call a machine learning pipeline.
+In particular, here's a picture
+showing the photo OCR pipeline.
+We have an image, which then
+fed to the text detection system
+text regions, we then segment
+out the characters--the individual characters in
+the text--and then finally we recognize the individual characters.
+In many complex machine learning
+systems, these sorts of
+pipelines are common, where you
+can have multiple modules--in this
+example, the text detection, character
+segmentation, character recognition modules--each of
+which may be machine learning component,
+or sometimes it may not
+be a machine learning component but
+to have a set of modules
+that act one after another on
+some piece of data in order
+to produce the output you want,
+which in the photo OCR example
+is to find the
+transcription of the text that appeared in the image.
+If you're designing a machine learning
+system one of the
+most important decisions will often
+be what exactly is the pipeline that you want to put together.
+In other words, given the photo
+OCR problem, how do you
+break this problem down into
+a sequence of different modules.
+And you design the pipeline
+and each the performance of each of the modules in your pipeline.
+will often have a big
+impact on the final performance of your algorithm.
+If you have a team of
+engineers working on a
+problem like this is also very
+common to have different
+individuals work on different modules.
+So I could easily imagine tech
+easily being the of anywhere
+from 1 to 5 engineers,
+character segmentation maybe another
+1-5 engineers, and character
+recognition being another 1-5
+engineers, and so having a
+pipeline like often offers a
+natural way to divide up
+the workload amongst different members of an engineering team, as well.
+Although, or course, all of
+this work could also be done
+by just one person if that's how you want to do it.
+In complex machine learning systems
+the idea of a pipeline, of
+a machine of a pipeline, is pretty pervasive.
+And what you just saw is
+a specific example of how
+a Photo OCR pipeline might work.
+In the next few videos I'll
+tell you a little bit more
+about this pipeline, and we'll continue
+to use this as an example
+to illustrate--I think--a few more
+key concepts of machine learning.

@@ -1,0 +1,919 @@
+1
+00:00:00,170 --> 00:00:01,340
+In this video, I'd like
+
+2
+00:00:01,450 --> 00:00:03,230
+to talk about how to initialize
+
+3
+00:00:04,580 --> 00:00:05,970
+K-means and more importantly, this will
+
+4
+00:00:06,170 --> 00:00:07,240
+lead into a discussion of
+
+5
+00:00:07,550 --> 00:00:10,210
+how to make K-means avoid local optima as well.
+
+6
+00:00:10,740 --> 00:00:12,390
+Here's the K-means clustering algorithm
+
+7
+00:00:12,950 --> 00:00:14,420
+that we talked about earlier.
+
+8
+00:00:15,760 --> 00:00:16,760
+One step that we never really
+
+9
+00:00:17,260 --> 00:00:18,350
+talked much about was this step
+
+10
+00:00:18,820 --> 00:00:21,560
+of how you randomly initialize the cluster centroids.
+
+11
+00:00:22,390 --> 00:00:23,490
+There are few different ways that
+
+12
+00:00:23,710 --> 00:00:25,350
+one can imagine using to randomly
+
+13
+00:00:25,960 --> 00:00:26,860
+initialize the cluster centroids.
+
+14
+00:00:27,510 --> 00:00:28,580
+But, it turns out that
+
+15
+00:00:28,720 --> 00:00:29,820
+there is one method that is
+
+16
+00:00:30,050 --> 00:00:31,700
+much more recommended than most
+
+17
+00:00:32,080 --> 00:00:33,830
+of the other options one might think about.
+
+18
+00:00:34,400 --> 00:00:35,250
+So, let me tell you about
+
+19
+00:00:35,590 --> 00:00:38,160
+that option since it's what often seems to work best.
+
+20
+00:00:39,550 --> 00:00:42,210
+Here's how I usually initialize my cluster centroids.
+
+21
+00:00:43,300 --> 00:00:44,710
+When running K-means, you should have
+
+22
+00:00:45,140 --> 00:00:47,160
+the number of cluster centroids, K,
+
+23
+00:00:47,430 --> 00:00:48,520
+set to be less than the
+
+24
+00:00:48,590 --> 00:00:50,090
+number of training examples M. It
+
+25
+00:00:50,170 --> 00:00:51,210
+would be really weird to run
+
+26
+00:00:51,430 --> 00:00:52,600
+K-means with a number
+
+27
+00:00:52,870 --> 00:00:54,270
+of cluster centroids that's, you know,
+
+28
+00:00:54,520 --> 00:00:55,790
+equal or greater than the number of examples you have, right?
+
+29
+00:00:58,080 --> 00:00:59,010
+So the way I
+
+30
+00:00:59,150 --> 00:01:00,510
+usually initialize K-means is,
+
+31
+00:01:00,770 --> 00:01:02,510
+I would randomly pick k training
+
+32
+00:01:02,990 --> 00:01:05,170
+examples. So, and, what
+
+33
+00:01:05,610 --> 00:01:06,730
+I do is then set Mu1
+
+34
+00:01:06,850 --> 00:01:09,320
+of MuK equal to these k examples.
+
+35
+00:01:10,610 --> 00:01:11,470
+Let me show you a concrete example.
+
+36
+00:01:12,560 --> 00:01:14,190
+Lets say that k is
+
+37
+00:01:14,470 --> 00:01:16,600
+equal to 2 and so
+
+38
+00:01:17,070 --> 00:01:19,520
+on this example on the right let's say I want to find two clusters.
+
+39
+00:01:21,170 --> 00:01:22,060
+So, what I'm going to
+
+40
+00:01:22,200 --> 00:01:23,350
+do in order to initialize
+
+41
+00:01:23,770 --> 00:01:25,340
+my cluster centroids is, I'm
+
+42
+00:01:25,470 --> 00:01:27,320
+going to randomly pick a couple examples.
+
+43
+00:01:27,760 --> 00:01:28,960
+And let's say, I pick
+
+44
+00:01:29,230 --> 00:01:31,060
+this one and I pick that one.
+
+45
+00:01:31,230 --> 00:01:32,320
+And the way I'm going
+
+46
+00:01:32,380 --> 00:01:34,100
+to initialize my cluster centroids
+
+47
+00:01:34,310 --> 00:01:35,190
+is, I'm just going to initialize
+
+48
+00:01:36,200 --> 00:01:38,930
+my cluster centroids to be right on top of those examples.
+
+49
+00:01:39,530 --> 00:01:40,430
+So that's my first cluster centroid
+
+50
+00:01:41,410 --> 00:01:43,230
+and that's my second cluster centroid, and
+
+51
+00:01:43,390 --> 00:01:45,770
+that's one random initialization of K-means.
+
+52
+00:01:48,540 --> 00:01:50,480
+The one I drew looks like a particularly good one.
+
+53
+00:01:50,890 --> 00:01:51,810
+And sometimes I might get less
+
+54
+00:01:52,040 --> 00:01:53,370
+lucky and maybe I'll end
+
+55
+00:01:53,510 --> 00:01:54,900
+up picking that as my first
+
+56
+00:01:55,330 --> 00:01:58,420
+random initial example, and that as my second one.
+
+57
+00:01:59,050 --> 00:02:01,380
+And here I'm picking two examples because k equals 2.
+
+58
+00:02:01,590 --> 00:02:03,590
+Some we have randomly picked two
+
+59
+00:02:03,890 --> 00:02:05,030
+training examples and if
+
+60
+00:02:05,100 --> 00:02:06,660
+I chose those two then I'll
+
+61
+00:02:06,830 --> 00:02:08,040
+end up with, may be
+
+62
+00:02:08,250 --> 00:02:09,200
+this as my first cluster
+
+63
+00:02:09,510 --> 00:02:10,980
+centroid and that as
+
+64
+00:02:11,140 --> 00:02:13,560
+my second initial location of the cluster centroid.
+
+65
+00:02:14,150 --> 00:02:15,690
+So, that's how you can randomly
+
+66
+00:02:16,070 --> 00:02:17,560
+initialize the cluster centroids.
+
+67
+00:02:17,810 --> 00:02:19,670
+And so at initialization, your
+
+68
+00:02:19,860 --> 00:02:21,110
+first cluster centroid Mu1 will
+
+69
+00:02:21,270 --> 00:02:23,350
+be equal to x(i) for
+
+70
+00:02:23,520 --> 00:02:25,870
+some randomly value of i and
+
+71
+00:02:26,980 --> 00:02:27,660
+Mu2 will be equal to x(j)
+
+72
+00:02:29,240 --> 00:02:30,980
+for some different randomly chosen value
+
+73
+00:02:31,380 --> 00:02:32,830
+of j and so on,
+
+74
+00:02:32,910 --> 00:02:34,440
+if you have more clusters and more cluster centroid.
+
+75
+00:02:35,680 --> 00:02:37,540
+And sort of the side common.
+
+76
+00:02:38,110 --> 00:02:39,240
+I should say that in the
+
+77
+00:02:39,320 --> 00:02:40,840
+earlier video where I first
+
+78
+00:02:41,150 --> 00:02:43,030
+illustrated K-means with the animation.
+
+79
+00:02:44,310 --> 00:02:45,070
+In that set of slides.
+
+80
+00:02:45,900 --> 00:02:46,890
+Only for the purpose of illustration.
+
+81
+00:02:47,590 --> 00:02:48,690
+I actually used a different
+
+82
+00:02:49,240 --> 00:02:51,750
+method of initialization for my cluster centroids.
+
+83
+00:02:52,460 --> 00:02:53,790
+But the method described on
+
+84
+00:02:53,900 --> 00:02:55,940
+this slide, this is really the recommended way.
+
+85
+00:02:56,430 --> 00:02:58,850
+And the way that you should probably use, when you implement K-means.
+
+86
+00:03:00,090 --> 00:03:01,560
+So, as they suggested perhaps
+
+87
+00:03:02,070 --> 00:03:04,090
+by these two illustrations on the right.
+
+88
+00:03:04,930 --> 00:03:06,050
+You might really guess that K-means
+
+89
+00:03:06,530 --> 00:03:08,130
+can end up converging to
+
+90
+00:03:08,260 --> 00:03:10,150
+different solutions depending on
+
+91
+00:03:10,860 --> 00:03:12,470
+exactly how the clusters
+
+92
+00:03:12,990 --> 00:03:15,170
+were initialized, and so, depending on the random initialization.
+
+93
+00:03:16,280 --> 00:03:18,180
+K-means can end up at different solutions.
+
+94
+00:03:18,930 --> 00:03:22,560
+And, in particular, K-means can actually end up at local optima.
+
+95
+00:03:23,650 --> 00:03:24,920
+If you're given the data sale like this.
+
+96
+00:03:25,400 --> 00:03:26,370
+Well, it looks like, you know, there
+
+97
+00:03:26,660 --> 00:03:28,340
+are three clusters, and so,
+
+98
+00:03:28,780 --> 00:03:30,090
+if you run K-means and if
+
+99
+00:03:30,150 --> 00:03:31,380
+it ends up at a good
+
+100
+00:03:31,820 --> 00:03:32,910
+local optima this might be
+
+101
+00:03:33,040 --> 00:03:35,830
+really the global optima, you might end up with that cluster ring.
+
+102
+00:03:36,820 --> 00:03:38,440
+But if you had a particularly
+
+103
+00:03:39,110 --> 00:03:41,630
+unlucky, random initialization, K-means
+
+104
+00:03:42,100 --> 00:03:43,660
+can also get stuck at different
+
+105
+00:03:44,180 --> 00:03:45,740
+local optima. So, in
+
+106
+00:03:45,850 --> 00:03:47,330
+this example on the left
+
+107
+00:03:47,620 --> 00:03:48,700
+it looks like this blue cluster has captured
+
+108
+00:03:49,470 --> 00:03:51,700
+a lot of points of the left and then the they were on the green clusters
+
+109
+00:03:52,050 --> 00:03:54,810
+each is captioned on the relatively small number of points.
+
+110
+00:03:55,020 --> 00:03:56,480
+And so, this corresponds to
+
+111
+00:03:56,640 --> 00:03:58,470
+a bad local optima because it
+
+112
+00:03:58,530 --> 00:04:00,060
+has basically taken these two
+
+113
+00:04:00,470 --> 00:04:01,560
+clusters and used them into
+
+114
+00:04:01,780 --> 00:04:03,440
+1 and furthermore, has
+
+115
+00:04:04,150 --> 00:04:06,070
+split the second cluster into
+
+116
+00:04:06,580 --> 00:04:09,170
+two separate sub-clusters like
+
+117
+00:04:09,380 --> 00:04:10,270
+so, and it has also
+
+118
+00:04:10,720 --> 00:04:12,280
+taken the second cluster and
+
+119
+00:04:12,540 --> 00:04:14,220
+split it into two
+
+120
+00:04:14,460 --> 00:04:16,630
+separate sub-clusters like so, and
+
+121
+00:04:16,760 --> 00:04:17,880
+so, both of these
+
+122
+00:04:18,000 --> 00:04:18,970
+examples on the lower
+
+123
+00:04:19,220 --> 00:04:20,890
+right correspond to different local
+
+124
+00:04:21,250 --> 00:04:22,440
+optima of K-means and in fact,
+
+125
+00:04:22,890 --> 00:04:24,440
+in this example here,
+
+126
+00:04:25,070 --> 00:04:26,150
+the cluster, the red cluster
+
+127
+00:04:26,550 --> 00:04:27,870
+has captured only a single optima example.
+
+128
+00:04:28,380 --> 00:04:29,810
+And the term local
+
+129
+00:04:30,200 --> 00:04:31,000
+optima, by the way, refers
+
+130
+00:04:31,490 --> 00:04:32,930
+to local optima of this
+
+131
+00:04:33,190 --> 00:04:35,940
+distortion function J, and
+
+132
+00:04:36,320 --> 00:04:38,380
+what these solutions on the
+
+133
+00:04:38,590 --> 00:04:39,830
+lower left, what these local
+
+134
+00:04:40,120 --> 00:04:41,420
+optima correspond to is
+
+135
+00:04:41,530 --> 00:04:42,880
+really solutions where K-means
+
+136
+00:04:43,330 --> 00:04:44,050
+has gotten stuck to the local
+
+137
+00:04:44,600 --> 00:04:45,940
+optima and it's not doing
+
+138
+00:04:46,170 --> 00:04:47,940
+a very good job minimizing this
+
+139
+00:04:48,110 --> 00:04:50,030
+distortion function J. So,
+
+140
+00:04:50,540 --> 00:04:52,250
+if you're worried about K-means getting
+
+141
+00:04:52,540 --> 00:04:53,810
+stuck in local optima, if
+
+142
+00:04:53,970 --> 00:04:55,110
+you want to increase the odds
+
+143
+00:04:55,330 --> 00:04:56,950
+of K-means finding the best
+
+144
+00:04:57,230 --> 00:04:58,480
+possible clustering, like that shown
+
+145
+00:04:58,730 --> 00:05:00,290
+on top here, what we
+
+146
+00:05:00,350 --> 00:05:02,820
+can do, is try multiple, random initializations.
+
+147
+00:05:03,580 --> 00:05:04,820
+So, instead of just initializing K-means
+
+148
+00:05:05,430 --> 00:05:06,460
+once and hopping that that
+
+149
+00:05:06,670 --> 00:05:07,680
+works, what we can do
+
+150
+00:05:08,040 --> 00:05:10,020
+is, initialize K-means lots of
+
+151
+00:05:10,130 --> 00:05:10,990
+times and run K-means lots of
+
+152
+00:05:11,890 --> 00:05:12,870
+times, and use that to
+
+153
+00:05:12,950 --> 00:05:13,840
+try to make sure we get
+
+154
+00:05:14,110 --> 00:05:15,640
+as good a solution, as
+
+155
+00:05:15,800 --> 00:05:18,380
+good a local or global optima as possible.
+
+156
+00:05:19,480 --> 00:05:22,460
+Concretely, here's how you could go about doing that.
+
+157
+00:05:22,720 --> 00:05:23,500
+Let's say, I decide to run
+
+158
+00:05:23,700 --> 00:05:24,800
+K-meanss a hundred times
+
+159
+00:05:25,160 --> 00:05:26,790
+so I'll execute this loop
+
+160
+00:05:27,060 --> 00:05:28,900
+a hundred times and it's
+
+161
+00:05:29,330 --> 00:05:30,830
+fairly typical a number of
+
+162
+00:05:30,920 --> 00:05:31,910
+times when came to will be
+
+163
+00:05:32,160 --> 00:05:33,670
+something from 50 up to may be 1000.
+
+164
+00:05:35,090 --> 00:05:36,730
+So, let's say you decide to say K-means one hundred times.
+
+165
+00:05:38,220 --> 00:05:39,100
+So what that means is that
+
+166
+00:05:39,170 --> 00:05:41,490
+we would randomnly initialize K-means.
+
+167
+00:05:42,350 --> 00:05:43,250
+And for each of
+
+168
+00:05:43,340 --> 00:05:44,710
+these one hundred random intializations
+
+169
+00:05:45,370 --> 00:05:47,040
+we would run K-means and
+
+170
+00:05:47,220 --> 00:05:48,200
+that would give us a set
+
+171
+00:05:48,430 --> 00:05:50,270
+of clusteringings, and a set of cluster
+
+172
+00:05:50,590 --> 00:05:51,940
+centroids, and then we
+
+173
+00:05:52,040 --> 00:05:53,760
+would then compute the distortion J,
+
+174
+00:05:54,500 --> 00:05:55,600
+that is compute this cause function on
+
+175
+00:05:56,910 --> 00:05:58,260
+the set of cluster assignments
+
+176
+00:05:58,720 --> 00:05:59,910
+and cluster centroids that we got.
+
+177
+00:06:01,000 --> 00:06:03,470
+Finally, having done this whole procedure a hundred times.
+
+178
+00:06:04,450 --> 00:06:06,330
+You will have a hundred different ways
+
+179
+00:06:06,710 --> 00:06:08,990
+of clustering the data and then
+
+180
+00:06:09,240 --> 00:06:10,310
+finally what you do
+
+181
+00:06:10,590 --> 00:06:11,510
+is all of these hundred
+
+182
+00:06:11,820 --> 00:06:13,210
+ways you have found of clustering the data,
+
+183
+00:06:13,800 --> 00:06:16,050
+just pick one, that gives us the lowest cost.
+
+184
+00:06:16,400 --> 00:06:18,480
+That gives us the lowest distortion.
+
+185
+00:06:18,960 --> 00:06:20,610
+And it turns out that
+
+186
+00:06:21,170 --> 00:06:22,490
+if you are running K-means with
+
+187
+00:06:22,670 --> 00:06:24,520
+a fairly small number of
+
+188
+00:06:24,630 --> 00:06:25,260
+clusters , so you know if the number
+
+189
+00:06:25,520 --> 00:06:26,700
+of clusters is anywhere from
+
+190
+00:06:26,760 --> 00:06:28,180
+two up to maybe 10 -
+
+191
+00:06:28,980 --> 00:06:30,650
+then doing multiple random initializations
+
+192
+00:06:31,460 --> 00:06:32,880
+can often, can sometimes make
+
+193
+00:06:32,990 --> 00:06:34,430
+sure that you find a better local optima.
+
+194
+00:06:34,690 --> 00:06:37,680
+Make sure you find the better clustering data.
+
+195
+00:06:37,870 --> 00:06:38,930
+But if K is very large, so, if
+
+196
+00:06:39,080 --> 00:06:40,000
+K is much greater than 10,
+
+197
+00:06:40,160 --> 00:06:41,010
+certainly if K were, you
+
+198
+00:06:41,080 --> 00:06:42,340
+know, if you were trying to
+
+199
+00:06:42,400 --> 00:06:44,050
+find hundreds of clusters, then,
+
+200
+00:06:45,840 --> 00:06:47,310
+having multiple random initializations is
+
+201
+00:06:47,940 --> 00:06:49,220
+less likely to make a huge difference
+
+202
+00:06:49,360 --> 00:06:50,400
+and there is a much
+
+203
+00:06:50,590 --> 00:06:51,910
+higher chance that your first
+
+204
+00:06:52,320 --> 00:06:53,610
+random initialization will give
+
+205
+00:06:53,730 --> 00:06:55,380
+you a pretty decent solution already
+
+206
+00:06:56,590 --> 00:06:58,070
+and doing, doing multiple random
+
+207
+00:06:58,680 --> 00:07:00,060
+initializations will probably give
+
+208
+00:07:00,260 --> 00:07:02,500
+you a slightly better solution but, but maybe not that much.
+
+209
+00:07:02,780 --> 00:07:04,230
+But it's really in the regime of where
+
+210
+00:07:04,540 --> 00:07:05,810
+you have a relatively small number
+
+211
+00:07:06,090 --> 00:07:07,740
+of clusters, especially if you
+
+212
+00:07:08,040 --> 00:07:09,080
+have, maybe 2 or 3
+
+213
+00:07:09,150 --> 00:07:10,550
+or 4 clusters that random
+
+214
+00:07:11,140 --> 00:07:13,790
+initialization could make a huge difference in terms of
+
+215
+00:07:14,190 --> 00:07:15,090
+making sure you do a good
+
+216
+00:07:15,170 --> 00:07:16,920
+job minimizing the distortion
+
+217
+00:07:17,560 --> 00:07:18,730
+function and giving you a good clustering.
+
+218
+00:07:21,390 --> 00:07:22,560
+So, that's K-means
+
+219
+00:07:22,640 --> 00:07:23,300
+with random initialization.
+
+220
+00:07:24,350 --> 00:07:25,570
+If you're trying to learn a
+
+221
+00:07:25,710 --> 00:07:26,950
+clustering with a relatively small
+
+222
+00:07:27,310 --> 00:07:28,250
+number of clusters, 2, 3,
+
+223
+00:07:28,400 --> 00:07:30,540
+4, 5, maybe, 6, 7, using
+
+224
+00:07:31,660 --> 00:07:34,040
+multiple random initializations can
+
+225
+00:07:34,380 --> 00:07:36,830
+sometimes, help you find much better clustering of the data.
+
+226
+00:07:37,680 --> 00:07:39,650
+But, even if you are learning a large number of clusters, the initialization, the random
+
+227
+00:07:40,350 --> 00:07:43,280
+initialization method that I describe here.
+
+228
+00:07:43,520 --> 00:07:45,110
+That should give K-means a
+
+229
+00:07:45,370 --> 00:07:46,680
+reasonable starting point to start
+
+230
+00:07:47,030 --> 00:07:48,580
+from for finding a good set of clusters.

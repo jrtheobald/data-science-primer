@@ -1,0 +1,147 @@
+For many learning algorithms, among them linear regression, logistic regression and neural networks,
+the way we derive the algorithm was by coming up with a cost function or coming up with an optimization objective.
+And then using an algorithm like gradient descent to minimize that cost function.
+We have a very large training set gradient descent becomes a computationally very expensive procedure.
+In this video, we'll talk about a modification to the basic gradient descent algorithm called Stochastic gradient descent,
+which will allow us to scale these algorithms to much bigger training sets.
+Suppose you are training a linear regression model using gradient descent.
+As a quick recap, the hypothesis will look like this, and the cost function will look like this,
+which is the sum of one half of the average square error of your hypothesis on your m training examples,
+and the cost function we've already seen looks like this sort of bow-shaped function.
+So, plotted as function of the parameters theta 0 and theta 1, the cost function J is a sort of a bow-shaped function.
+And gradient descent looks like this, where in the inner loop of gradient descent
+you repeatedly update the parameters theta using that expression.
+Now in the rest of this video, I'm going to keep using linear regression as the running example.
+But the ideas here, the ideas of Stochastic gradient descent is fully general and also applies to other learning algorithms
+like logistic regression, neural networks and other algorithms that are based on training gradient descent on a specific training set.
+So here's a picture of what gradient descent does, if the parameters are initialized to the point there
+then as you run gradient descent different iterations of gradient descent will take the parameters to the global minimum.
+So take a trajectory that looks like that and heads pretty directly to the global minimum.
+Now, the problem with gradient descent is that if m is large.
+Then computing this derivative term can be very expensive, because the surprise, summing over all m examples.
+So if m is 300 million, alright. So in the United States, there are about 300 million people.
+And so the US or United States census data may have on the order of that many records.
+So you want to fit the linear regression model to that then you need to sum over 300 million records.
+And that's very expensive. To give the algorithm a name, this particular version of gradient descent is also called Batch gradient descent.
+And the term Batch refers to the fact that we're looking at all of the training examples at a time.
+We call it sort of a batch of all of the training examples.
+And it really isn't the, maybe the best name but this is what machine learning people call this particular version of gradient descent.
+And if you imagine really that you have 300 million census records stored away on disc.
+The way this algorithm works is you need to read into your computer memory all 300 million records in order to compute this derivative term.
+You need to stream all of these records through computer because you can't store all your records in computer memory.
+So you need to read through them and slowly, you know, accumulate the sum in order to compute the derivative.
+And then having done all that work, that allows you to take one step of gradient descent.
+And now you need to do the whole thing again.
+You know, scan through all 300 million records, accumulate these sums.
+And having done all that work, you can take another little step using gradient descent.
+And then do that again. And then you take yet a third step. And so on.
+And so it's gonna take a long time in order to get the algorithm to converge.
+In contrast to Batch gradient descent, what we are going to do is come up with a different algorithm
+that doesn't need to look at all the training examples in every single iteration,
+but that needs to look at only a single training example in one iteration.
+Before moving on to the new algorithm, here's just a Batch gradient descent algorithm written out again
+with that being the cost function and that being the update and of course this term here,
+that's used in the gradient descent rule, that is the partial derivative
+with respect to the parameters theta J of our optimization objective, J train of theta.
+Now, let's look at the more efficient algorithm that scales better to large data sets.
+In order to work off the algorithms called Stochastic gradient descent,
+this vectors the cost function in a slightly different way then they define the cost of the parameter theta
+with respect to a training example x(i), y(i) to be equal to one half times the squared error
+that my hypothesis incurs on that example, x(i), y(i).
+So this cost function term really measures how well is my hypothesis doing on a single example x(i), y(i).
+Now you notice that the overall cost function j train can now be written in this equivalent form.
+So j train is just the average over my m training examples of the cost of my hypothesis on that example x(i), y(i).
+Armed with this view of the cost function for linear regression,
+let me now write out what Stochastic gradient descent does.
+The first step of Stochastic gradient descent is to randomly shuffle the data set.
+So by that I just mean randomly shuffle, or randomly reorder your m training examples.
+It's sort of a standard pre-processing step, come back to this in a minute.
+But the main work of Stochastic gradient descent is then done in the following.
+We're going to repeat for i equals 1 through m.
+So we'll repeatedly scan through my training examples and perform the following update.
+Gonna update the parameter theta j as theta j minus alpha times h of x(i) minus y(i) times x(i)j.
+And we're going to do this update as usual for all values of j.
+Now, you notice that this term over here is exactly what we had inside the summation for Batch gradient descent.
+In fact, for those of you that are calculus is possible to show that that term here, that's this term here,
+is equal to the partial derivative with respect to my parameter theta j of the cost of the parameters theta on x(i), y(i).
+Where cost is of course this thing that was defined previously.
+And just the wrap of the algorithm, let me close my curly braces over there.
+So what Stochastic gradient descent is doing is it is actually scanning through the training examples.
+And first it's gonna look at my first training example x(1), y(1).
+And then looking at only this first example, it's gonna take like a basically a little gradient descent step
+with respect to the cost of just this first training example.
+So in other words, we're going to look at the first example
+and modify the parameters a little bit to fit just the first training example a little bit better.
+Having done this inside this inner for-loop is then going to go on to the second training example.
+And what it's going to do there is take another little step in parameter space,
+so modify the parameters just a little bit to try to fit just a second training example a little bit better.
+Having done that, is then going to go onto my third training example.
+And modify the parameters to try to fit just the third training example a little bit better, and so on
+until you know, you get through the entire training set.
+And then this ultra repeat loop may cause it to take multiple passes over the entire training set.
+This view of Stochastic gradient descent also motivates why we wanted to start by randomly shuffling the data set.
+This doesn't show us that when we scan through the training site here,
+that we end up visiting the training examples in some sort of randomly sorted order.
+Depending on whether your data already came randomly sorted or whether it came originally sorted in some strange order,
+in practice this would just speed up the conversions to Stochastic gradient descent just a little bit.
+So in the interest of safety, it's usually better to randomly shuffle the data set if you aren't sure
+if it came to you in randomly sorted order.
+But more importantly another view of Stochastic gradient descent is
+that it's a lot like descent but rather than wait to sum up these gradient terms over all m training examples,
+what we're doing is we're taking this gradient term using just one single training example
+and we're starting to make progress in improving the parameters already.
+So rather than, you know, waiting 'till taking a path through all 300,000 United States Census records,
+say, rather than needing to scan through all of the training examples
+before we can modify the parameters a little bit and make progress towards a global minimum.
+For Stochastic gradient descent instead we just need to look at a single training example
+and we're already starting to make progress in this case of parameters towards, moving the parameters towards the global minimum.
+So, here's the algorithm written out again where the first step is to randomly shuffle the data
+and the second step is where the real work is done, where that's the update with respect to a single training example x(i), y(i).
+So, let's see what this algorithm does to the parameters.
+Previously, we saw that when we are using Batch gradient descent,
+that is the algorithm that looks at all the training examples in time,
+Batch gradient descent will tend to, you know, take a reasonably straight line trajectory to get to the global minimum like that.
+In contrast with Stochastic gradient descent every iteration is going to be much faster
+because we don't need to sum up over all the training examples.
+But every iteration is just trying to fit single training example better.
+So, if we were to start stochastic gradient descent, oh, let's start stochastic gradient descent at a point like that.
+The first iteration, you know, may take the parameters in that direction and
+maybe the second iteration looking at just the second example maybe just by chance,
+we get more unlucky and actually head in a bad direction with the parameters like that.
+In the third iteration where we tried to modify the parameters to fit just the third training examples better,
+maybe we'll end up heading in that direction.
+And then we'll look at the fourth training example and we will do that. The fifth example, sixth example, 7th and so on.
+And as you run Stochastic gradient descent, what you find is that
+it will generally move the parameters in the direction of the global minimum, but not always.
+And so take some more random-looking, circuitous path to watch the global minimum.
+And in fact as you run Stochastic gradient descent it doesn't actually converge in the same same sense as Batch gradient descent does
+and what it ends up doing is wandering around continuously in some region that's in some region close to the global minimum,
+but it doesn't just get to the global minimum and stay there.
+But in practice this isn't a problem because, you know, so
+long as the parameters end up in some region there maybe it is pretty close to the global minimum.
+So, as parameters end up pretty close to the global minimum, that will be a pretty good hypothesis
+and so usually running Stochastic gradient descent
+we get a parameter near the global minimum and that's good enough for, you know, essentially any, most practical purposes.
+Just one final detail. In Stochastic gradient descent,
+we had this outer loop repeat which says to do this inner loop multiple times.
+So, how many times do we repeat this outer loop?
+Depending on the size of the training set, doing this loop just a single time may be enough.
+And up to, you know, maybe 10 times may be typical
+so we may end up repeating this inner loop anywhere from once to ten times.
+So if we have a you know, truly massive data set like the this US census gave us that example
+that I've been talking about with 300 million examples,
+it is possible that by the time you've taken just a single pass through your training set.
+So, this is for i equals 1 through 300 million.
+It's possible that by the time you've taken a single pass through your data set
+you might already have a perfectly good hypothesis.
+In which case, you know, this inner loop you might need to do only once if m is very, very large.
+But in general taking anywhere from 1 through 10 passes through your data set, you know, maybe fairly common.
+But really it depends on the size of your training set.
+And if you contrast this to Batch gradient descent.
+With Batch gradient descent, after taking a pass through your entire training set,
+you would have taken just one single gradient descent steps.
+So one of these little baby steps of gradient descent where you just take one small gradient descent step
+and this is why Stochastic gradient descent can be much faster.
+So, that was the Stochastic gradient descent algorithm.
+And if you implement it, hopefully that will allow you to scale up many of your learning algorithms
+to much bigger data sets and get much more performance that way.

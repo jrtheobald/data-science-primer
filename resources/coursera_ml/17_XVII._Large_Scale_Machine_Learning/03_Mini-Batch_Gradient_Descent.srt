@@ -1,0 +1,247 @@
+1
+00:00:00,000 --> 00:00:07,306
+In the previous video, we talked about Stochastic gradient descent, and how that can be much faster than Batch gradient descent.
+
+2
+00:00:07,306 --> 00:00:12,866
+In this video, let's talk about another variation on these ideas is called Mini-batch gradient descent
+
+3
+00:00:12,866 --> 00:00:16,906
+they can work sometimes even a bit faster than stochastic gradient descent.
+
+4
+00:00:16,906 --> 00:00:22,046
+To summarize the algorithms we talked about so far.
+
+5
+00:00:22,046 --> 00:00:26,619
+In Batch gradient descent we will use all m examples in each generation.
+
+6
+00:00:26,619 --> 00:00:31,792
+Whereas in Stochastic gradient descent we will use a single example in each generation.
+
+7
+00:00:31,792 --> 00:00:36,120
+What Mini-batch gradient descent does is somewhere in between.
+
+8
+00:00:36,120 --> 00:00:46,559
+Specifically, with this algorithm we're going to use b examples in each iteration where b is a parameter called the "mini batch size"
+
+9
+00:00:46,559 --> 00:00:52,688
+so the idea is that this is somewhat in-between Batch gradient descent and Stochastic gradient descent.
+
+10
+00:00:52,688 --> 00:00:57,488
+This is just like batch gradient descent, except that I'm going to use a much smaller batch size.
+
+11
+00:00:57,488 --> 00:01:08,672
+A typical choice for the value of b might be b equals 10, lets say, and a typical range really might be anywhere from b equals 2 up to b equals 100.
+
+12
+00:01:08,672 --> 00:01:13,668
+So that will be a pretty typical range of values for the Mini-batch size.
+
+13
+00:01:13,668 --> 00:01:21,153
+And the idea is that rather than using one example at a time or m examples at a time we will use b examples at a time.
+
+14
+00:01:21,153 --> 00:01:28,833
+So let me just write this out informally, we're going to get, let's say, b. For this example, let's say b equals 10.
+
+15
+00:01:28,833 --> 00:01:37,782
+So we're going to get, the next 10 examples from my training set so that may be some set of examples xi, yi.
+
+16
+00:01:37,782 --> 00:01:46,114
+If it's 10 examples then the indexing will be up to x (i+9), y (i+9)
+
+17
+00:01:46,114 --> 00:01:57,794
+so that's 10 examples altogether and then we'll perform essentially a gradient descent update using these 10 examples.
+
+18
+00:01:57,794 --> 00:02:19,012
+So, that's any rate times one tenth times sum over k equals i through i+9 of h subscript theta of x(k) minus y(k) times x(k)j.
+
+19
+00:02:19,012 --> 00:02:27,213
+And so in this expression, where summing the gradient terms over my ten examples.
+
+20
+00:02:27,229 --> 00:02:32,370
+So, that's number ten, that's, you know, my mini batch size and just i+9 again,
+
+21
+00:02:32,370 --> 00:02:39,384
+the 9 comes from the choice of the parameter b, and then after this we will then increase, you know,
+
+22
+00:02:39,384 --> 00:02:46,755
+i by tenth, we will go on to the next ten examples and then keep moving like this.
+
+23
+00:02:46,755 --> 00:02:50,584
+So just to write out the entire algorithm in full.
+
+24
+00:02:50,584 --> 00:02:55,231
+In order to simplify the indexing for this one at the right top,
+
+25
+00:02:55,231 --> 00:02:59,843
+I'm going to assume we have a mini-batch size of ten and a training set size of a thousand,
+
+26
+00:02:59,843 --> 00:03:05,045
+what we're going to do is have this sort of form, for i equals 1 and that in 21's the stepping,
+
+27
+00:03:05,045 --> 00:03:07,926
+in steps of 10 because we look at 10 examples at a time.
+
+28
+00:03:07,926 --> 00:03:13,648
+And then we perform this sort of gradient descent update using ten examples at a time
+
+29
+00:03:13,648 --> 00:03:21,566
+so this 10 and this i+9 those are consequence of having chosen my mini-batch to be ten.
+
+30
+00:03:21,566 --> 00:03:27,435
+And you know, this ultimate four-loop, this ends at 991 here because
+
+31
+00:03:27,435 --> 00:03:34,457
+if I have 1000 training samples then I need 100 steps of size 10 in order to get through my training set.
+
+32
+00:03:34,457 --> 00:03:37,729
+So this is mini-batch gradient descent.
+
+33
+00:03:37,729 --> 00:03:43,219
+Compared to batch gradient descent, this also allows us to make progress much faster.
+
+34
+00:03:43,219 --> 00:03:49,487
+So we have again our running example of, you know, U.S. Census data with 300 million training examples,
+
+35
+00:03:49,487 --> 00:03:55,621
+then what we're saying is after looking at just the first 10 examples we can start to make progress
+
+36
+00:03:55,621 --> 00:04:00,873
+in improving the parameters theta so we don't need to scan through the entire training set.
+
+37
+00:04:00,873 --> 00:04:05,377
+We just need to look at the first 10 examples and this will start letting us make progress and then
+
+38
+00:04:05,377 --> 00:04:09,289
+we can look at the second ten examples and modify the parameters a little bit again and so on.
+
+39
+00:04:09,289 --> 00:04:14,186
+So, that is why Mini-batch gradient descent can be faster than batch gradient descent.
+
+40
+00:04:14,186 --> 00:04:19,578
+Namely, you can start making progress in modifying the parameters after looking at just ten examples
+
+41
+00:04:19,578 --> 00:04:24,836
+rather than needing to wait 'till you've scan through every single training example of 300 million of them.
+
+42
+00:04:24,836 --> 00:04:29,699
+So, how about Mini-batch gradient descent versus Stochastic gradient descent.
+
+43
+00:04:29,699 --> 00:04:38,237
+So, why do we want to look at b examples at a time rather than look at just a single example at a time as the Stochastic gradient descent?
+
+44
+00:04:38,237 --> 00:04:42,044
+The answer is in vectorization.
+
+45
+00:04:42,044 --> 00:04:47,450
+In particular, Mini-batch gradient descent is likely to outperform Stochastic gradient descent
+
+46
+00:04:47,450 --> 00:04:50,817
+only if you have a good vectorized implementation.
+
+47
+00:04:50,817 --> 00:04:58,571
+In that case, the sum over 10 examples can be performed in a more vectorized way
+
+48
+00:04:58,571 --> 00:05:05,376
+which will allow you to partially parallelize your computation over the ten examples.
+
+49
+00:05:05,376 --> 00:05:09,953
+So, in other words, by using appropriate vectorization to compute the rest of the terms,
+
+50
+00:05:09,953 --> 00:05:18,565
+you can sometimes partially use the good numerical algebra libraries and parallelize your gradient computations over the b examples,
+
+51
+00:05:18,565 --> 00:05:24,152
+whereas if you were looking at just a single example of time with Stochastic gradient descent then, you know,
+
+52
+00:05:24,152 --> 00:05:27,456
+just looking at one example at a time their isn't much to parallelize over.
+
+53
+00:05:27,456 --> 00:05:29,824
+At least there is less to parallelize over.
+
+54
+00:05:29,824 --> 00:05:34,866
+One disadvantage of Mini-batch gradient descent is that there is now this extra parameter b,
+
+55
+00:05:34,866 --> 00:05:39,006
+the Mini-batch size which you may have to fiddle with, and which may therefore take time.
+
+56
+00:05:39,006 --> 00:05:45,611
+But if you have a good vectorized implementation this can sometimes run even faster that Stochastic gradient descent.
+
+57
+00:05:45,611 --> 00:05:52,937
+So that was Mini-batch gradient descent which is an algorithm that in some sense does something
+
+58
+00:05:52,937 --> 00:05:57,697
+that's somewhat in between what Stochastic gradient descent does and what Batch gradient descent does.
+
+59
+00:05:57,697 --> 00:06:02,626
+And if you choose their reasonable value of b. I usually use b equals 10, but,
+
+60
+00:06:02,626 --> 00:06:07,343
+you know, other values, anywhere from say 2 to 100, would be reasonably common.
+
+61
+00:06:07,343 --> 00:06:11,917
+So we choose value of b and if you use a good vectorized implementation,
+
+62
+00:06:11,917 --> 00:06:15,917
+sometimes it can be faster than both Stochastic gradient descent and faster than Batch gradient descent.

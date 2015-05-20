@@ -1,0 +1,1255 @@
+1
+00:00:00,190 --> 00:00:01,558
+In this video we talk about
+
+2
+00:00:01,558 --> 00:00:03,577
+matrix, matrix multiplication or
+
+3
+00:00:03,580 --> 00:00:06,262
+how to multiply two matrices together.
+
+4
+00:00:06,590 --> 00:00:07,935
+When we talk about the method
+
+5
+00:00:07,935 --> 00:00:09,412
+in linear regression for how
+
+6
+00:00:09,412 --> 00:00:11,251
+to solve for the parameters,
+
+7
+00:00:11,251 --> 00:00:13,195
+theta zero and theta one, all in one shot.
+
+8
+00:00:13,195 --> 00:00:16,601
+So, without needing an iterative algorithm like gradient descent.
+
+9
+00:00:16,601 --> 00:00:18,005
+When we talk about that algorithm,
+
+10
+00:00:18,005 --> 00:00:19,982
+it turns out that matrix, matrix
+
+11
+00:00:19,982 --> 00:00:23,086
+multiplication is one of the key steps that you need to know.
+
+12
+00:00:24,050 --> 00:00:27,885
+So, let's, as usual, start with an example.
+
+13
+00:00:28,790 --> 00:00:30,558
+Let's say I have two matrices
+
+14
+00:00:30,558 --> 00:00:33,060
+and I want to multiply them together.
+
+15
+00:00:33,060 --> 00:00:34,343
+Let me again just reference this
+
+16
+00:00:34,343 --> 00:00:37,441
+example and then I'll tell you in a little bit what happens.
+
+17
+00:00:38,000 --> 00:00:39,154
+So, the first thing
+
+18
+00:00:39,160 --> 00:00:40,589
+I'm gonna do is, I'm going
+
+19
+00:00:40,589 --> 00:00:43,154
+to pull out the first
+
+20
+00:00:43,170 --> 00:00:45,545
+column of this matrix on the right.
+
+21
+00:00:46,340 --> 00:00:48,135
+And I'm going to take this
+
+22
+00:00:48,135 --> 00:00:49,163
+matrix on the left and
+
+23
+00:00:49,170 --> 00:00:52,385
+multiply it by, you know, a vector.
+
+24
+00:00:52,385 --> 00:00:55,188
+That's just this first column, OK?
+
+25
+00:00:55,188 --> 00:00:56,385
+And it turns out if I
+
+26
+00:00:56,385 --> 00:00:59,067
+do that I am going to get the vector 11, 9.
+
+27
+00:00:59,070 --> 00:01:02,068
+So, this is the same matrix
+
+28
+00:01:02,068 --> 00:01:05,932
+vector multiplication as you saw in the last videos.
+
+29
+00:01:05,950 --> 00:01:08,934
+I worked this out in advance so, I know it's 11, 9.
+
+30
+00:01:08,934 --> 00:01:10,519
+And, then, the second thing
+
+31
+00:01:10,519 --> 00:01:12,811
+I'm going to do is, I'm going
+
+32
+00:01:12,811 --> 00:01:14,752
+to pull out the second column,
+
+33
+00:01:14,752 --> 00:01:16,537
+this matrix on the right and
+
+34
+00:01:16,537 --> 00:01:18,575
+I am then going to
+
+35
+00:01:18,575 --> 00:01:20,174
+take this matrix on the left,
+
+36
+00:01:20,174 --> 00:01:21,398
+right, so, it will be that matrix,
+
+37
+00:01:21,410 --> 00:01:23,476
+and multiply it by
+
+38
+00:01:23,480 --> 00:01:24,902
+that second column on the right.
+
+39
+00:01:24,902 --> 00:01:26,360
+So, again, this is a matrix
+
+40
+00:01:27,060 --> 00:01:28,960
+vector multiplication set, which
+
+41
+00:01:28,960 --> 00:01:30,643
+you saw from the previous video, and
+
+42
+00:01:30,643 --> 00:01:31,623
+it turns out that if you
+
+43
+00:01:31,623 --> 00:01:32,768
+multiply this matrix and this
+
+44
+00:01:32,780 --> 00:01:34,250
+vector, you get 10,
+
+45
+00:01:34,250 --> 00:01:36,214
+14 and by
+
+46
+00:01:36,214 --> 00:01:37,472
+the way, if you want to practice
+
+47
+00:01:37,472 --> 00:01:39,776
+your matrix vector multiplication, feel
+
+48
+00:01:39,776 --> 00:01:42,810
+free to pause the video and check this product yourself.
+
+49
+00:01:43,170 --> 00:01:44,248
+Then, I'm just going
+
+50
+00:01:44,248 --> 00:01:45,743
+to take these two results and
+
+51
+00:01:45,743 --> 00:01:48,398
+put them together, and that will be my answer.
+
+52
+00:01:48,400 --> 00:01:49,962
+So, turns out the
+
+53
+00:01:49,962 --> 00:01:51,350
+outcome of this product is going
+
+54
+00:01:51,350 --> 00:01:53,449
+to be a 2 by 2 matrix, and
+
+55
+00:01:53,449 --> 00:01:54,467
+The way I am going to fill
+
+56
+00:01:54,467 --> 00:01:56,294
+in this matrix is just by
+
+57
+00:01:56,294 --> 00:01:57,914
+taking my elements 11,
+
+58
+00:01:57,914 --> 00:02:00,137
+9 and plugging them here, and
+
+59
+00:02:00,140 --> 00:02:03,753
+taking 10, 14 and plugging
+
+60
+00:02:03,753 --> 00:02:06,386
+them into the second column.
+
+61
+00:02:06,720 --> 00:02:06,720
+Okay?
+
+62
+00:02:07,430 --> 00:02:08,824
+So, that was the mechanics of
+
+63
+00:02:08,824 --> 00:02:11,086
+how to multiply a matrix by
+
+64
+00:02:11,086 --> 00:02:12,248
+another matrix.
+
+65
+00:02:12,265 --> 00:02:14,094
+You basically look at the
+
+66
+00:02:14,094 --> 00:02:17,045
+second matrix one column at a time, and you assemble the answers.
+
+67
+00:02:17,070 --> 00:02:18,199
+And again, we will step
+
+68
+00:02:18,199 --> 00:02:19,455
+through this much more carefully in
+
+69
+00:02:19,455 --> 00:02:20,754
+a second, but I just
+
+70
+00:02:20,754 --> 00:02:22,852
+want to point out also, this
+
+71
+00:02:22,852 --> 00:02:26,301
+first example is a 2x3 matrix matrix.
+
+72
+00:02:26,301 --> 00:02:28,548
+Multiplying that by a
+
+73
+00:02:28,550 --> 00:02:30,649
+3x2 matrix, and the
+
+74
+00:02:30,649 --> 00:02:32,497
+outcome of this product, it
+
+75
+00:02:32,497 --> 00:02:35,518
+turns out to be a 2x2
+
+76
+00:02:35,518 --> 00:02:36,802
+matrix.
+
+77
+00:02:36,802 --> 00:02:39,121
+And again, we'll see in a second why this was the case.
+
+78
+00:02:39,122 --> 00:02:40,484
+All right.
+
+79
+00:02:40,790 --> 00:02:42,637
+That was the mechanics of the calculation.
+
+80
+00:02:42,637 --> 00:02:43,745
+Let's actually look at the
+
+81
+00:02:43,745 --> 00:02:44,953
+details and look at what
+
+82
+00:02:44,960 --> 00:02:46,305
+exactly happened.
+
+83
+00:02:46,305 --> 00:02:48,082
+Here are details.
+
+84
+00:02:48,082 --> 00:02:49,471
+I have a matrix A and
+
+85
+00:02:49,471 --> 00:02:51,325
+I want to multiply that
+
+86
+00:02:51,350 --> 00:02:53,088
+with a matrix B, and the result
+
+87
+00:02:53,088 --> 00:02:56,143
+will be some new matrix C. And
+
+88
+00:02:56,143 --> 00:02:57,168
+it turns out you can only
+
+89
+00:02:57,168 --> 00:02:59,238
+multiply together matrices whose
+
+90
+00:02:59,238 --> 00:03:00,714
+dimensions match so A
+
+91
+00:03:00,714 --> 00:03:02,239
+is an m by n matrix,
+
+92
+00:03:02,240 --> 00:03:04,468
+so m columns, n columns and
+
+93
+00:03:04,468 --> 00:03:05,394
+I am going to multiply
+
+94
+00:03:05,394 --> 00:03:06,480
+that with an n by o
+
+95
+00:03:06,500 --> 00:03:08,232
+and it turns out this n
+
+96
+00:03:08,232 --> 00:03:10,306
+here must match this n
+
+97
+00:03:10,330 --> 00:03:11,978
+here, so the number of columns
+
+98
+00:03:11,978 --> 00:03:16,778
+in first matrix must equal to the number of rows in second matrix.
+
+99
+00:03:16,800 --> 00:03:18,035
+And the result of this
+
+100
+00:03:18,035 --> 00:03:20,639
+product will be an M
+
+101
+00:03:20,639 --> 00:03:25,204
+by O matrix, like the the matrix C here.
+
+102
+00:03:25,390 --> 00:03:26,822
+And, in the previous
+
+103
+00:03:26,830 --> 00:03:28,743
+video, everything we did corresponded
+
+104
+00:03:28,770 --> 00:03:31,380
+to this special case of OB
+
+105
+00:03:31,380 --> 00:03:32,588
+equal to 1.
+
+106
+00:03:32,588 --> 00:03:33,150
+Okay?
+
+107
+00:03:33,150 --> 00:03:35,469
+That was, that was in case of B being a vector.
+
+108
+00:03:35,480 --> 00:03:36,522
+But now, we are going to
+
+109
+00:03:36,530 --> 00:03:39,805
+view of the case of values of O larger than 1.
+
+110
+00:03:39,805 --> 00:03:41,533
+So, here's how you
+
+111
+00:03:41,540 --> 00:03:44,564
+multiply together the two matrices.
+
+112
+00:03:44,564 --> 00:03:46,349
+In order to get, what
+
+113
+00:03:46,349 --> 00:03:47,775
+I am going to do is
+
+114
+00:03:47,775 --> 00:03:49,180
+I am going to take the
+
+115
+00:03:49,270 --> 00:03:52,025
+first column of B
+
+116
+00:03:52,025 --> 00:03:53,782
+and treat that as a vector,
+
+117
+00:03:53,782 --> 00:03:56,098
+and multiply the matrix A,
+
+118
+00:03:56,120 --> 00:03:57,909
+with the first column of B,
+
+119
+00:03:57,930 --> 00:03:59,632
+and the result of that will
+
+120
+00:03:59,632 --> 00:04:00,370
+be a M by 1 vector,
+
+121
+00:04:00,400 --> 00:04:04,726
+and we're going to put that over here.
+
+122
+00:04:05,070 --> 00:04:06,481
+Then, I'm going to
+
+123
+00:04:06,481 --> 00:04:09,048
+take the second column
+
+124
+00:04:09,048 --> 00:04:11,920
+of B, right, so,
+
+125
+00:04:12,010 --> 00:04:13,775
+this is another n by
+
+126
+00:04:13,790 --> 00:04:15,501
+one vector, so, this column
+
+127
+00:04:15,501 --> 00:04:16,690
+here, this is right, n
+
+128
+00:04:16,690 --> 00:04:17,910
+by one, those are n dimensional
+
+129
+00:04:17,910 --> 00:04:19,782
+vector, gonna multiply this
+
+130
+00:04:19,782 --> 00:04:21,678
+matrix with this n by one vector.
+
+131
+00:04:21,678 --> 00:04:23,775
+The result will be
+
+132
+00:04:23,775 --> 00:04:26,018
+a M dimensional vector,
+
+133
+00:04:26,450 --> 00:04:28,035
+which we'll put there.
+
+134
+00:04:28,035 --> 00:04:29,273
+And, so on.
+
+135
+00:04:29,273 --> 00:04:30,035
+Okay?
+
+136
+00:04:30,035 --> 00:04:31,135
+And, so, you know, and then
+
+137
+00:04:31,135 --> 00:04:32,099
+I'm going to take the third
+
+138
+00:04:32,099 --> 00:04:33,475
+column, multiply it by
+
+139
+00:04:33,475 --> 00:04:37,507
+this matrix, I get a M dimensional vector.
+
+140
+00:04:37,510 --> 00:04:39,368
+And so on, until you get
+
+141
+00:04:39,368 --> 00:04:40,610
+to the last column times,
+
+142
+00:04:40,610 --> 00:04:41,870
+the matrix times the
+
+143
+00:04:41,950 --> 00:04:43,420
+lost column gives you
+
+144
+00:04:43,530 --> 00:04:45,757
+the lost column of C.
+
+145
+00:04:46,460 --> 00:04:48,808
+Just to say that again.
+
+146
+00:04:49,310 --> 00:04:51,510
+The ith column of the
+
+147
+00:04:51,600 --> 00:04:53,777
+matrix C is attained
+
+148
+00:04:53,810 --> 00:04:56,108
+by taking the matrix A and
+
+149
+00:04:56,110 --> 00:04:57,641
+multiplying the matrix A with
+
+150
+00:04:57,660 --> 00:04:59,638
+the ith column of the
+
+151
+00:04:59,638 --> 00:05:01,539
+matrix B for the values
+
+152
+00:05:01,560 --> 00:05:03,387
+of I equals 1, 2
+
+153
+00:05:03,387 --> 00:05:04,936
+up through O. Okay ?
+
+154
+00:05:04,950 --> 00:05:06,752
+So, this is just a summary
+
+155
+00:05:06,760 --> 00:05:08,765
+of what we did up there
+
+156
+00:05:08,765 --> 00:05:10,163
+in order to compute the matrix
+
+157
+00:05:10,163 --> 00:05:12,909
+C.  Let's look at just one more example.
+
+158
+00:05:12,940 --> 00:05:17,235
+Let 's say, I want to multiply together these two matrices.
+
+159
+00:05:17,235 --> 00:05:18,208
+So, what I'm going to
+
+160
+00:05:18,208 --> 00:05:20,178
+do is, first pull
+
+161
+00:05:20,178 --> 00:05:22,535
+out the first column
+
+162
+00:05:22,535 --> 00:05:24,370
+of my second matrix, that
+
+163
+00:05:24,370 --> 00:05:26,185
+was matrix B, that was
+
+164
+00:05:26,185 --> 00:05:29,133
+my matrix B on the previous slide.
+
+165
+00:05:29,160 --> 00:05:30,660
+And, I therefore, have this
+
+166
+00:05:30,660 --> 00:05:32,917
+matrix times my vector and
+
+167
+00:05:32,920 --> 00:05:35,350
+so, oh, let's do this calculation quickly.
+
+168
+00:05:35,350 --> 00:05:37,518
+There's going to be equal to,
+
+169
+00:05:37,518 --> 00:05:39,048
+right, 1, 3 times 0,
+
+170
+00:05:39,048 --> 00:05:41,238
+3 so that gives 1
+
+171
+00:05:41,270 --> 00:05:45,930
+times 0, plus 3 times 3.
+
+172
+00:05:45,930 --> 00:05:48,322
+And, the second element
+
+173
+00:05:48,322 --> 00:05:49,530
+is going to be 2,
+
+174
+00:05:49,530 --> 00:05:51,678
+5 times 0, 3 so, that's going to
+
+175
+00:05:51,678 --> 00:05:52,739
+be two times 0 plus 5
+
+176
+00:05:52,740 --> 00:05:57,276
+times 3 and that is
+
+177
+00:05:57,276 --> 00:06:02,242
+9,15, actually didn't
+
+178
+00:06:02,242 --> 00:06:03,672
+write that in green, so this
+
+179
+00:06:03,672 --> 00:06:09,365
+is nine fifteen, and then mix.
+
+180
+00:06:09,365 --> 00:06:12,061
+I am going to pull out
+
+181
+00:06:12,090 --> 00:06:14,451
+the second column of this,
+
+182
+00:06:14,451 --> 00:06:16,174
+and do the corresponding
+
+183
+00:06:16,190 --> 00:06:18,170
+calculation so there's this
+
+184
+00:06:18,200 --> 00:06:20,477
+matrix times this vector 1, 2.
+
+185
+00:06:20,477 --> 00:06:22,288
+Let's also do this
+
+186
+00:06:22,290 --> 00:06:23,814
+quickly, so that's one times
+
+187
+00:06:23,814 --> 00:06:27,362
+one plus three times two.
+
+188
+00:06:27,362 --> 00:06:28,973
+So that deals with that
+
+189
+00:06:28,973 --> 00:06:30,868
+row, let's do the
+
+190
+00:06:30,868 --> 00:06:34,223
+other one, so let's see,
+
+191
+00:06:34,223 --> 00:06:37,510
+that gives me two times
+
+192
+00:06:37,510 --> 00:06:41,926
+one plus times two,
+
+193
+00:06:41,926 --> 00:06:43,493
+so that is going to
+
+194
+00:06:43,493 --> 00:06:46,176
+be equal to, let's see,
+
+195
+00:06:46,176 --> 00:06:47,464
+one times one plus three times
+
+196
+00:06:47,464 --> 00:06:50,378
+one is four and two
+
+197
+00:06:50,378 --> 00:06:52,282
+times one plus five times two
+
+198
+00:06:52,282 --> 00:06:53,923
+is twelve.
+
+199
+00:06:55,570 --> 00:06:56,660
+So now I have these two
+
+200
+00:06:56,660 --> 00:06:58,448
+you, and so my
+
+201
+00:06:58,448 --> 00:07:00,343
+outcome, so the product
+
+202
+00:07:00,343 --> 00:07:01,714
+of these two matrices is going
+
+203
+00:07:01,714 --> 00:07:03,831
+to be, this goes
+
+204
+00:07:03,831 --> 00:07:07,232
+here and this
+
+205
+00:07:07,232 --> 00:07:09,828
+goes here, so I
+
+206
+00:07:09,828 --> 00:07:14,632
+get nine fifteen and
+
+207
+00:07:14,660 --> 00:07:17,831
+four twelve and you
+
+208
+00:07:17,831 --> 00:07:19,657
+may notice also that the result
+
+209
+00:07:19,670 --> 00:07:21,616
+of multiplying a 2x2 matrix
+
+210
+00:07:21,616 --> 00:07:23,687
+with another 2x2 matrix.
+
+211
+00:07:23,687 --> 00:07:25,215
+The resulting dimension is going
+
+212
+00:07:25,215 --> 00:07:26,609
+to be that first two times
+
+213
+00:07:26,609 --> 00:07:28,415
+that second two, so the result
+
+214
+00:07:28,430 --> 00:07:31,460
+is itself also a two by two matrix.
+
+215
+00:07:35,000 --> 00:07:36,304
+Finally let me show you
+
+216
+00:07:36,304 --> 00:07:37,795
+one more neat trick you can
+
+217
+00:07:37,795 --> 00:07:40,699
+do with matrix matrix multiplication.
+
+218
+00:07:40,980 --> 00:07:42,455
+Let's say as before that we
+
+219
+00:07:42,455 --> 00:07:45,823
+have four houses whose
+
+220
+00:07:45,823 --> 00:07:47,970
+prices we want to predict,
+
+221
+00:07:48,410 --> 00:07:49,825
+only now we have three
+
+222
+00:07:49,825 --> 00:07:51,967
+competing hypothesis shown here
+
+223
+00:07:51,970 --> 00:07:54,145
+on the right, so if
+
+224
+00:07:54,145 --> 00:07:55,720
+you want to So apply all
+
+225
+00:07:55,720 --> 00:07:57,745
+3 competing hypotheses to
+
+226
+00:07:57,745 --> 00:07:58,951
+all four of the houses, it
+
+227
+00:07:58,951 --> 00:07:59,926
+turns out you can do that
+
+228
+00:07:59,926 --> 00:08:01,718
+very efficiently using a
+
+229
+00:08:01,718 --> 00:08:05,080
+matrix matrix multiplication so here
+
+230
+00:08:05,110 --> 00:08:07,347
+on the left is my usual
+
+231
+00:08:07,370 --> 00:08:08,626
+matrix, same as from the
+
+232
+00:08:08,626 --> 00:08:11,063
+last video where these values
+
+233
+00:08:11,063 --> 00:08:15,012
+are my housing prices and I put ones there on the left as well.
+
+234
+00:08:15,012 --> 00:08:16,626
+And, what I'm going to
+
+235
+00:08:16,626 --> 00:08:19,029
+do is construct another matrix, where
+
+236
+00:08:19,110 --> 00:08:21,693
+here these, the first
+
+237
+00:08:21,700 --> 00:08:23,477
+column, is this minus
+
+238
+00:08:23,480 --> 00:08:26,062
+40 and two five and
+
+239
+00:08:26,070 --> 00:08:28,372
+the second column is this two
+
+240
+00:08:28,372 --> 00:08:30,945
+hundred open one and so
+
+241
+00:08:31,460 --> 00:08:34,278
+on and it
+
+242
+00:08:34,278 --> 00:08:35,925
+turns out that if you
+
+243
+00:08:35,925 --> 00:08:37,893
+multiply these two matrices
+
+244
+00:08:37,910 --> 00:08:40,448
+what you find is that, this
+
+245
+00:08:40,448 --> 00:08:43,467
+first column, you know,
+
+246
+00:08:43,467 --> 00:08:46,340
+oh, well how do you get this first column, right?
+
+247
+00:08:46,400 --> 00:08:48,850
+A procedure from matrix
+
+248
+00:08:48,850 --> 00:08:50,565
+matrix multiplication is the way
+
+249
+00:08:50,565 --> 00:08:51,945
+you get this first column, is
+
+250
+00:08:51,960 --> 00:08:53,360
+you take this matrix and you
+
+251
+00:08:53,420 --> 00:08:54,816
+multiply it by this
+
+252
+00:08:54,840 --> 00:08:56,724
+first column, and we
+
+253
+00:08:56,724 --> 00:08:58,540
+saw in the previous video that this
+
+254
+00:08:58,540 --> 00:09:00,472
+is exactly the predicted
+
+255
+00:09:00,490 --> 00:09:02,050
+housing prices of the
+
+256
+00:09:02,150 --> 00:09:05,701
+first hypothesis, right?
+
+257
+00:09:05,701 --> 00:09:08,775
+Of this first hypothesis here.
+
+258
+00:09:08,790 --> 00:09:10,794
+And, how about a second column?
+
+259
+00:09:10,794 --> 00:09:12,955
+Well, how do setup the second column?
+
+260
+00:09:12,990 --> 00:09:14,332
+The way you get the second column
+
+261
+00:09:14,332 --> 00:09:15,548
+is, well, you take this
+
+262
+00:09:15,590 --> 00:09:19,270
+matrix and you multiply by this second column.
+
+263
+00:09:19,270 --> 00:09:21,293
+And so this second column turns
+
+264
+00:09:21,293 --> 00:09:24,651
+out to be the predictions of
+
+265
+00:09:24,651 --> 00:09:27,728
+the second hypothesis of
+
+266
+00:09:27,750 --> 00:09:30,228
+the second hypothesis up there,
+
+267
+00:09:30,228 --> 00:09:34,450
+and similarly for the third column.
+
+268
+00:09:34,450 --> 00:09:35,809
+And so, I didn't step
+
+269
+00:09:35,810 --> 00:09:38,058
+through all the details but hopefully
+
+270
+00:09:38,058 --> 00:09:39,139
+you just, feel free to
+
+271
+00:09:39,140 --> 00:09:40,448
+pause the video and check
+
+272
+00:09:40,448 --> 00:09:41,786
+the math yourself and check
+
+273
+00:09:41,786 --> 00:09:43,972
+that what I just claimed really is true.
+
+274
+00:09:43,990 --> 00:09:45,611
+But it turns out that by
+
+275
+00:09:45,611 --> 00:09:47,454
+constructing these two matrices, what
+
+276
+00:09:47,454 --> 00:09:48,937
+you can therefore do is very
+
+277
+00:09:48,940 --> 00:09:51,180
+quickly apply all three
+
+278
+00:09:51,180 --> 00:09:52,602
+hypotheses to all four
+
+279
+00:09:52,602 --> 00:09:54,455
+house sizes to get,
+
+280
+00:09:54,455 --> 00:09:56,452
+you know, all twelve predicted
+
+281
+00:09:56,452 --> 00:09:57,721
+prices output by your
+
+282
+00:09:57,721 --> 00:10:00,928
+three hypotheses on your four houses.
+
+283
+00:10:00,928 --> 00:10:03,366
+So one matrix multiplications
+
+284
+00:10:03,366 --> 00:10:05,072
+that you manage to make 12
+
+285
+00:10:05,080 --> 00:10:07,130
+predictions and, even
+
+286
+00:10:07,130 --> 00:10:08,446
+better, it turns out that
+
+287
+00:10:08,446 --> 00:10:09,937
+in order to do that matrix
+
+288
+00:10:09,937 --> 00:10:11,408
+multiplication and there are
+
+289
+00:10:11,408 --> 00:10:13,130
+lots of good linear algebra libraries
+
+290
+00:10:13,150 --> 00:10:14,767
+in order to do this
+
+291
+00:10:14,767 --> 00:10:16,676
+multiplication step for you,
+
+292
+00:10:16,676 --> 00:10:18,250
+and no matter so pretty
+
+293
+00:10:18,250 --> 00:10:22,025
+much any reasonable programming language that you might be using.
+
+294
+00:10:22,025 --> 00:10:24,005
+Certainly all the top ten
+
+295
+00:10:24,005 --> 00:10:27,898
+most popular programming languages will have great linear algebra libraries.
+
+296
+00:10:27,898 --> 00:10:29,554
+And they'll be good thing are
+
+297
+00:10:29,554 --> 00:10:31,463
+highly optimized in order
+
+298
+00:10:31,463 --> 00:10:33,415
+to do that, matrix matrix
+
+299
+00:10:33,440 --> 00:10:36,531
+multiplication very efficiently, including
+
+300
+00:10:36,531 --> 00:10:38,501
+taking, taking advantage of
+
+301
+00:10:38,501 --> 00:10:41,119
+any parallel computation that
+
+302
+00:10:41,130 --> 00:10:42,886
+your computer may be capable
+
+303
+00:10:42,886 --> 00:10:46,297
+of, when your computer has multiple
+
+304
+00:10:46,330 --> 00:10:48,016
+calls or lots of
+
+305
+00:10:48,016 --> 00:10:49,866
+multiple processors, within a processor sometimes
+
+306
+00:10:49,866 --> 00:10:53,285
+there's there's parallelism as well called symdiparallelism [sp].
+
+307
+00:10:53,285 --> 00:10:55,242
+The computer take care of
+
+308
+00:10:55,242 --> 00:10:56,727
+and you should, there are
+
+309
+00:10:56,730 --> 00:10:58,826
+very good free libraries
+
+310
+00:10:58,826 --> 00:11:00,146
+that you can use to do
+
+311
+00:11:00,146 --> 00:11:02,326
+this matrix matrix multiplication very
+
+312
+00:11:02,326 --> 00:11:04,104
+efficiently so that you
+
+313
+00:11:04,110 --> 00:11:05,908
+can very efficiently, you
+
+314
+00:11:05,930 --> 00:11:08,738
+know, makes lots of predictions of lots of hypotheses.

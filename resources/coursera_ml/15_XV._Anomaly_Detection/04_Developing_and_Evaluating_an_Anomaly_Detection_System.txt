@@ -1,0 +1,390 @@
+In the last video, we developed
+an anomaly detection algorithm.
+In this video, I like to
+talk about the process of how
+to go about developing a specific
+application of anomaly detection
+to a problem and in particular
+this will focus on the problem
+of how to evaluate an anomaly detection algorithm. In
+previous videos, we've already talked
+about the importance of real
+number evaluation and this captures the idea that
+when you're trying to develop
+a learning algorithm for a
+specific application, you need to
+often make a lot of choices
+like, you know, choosing what features to use and then so on.
+And making decisions about all
+of these choices is often much
+easier, and if you have
+a way to evaluate your learning
+algorithm that just gives you back a number.
+So if you're trying to decide,
+you know, I have an idea for
+one extra feature, do I include this feature or not.
+If you can run the algorithm
+with the feature, and run the
+algorithm without the feature, and
+just get back a number that
+tells you, you know, did
+it improve or worsen performance to add this feature?
+Then it gives you a much better
+way, a much simpler way, with which
+to decide whether or not to include that feature.
+So in order to be
+able to develop an anomaly
+detection system quickly, it would
+be a really helpful to have
+a way of evaluating an anomaly detection system.
+In order to do this,
+in order to evaluate an anomaly
+detection system, we're
+actually going to assume have some labeled data.
+So, so far, we'll be treating
+anomaly detection as an
+unsupervised learning problem, using
+unlabeled data.
+But if you have some labeled
+data that specifies what
+are some anomalous examples, and
+what are some non-anomalous examples, then
+this is how we actually
+think of as the standard way of evaluating an anomaly detection algorithm.
+So taking the
+aircraft engine example again.
+Let's say that, you know, we have some
+label data of just a few anomalous
+examples of some aircraft engines
+that were manufactured in the past that turns out to be anomalous.
+Turned out to be flawed or strange in some way.
+Let's say we
+use we also have some non-anomalous
+examples, so some
+perfectly okay examples.
+I'm going to use y equals 0
+to denote the normal or the
+non-anomalous example and
+y equals 1 to denote the anomalous examples.
+The process of developing and evaluating an anomaly
+detection algorithm is as follows.
+We're going to think of it as
+a training set and talk
+about the cross validation in test
+sets later, but the training set we usually
+think of this as still the unlabeled
+training set.
+And so this is our large
+collection of normal, non-anomalous
+or not anomalous examples.
+And usually we think
+of this as being as non-anomalous,
+but it's actually okay even
+if a few anomalies slip into
+your unlabeled training set.
+And next we are going to
+define a cross validation set
+and a test set, with which
+to evaluate a particular anomaly detection algorithm.
+So, specifically, for both the
+cross validation test sets we're
+going to assume that, you know, we
+can include a few examples
+in the cross validation set and
+the test set that contain examples
+that are known to be anomalous.
+So the test sets say
+we have a few examples with
+y equals 1 that
+correspond to anomalous aircraft engines.
+So here's a specific example.
+Let's say that, altogether, this
+is the data that we have.
+We have manufactured 10,000 examples
+of engines that, as far
+as we know we're perfectly normal,
+perfectly good aircraft engines.
+And again, it turns out to be okay even
+if a few flawed engine
+slips into the set of
+10,000 is actually okay, but
+we kind of assumed that the vast
+majority of these
+10,000 examples are, you know, good and normal non-anomalous engines.
+And let's say that, you know, historically, however
+long we've been running on manufacturing
+plant, let's say that
+we end up getting features,
+getting 24 to 28
+anomalous engines as well.
+And for a pretty typical application of
+anomaly detection, you know, the number non-anomalous
+examples, that is with y equals
+1, we may have anywhere from, you know, 20 to 50.
+It would be a pretty typical
+range of examples, number of
+examples that we have with y equals 1.
+And usually we will have a
+much larger number of good examples.
+So, given this data set,
+a fairly typical way to split
+it into the training set,
+cross validation set and test set would be as follows.
+Let's take 10,000 good aircraft
+engines and put 6,000
+of that into the unlabeled training set.
+So, I'm calling this an unlabeled training
+set but all of these examples
+are really ones that correspond to
+y equals 0, as far as we know.
+And so, we will use this to
+fit p of x, right.
+So, we will use these 6000 engines
+to fit p of x, which
+is that p of x
+one parametrized by Mu
+1, sigma squared 1, up
+to p of Xn parametrized
+by Mu N sigma squared
+n. And so it would be these
+6,000 examples that we would
+use to estimate the parameters
+Mu 1, sigma squared 1,
+up to Mu N, sigma
+squared N. And so that's our training
+set of all, you know,
+good, or the vast majority of good examples.
+Next we will take our good
+aircraft engines and put some
+number of them in a cross
+validation set plus some number
+of them in the test sets.
+So 6,000 plus 2,000 plus 2,000,
+that's how we split up our
+10,000 good aircraft engines.
+And then we also have 20
+flawed aircraft engines, and we'll
+take that and maybe split it
+up, you know, put ten of them in
+the cross validation set and put
+ten of them in the test sets.
+And in the next slide
+we will talk about how to
+actually use this to evaluate
+the anomaly detection algorithm.
+So what I have
+just described here is a you
+know probably the recommend a
+good way of splitting the labeled and unlabeled example.
+The good and the flawed aircraft engines.
+Where we use like
+a 60, 20, 20% split for
+the good engines and we take
+the flawed engines, and we
+put them just in the cross
+validation set, and just in
+the test set, then we'll see in the next slide why that's the case.
+Just as an aside, if you
+look at how people apply anomaly
+detection algorithms, sometimes you see
+other peoples' split the data differently as well.
+So, another alternative, this is really
+not a recommended alternative, but
+some people want to
+take off your 10,000 good engines, maybe put 6000
+of them in your training set
+and then put the same
+4000 in the cross validation
+set and the test set.
+And so, you know, we like to think of the cross
+validation set and the
+test set as being completely
+different data sets to each other.
+But you know, in anomaly detection, you know,
+for sometimes you see
+people, sort of, use the
+same set of good engines
+in the cross validation sets, and
+the test sets, and sometimes you
+see people use exactly the
+same sets of anomalous
+engines in the cross validation set and the test set.
+And so, all of these are considered, you know,
+less good practices and definitely less recommended.
+Certainly using the same
+data in the cross validation
+set and the test set, that
+is not considered a good machine learning practice.
+But, sometimes you see people do this too.
+So, given the training cross
+validation and test sets,
+here's how you evaluate or
+here is how you develop and evaluate an algorithm.
+First, we take the training sets
+and we fit the model p of
+x. So, we fit, you know, all these
+Gaussians to my m
+unlabeled examples of aircraft engines,
+and these, I am calling them
+unlabeled examples, but these are
+really examples that we're assuming
+our goods are the normal aircraft engines.
+Then imagine that your
+anomaly detection algorithm is actually making prediction.
+So, on the cross validation
+of the test set, given that,
+say, test example X, think
+of the algorithm as predicting that
+y is equal to 1, p
+of x is less than epsilon,
+we must be taking zero, if
+p of x is
+greater than or equal to epsilon.
+So, given x, it's trying to predict, what is
+the label, given y equals 1 corresponding
+to an anomaly or is
+it y equals 0 corresponding to a normal example?
+So given the training, cross validation, and test sets.
+How do you develop an algorithm?
+And more specifically, how do
+you evaluate an anomaly detection algorithm?
+Well, to this whole,
+the first step is to take
+the unlabeled training set, and
+to fit the model p of x lead training data.
+So you take this, you know
+on I'm coming, unlabeled training set,
+but really, these are examples
+that we are assuming, vast majority
+of which are normal aircraft engines,
+not because they're not anomalies
+and it will
+fit the model p of x. It
+will fit all those parameters for all
+the Gaussians on this data.
+Next on the cross validation
+of the test set, we're
+going to think of the anomaly
+detention algorithm as trying to
+predict the value of
+y. So in each of like
+say test examples.
+We have these X-I tests,
+Y-I test, where y is
+going to be equal to
+1 or 0 depending on whether this was an anomalous example.
+So given input x in
+my test set, my anomaly detection
+algorithm think of it as
+predicting the y as 1 if p of x is less than epsilon.
+So predicting that it is an anomaly, it is probably is very low.
+And we think of the algorithm is predicting that y is equal to 0.
+If p of x is greater then or equals epsilon.
+So predicting those normal example
+if the p of x is reasonably large.
+And so we can now
+think of the anomaly detection algorithm
+as making predictions for what
+are the values of these y
+labels in the test sets
+or on the cross validation set.
+And this puts us somewhat more similar
+to the supervised learning setting, right?
+Where we have label test
+set and our algorithm is
+making predictions on these labels
+and so we can evaluate it you
+know by seeing how often it gets these labels right.
+Of course these labels are
+will be very skewed because y
+equals zero, that is normal
+examples, usually be much
+more common than y equals
+1 than anomalous examples.
+But, you know, this is much closer
+to the source of evaluation
+metrics we can use in supervised learning.
+So what's a good evaluation metric to use.
+Well, because the data is
+very skewed, because y equals 0 is
+much more common, classification accuracy
+would not be a good the evaluation metrics.
+So, we talked about this in the earlier video.
+So, if you have a very
+skewed data set, then predicting
+y equals 0 all the time,
+will have very high classification accuracy.
+Instead, we should use evaluation
+metrics, like computing the fraction
+of true positives, false positives,
+false negatives, true negatives or
+compute the position of the
+v curve of this algorithm or
+do things like compute the
+f1 score, right, which is
+a single real number way of summarizing
+the position and the recall numbers.
+And so these would be ways
+to evaluate an anomaly detection
+algorithm on your cross validation set or on your test set.
+Finally, earlier in the
+anomaly detection algorithm, we
+also had this parameter epsilon, right?
+So, epsilon is this threshold
+that we would use to decide
+when to flag something as an anomaly.
+And so, if you have
+a cross validation set, another way
+to and to choose this parameter
+epsilon, would be to
+try a different, try many
+different values of epsilon, and
+then pick the value of epsilon
+that, let's say, maximizes f1
+score, or that otherwise does well on your cross validation set.
+And more generally, the way
+to reduce the training, testing,
+and cross validation sets, is that
+when we are trying to make decisions,
+like what features to include, or
+trying to, you know, tune the parameter
+epsilon, we would then
+continually evaluate the algorithm
+on the cross validation sets and
+make all those decisions like what
+features did you use, you know,
+how to set epsilon, use that, evaluate
+the algorithm on the cross validation
+set, and then when we've
+picked the set of features, when
+we've found the value of
+epsilon that we're happy with, we
+can then take the final model and
+evaluate it, you know, do the
+final evaluation of the algorithm on the test sets.
+So, in this video, we talked
+about the process of how
+to evaluate an anomaly
+detection algorithm, and again,
+having being able to evaluate
+an algorithm, you know, with
+a single real number evaluation,
+with a number like an F1 score
+that often allows you to
+much more efficient use
+of your time when you are
+trying to develop an anomaly detection system.
+And we try to make these sorts of decisions.
+I have to chose epsilon, what features to include, and so on.
+In this video, we started
+to use a bit of labeled
+data in order to
+evaluate the anomaly detection algorithm and
+this takes us a
+little bit closer to a supervised learning setting.
+In the next video, I'm going
+to say a bit more about that.
+And in particular we'll talk about when should
+you be using an anomaly detection
+algorithm and when should we
+be thinking about using supervised learning instead, and what are the differences between these two formalisms.

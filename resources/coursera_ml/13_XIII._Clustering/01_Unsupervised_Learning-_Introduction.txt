@@ -1,0 +1,100 @@
+In this video, I'd like to start to talk about clustering.
+This will be exciting because this
+is our first unsupervised learning algorithm
+where we learn from unlabeled data
+instead of the label data.
+So, what is unsupervised learning?
+I briefly talked about unsupervised
+learning at the beginning of
+the class but it's useful
+to contrast it with supervised learning. So, here's
+a typical supervisory problem where
+we are given a label training sets
+and the goal is to find
+the decision boundary that separates the
+positive label examples and the negative label examples.
+The supervised learning problem in
+this case is given a
+set of labels to fit a hypothesis to it.
+In contrast, in the unsupervised
+learning problem, we're given
+data that does not have
+any labels associated with it.
+So we're given data that looks
+like this, here's a set
+of points and then no labels.
+And so our training set is written
+just x1, x2 and
+so on up to x(m)
+and we don't get any labels y.
+And that's why the points plotted
+up on the figure don't have
+any labels on them.
+So in unsupervised learning, what
+we do is, we give this sort of
+unlabeled training set to
+an algorithm and we just
+ask the algorithm: find some
+structure in the data for us.
+Given this data set, one
+type of structure we might
+have an algorithm find, is that
+it looks like this data set has
+points grouped into two
+separate clusters and so
+an algorithm that finds that
+clusters like the ones I just
+circled, is called a clustering
+algorithm.
+And this will be our first type of
+unsupervised learning, although there
+will be other types of unsupervised
+learning algorithms that we'll talk
+about later that finds other
+types of structure or other
+types of patterns in the data other than clusters.
+We'll talk about this afterwards, we will talk about clustering.
+So what is clustering good for?
+Early in this class I had already mentioned a few applications.
+One is market segmentation, where
+you may have a database of
+customers and want to group
+them into different market segments.
+So, you can sell to
+them separately or serve your different market segments better.
+Social network analysis, there are
+actually, you know, groups that have done
+this, things like looking at a
+group of people, social networks,
+so things like Facebook, Google plus
+or maybe information about who
+are the people that you
+email the most frequently and who
+are the people that they email
+the most frequently, and
+to find coherent groups of people.
+So, this would be another maybe
+clustering algorithm where, you know, you'd want
+to find who other coherent groups of friends in a social network.
+Here's something that one of my
+friends actually worked on, which is,
+use clustering to organize compute
+clusters or to organize data
+centers better because, if you
+know which computers in the
+data center are in the cluster there tend to work together.
+You can use that to reorganize
+your resources and how you
+lay out its network and
+how design your data center and communications.
+And lastly something that, actually
+another thing I worked on, using
+clustering algorithms to understand
+galaxy formation and using
+that to understand how, to
+understand astronomical detail.
+So, that's clustering which
+is our first example of
+an unsupervised learning algorithm.
+In the next video, we'll start to
+talk about a specific clustering algorithm.

@@ -1,0 +1,1575 @@
+1
+00:00:00,210 --> 00:00:01,300
+In the last video, I talked
+
+2
+00:00:01,600 --> 00:00:03,390
+about how when faced with
+
+3
+00:00:03,520 --> 00:00:04,780
+a machine learning problem, there are
+
+4
+00:00:04,980 --> 00:00:07,260
+often lots of different ideas on how to improve the algorithm.
+
+5
+00:00:08,460 --> 00:00:09,510
+In this video let's
+
+6
+00:00:09,650 --> 00:00:11,060
+talk about the concepts of error
+
+7
+00:00:11,330 --> 00:00:12,980
+analysis which will help
+
+8
+00:00:13,070 --> 00:00:13,980
+me give you a way to more
+
+9
+00:00:14,300 --> 00:00:15,830
+systematically make some of these decisions.
+
+10
+00:00:18,070 --> 00:00:19,420
+If you're starting work on a
+
+11
+00:00:19,540 --> 00:00:21,210
+machine learning product or building
+
+12
+00:00:21,400 --> 00:00:23,340
+a machine learning application, it is
+
+13
+00:00:23,480 --> 00:00:24,880
+often considered very good practice
+
+14
+00:00:25,840 --> 00:00:27,000
+to start, not by building
+
+15
+00:00:27,520 --> 00:00:29,070
+a very complicated system with
+
+16
+00:00:29,220 --> 00:00:30,490
+lots of complex features and so
+
+17
+00:00:30,930 --> 00:00:32,450
+on, but to instead start
+
+18
+00:00:33,060 --> 00:00:34,120
+by building a very simple
+
+19
+00:00:34,510 --> 00:00:35,760
+algorithm, the you can implement quickly.
+
+20
+00:00:37,480 --> 00:00:38,610
+And when I start on
+
+21
+00:00:38,740 --> 00:00:39,770
+a learning problem, what I usually
+
+22
+00:00:40,150 --> 00:00:41,350
+do is spend at most one
+
+23
+00:00:41,570 --> 00:00:43,160
+day, literally at most 24
+
+24
+00:00:43,460 --> 00:00:46,030
+hours to try to get something really quick and dirty.
+
+25
+00:00:47,040 --> 00:00:48,550
+Frankly not at all sophisticated system.
+
+26
+00:00:49,370 --> 00:00:50,310
+But get something really quick and
+
+27
+00:00:50,400 --> 00:00:52,080
+dirty running and implement
+
+28
+00:00:52,590 --> 00:00:53,710
+it and then test it on
+
+29
+00:00:53,880 --> 00:00:55,870
+my cross validation data. Once
+
+30
+00:00:56,050 --> 00:00:57,140
+you've done that, you can
+
+31
+00:00:57,480 --> 00:00:58,690
+then plot learning curves.
+
+32
+00:00:59,960 --> 00:01:02,670
+This is what we talked about in the previous set of videos.
+
+33
+00:01:03,230 --> 00:01:05,160
+But plot learning curves of the
+
+34
+00:01:05,370 --> 00:01:07,120
+training and test errors to
+
+35
+00:01:07,310 --> 00:01:08,280
+try to figure out if your
+
+36
+00:01:08,400 --> 00:01:09,630
+learning algorithm may be suffering
+
+37
+00:01:10,120 --> 00:01:11,240
+from high bias or high
+
+38
+00:01:11,440 --> 00:01:13,180
+variance or something else and
+
+39
+00:01:13,440 --> 00:01:14,380
+use that to try to
+
+40
+00:01:14,490 --> 00:01:15,610
+decide if having more data
+
+41
+00:01:16,080 --> 00:01:17,990
+and more features and so on are likely to help.
+
+42
+00:01:18,670 --> 00:01:19,830
+And the reason that this
+
+43
+00:01:20,000 --> 00:01:20,980
+is a good approach is often
+
+44
+00:01:21,940 --> 00:01:22,980
+when you're just starting out on
+
+45
+00:01:23,100 --> 00:01:24,460
+a learning problem, there's really no
+
+46
+00:01:24,680 --> 00:01:25,820
+way to tell in advance
+
+47
+00:01:26,480 --> 00:01:27,360
+whether you need more complex
+
+48
+00:01:27,790 --> 00:01:29,200
+features or whether you need
+
+49
+00:01:29,250 --> 00:01:30,950
+more data or something else.
+
+50
+00:01:31,280 --> 00:01:32,270
+And it's just very hard to tell
+
+51
+00:01:32,510 --> 00:01:33,840
+in advance, that is in
+
+52
+00:01:33,970 --> 00:01:36,040
+the absence of evidence, in
+
+53
+00:01:36,160 --> 00:01:37,840
+the absence of seeing a
+
+54
+00:01:37,970 --> 00:01:39,130
+learning curve, it's just incredibly
+
+55
+00:01:39,750 --> 00:01:42,860
+difficult to figure out where you should be spending your time.
+
+56
+00:01:43,760 --> 00:01:45,360
+And it's often by implementing even
+
+57
+00:01:45,730 --> 00:01:46,670
+a very, very quick and dirty
+
+58
+00:01:46,980 --> 00:01:48,100
+implementation and by plotting
+
+59
+00:01:48,540 --> 00:01:51,070
+learning curves that that helps you make these decisions.
+
+60
+00:01:52,580 --> 00:01:53,340
+So if you like, you can think
+
+61
+00:01:53,560 --> 00:01:54,490
+of this as a way of
+
+62
+00:01:54,620 --> 00:01:56,270
+avoiding what's sometimes called
+
+63
+00:01:56,570 --> 00:01:58,950
+premature optimization in computer programming.
+
+64
+00:02:00,000 --> 00:02:01,070
+And this is idea that just
+
+65
+00:02:01,200 --> 00:02:03,130
+says that we should let
+
+66
+00:02:03,460 --> 00:02:04,920
+evidence guide our decisions
+
+67
+00:02:05,650 --> 00:02:06,540
+on where to spend our time
+
+68
+00:02:07,160 --> 00:02:08,150
+rather than use gut feeling,
+
+69
+00:02:09,070 --> 00:02:09,680
+which is often wrong.
+
+70
+00:02:10,930 --> 00:02:12,120
+In addition to plotting learning
+
+71
+00:02:12,390 --> 00:02:13,540
+curves, one other thing
+
+72
+00:02:13,810 --> 00:02:16,440
+that's often very useful to do is what's called error analysis.
+
+73
+00:02:18,120 --> 00:02:19,080
+And what I mean by that is
+
+74
+00:02:19,280 --> 00:02:20,520
+that when building, say
+
+75
+00:02:20,770 --> 00:02:22,190
+a spam classifier, I will
+
+76
+00:02:22,470 --> 00:02:24,500
+often look at my
+
+77
+00:02:24,730 --> 00:02:26,690
+cross validation set and manually
+
+78
+00:02:27,360 --> 00:02:29,110
+look at the emails that my
+
+79
+00:02:29,310 --> 00:02:30,910
+algorithm is making errors on.
+
+80
+00:02:31,180 --> 00:02:32,250
+So, look at the spam emails
+
+81
+00:02:32,630 --> 00:02:34,440
+and non-spam emails that the
+
+82
+00:02:34,640 --> 00:02:36,920
+algorithm is misclassifying, and see
+
+83
+00:02:37,430 --> 00:02:38,590
+if you can spot any systematic
+
+84
+00:02:39,210 --> 00:02:41,300
+patterns in what type of examples it is misclassifying.
+
+85
+00:02:42,980 --> 00:02:44,560
+And often by doing that, this
+
+86
+00:02:44,810 --> 00:02:45,960
+is the process that would inspire
+
+87
+00:02:47,170 --> 00:02:48,800
+you to design new features.
+
+88
+00:02:49,430 --> 00:02:50,420
+Or they'll tell you whether the
+
+89
+00:02:50,920 --> 00:02:52,150
+current things or current
+
+90
+00:02:52,400 --> 00:02:53,290
+shortcomings of the system
+
+91
+00:02:54,270 --> 00:02:55,550
+and give you the inspiration you
+
+92
+00:02:55,660 --> 00:02:57,680
+need to come up with improvements to it.
+
+93
+00:02:58,260 --> 00:03:00,070
+Concretely, here's a specific example.
+
+94
+00:03:01,350 --> 00:03:02,360
+Let's say you've built a spam
+
+95
+00:03:02,780 --> 00:03:05,740
+classifier and you
+
+96
+00:03:05,840 --> 00:03:07,720
+have 500 examples in
+
+97
+00:03:07,940 --> 00:03:09,650
+your cross-validation set.
+
+98
+00:03:10,410 --> 00:03:11,760
+And let's say in this example, that the
+
+99
+00:03:12,010 --> 00:03:13,060
+algorithm has a very high error
+
+100
+00:03:13,340 --> 00:03:14,640
+rate, and it misclassifies a
+
+101
+00:03:14,910 --> 00:03:16,500
+hundred of these cross-validation examples.
+
+102
+00:03:18,770 --> 00:03:19,850
+So what I do is manually
+
+103
+00:03:20,450 --> 00:03:22,370
+examine these 100 errors, and
+
+104
+00:03:22,530 --> 00:03:24,450
+manually categorize them, based
+
+105
+00:03:24,700 --> 00:03:25,810
+on things like what type
+
+106
+00:03:25,980 --> 00:03:27,110
+of email it is and
+
+107
+00:03:27,270 --> 00:03:28,630
+what cues or what features you
+
+108
+00:03:28,710 --> 00:03:31,130
+think might have helped the algorithm classify them incorrectly.
+
+109
+00:03:32,450 --> 00:03:33,880
+So, specifically, by what
+
+110
+00:03:34,080 --> 00:03:35,050
+type of email it is,
+
+111
+00:03:35,560 --> 00:03:36,870
+you know, if I look through these
+
+112
+00:03:37,140 --> 00:03:38,180
+hundred errors I may find
+
+113
+00:03:38,520 --> 00:03:39,660
+that maybe the most
+
+114
+00:03:39,970 --> 00:03:41,350
+common types of spam
+
+115
+00:03:41,840 --> 00:03:43,450
+emails in misclassifies are maybe
+
+116
+00:03:44,010 --> 00:03:45,610
+emails on pharmacy, so basically
+
+117
+00:03:45,610 --> 00:03:48,300
+these are emails trying to
+
+118
+00:03:48,610 --> 00:03:50,000
+sell drugs, maybe emails that are
+
+119
+00:03:50,180 --> 00:03:51,740
+trying to sell replicas -
+
+120
+00:03:51,760 --> 00:03:54,330
+those are those fake watches fake you know, random things.
+
+121
+00:03:56,160 --> 00:03:59,410
+Maybe have some emails trying to steal passwords.
+
+122
+00:04:00,240 --> 00:04:01,400
+These are also called phishing emails.
+
+123
+00:04:02,180 --> 00:04:04,690
+But that's another big category of emails and maybe other categories.
+
+124
+00:04:06,160 --> 00:04:07,800
+So, in terms
+
+125
+00:04:08,120 --> 00:04:09,230
+of classify what type of email
+
+126
+00:04:09,530 --> 00:04:10,420
+it is, I would actually go through
+
+127
+00:04:10,890 --> 00:04:11,990
+and count up, you know, of
+
+128
+00:04:12,200 --> 00:04:14,220
+my 100 emails, maybe I
+
+129
+00:04:14,400 --> 00:04:15,510
+find that twelve of the
+
+130
+00:04:15,620 --> 00:04:17,600
+mislabeled emails are pharma emails.
+
+131
+00:04:18,100 --> 00:04:19,460
+And maybe four of them
+
+132
+00:04:19,700 --> 00:04:20,840
+are emails trying to sell
+
+133
+00:04:20,980 --> 00:04:22,680
+replicas, they sell fake watches or something.
+
+134
+00:04:23,720 --> 00:04:25,060
+And maybe I find that 53
+
+135
+00:04:25,650 --> 00:04:26,970
+of them are these,
+
+136
+00:04:27,720 --> 00:04:29,480
+what's called phishing emails, basically emails
+
+137
+00:04:29,730 --> 00:04:30,900
+trying to persuade you to
+
+138
+00:04:31,020 --> 00:04:32,760
+give them your password, and 31 emails are other types of emails.
+
+139
+00:04:35,330 --> 00:04:37,210
+And it's by counting up the
+
+140
+00:04:37,280 --> 00:04:38,280
+number of emails in these
+
+141
+00:04:38,430 --> 00:04:39,540
+different categories that you might
+
+142
+00:04:39,790 --> 00:04:41,570
+discover, for example, that the
+
+143
+00:04:41,870 --> 00:04:43,100
+algorithm is doing really particularly
+
+144
+00:04:44,170 --> 00:04:45,640
+poorly on emails trying to
+
+145
+00:04:45,780 --> 00:04:47,240
+steal passwords, and that
+
+146
+00:04:47,400 --> 00:04:49,230
+may suggest that it might
+
+147
+00:04:49,380 --> 00:04:50,490
+be worth your effort to look
+
+148
+00:04:50,690 --> 00:04:51,650
+more carefully at that type
+
+149
+00:04:51,900 --> 00:04:53,350
+of email, and see if
+
+150
+00:04:53,450 --> 00:04:54,450
+you can come up with better features
+
+151
+00:04:55,070 --> 00:04:56,280
+to categorize them correctly.
+
+152
+00:04:57,550 --> 00:04:58,930
+And also, what I might
+
+153
+00:04:59,000 --> 00:05:00,130
+do is look at what cues,
+
+154
+00:05:00,550 --> 00:05:02,120
+or what features, additional features
+
+155
+00:05:02,620 --> 00:05:04,920
+might have helped the algorithm classify the emails.
+
+156
+00:05:06,090 --> 00:05:06,970
+So let's say that some of
+
+157
+00:05:07,060 --> 00:05:09,700
+our hypotheses about things or
+
+158
+00:05:09,840 --> 00:05:10,780
+features that might help us
+
+159
+00:05:10,920 --> 00:05:13,240
+classify emails better are trying
+
+160
+00:05:13,490 --> 00:05:15,600
+to detect deliberate misspellings versus
+
+161
+00:05:16,220 --> 00:05:18,610
+unusual email routing versus unusual, you know,
+
+162
+00:05:19,950 --> 00:05:21,450
+spamming punctuation, such as
+
+163
+00:05:21,790 --> 00:05:23,230
+people use a lot of exclamation marks.
+
+164
+00:05:23,700 --> 00:05:24,470
+And once again, I would manually
+
+165
+00:05:24,860 --> 00:05:25,670
+go through and let's say
+
+166
+00:05:25,760 --> 00:05:27,490
+I find five cases of
+
+167
+00:05:27,620 --> 00:05:29,400
+this, and 16 of
+
+168
+00:05:29,500 --> 00:05:30,560
+this, and 32 of this and
+
+169
+00:05:31,180 --> 00:05:33,620
+a bunch of other types of emails as well.
+
+170
+00:05:34,770 --> 00:05:36,180
+And if this is what
+
+171
+00:05:36,350 --> 00:05:37,470
+you get on your cross validation
+
+172
+00:05:38,070 --> 00:05:39,170
+set then it really tells
+
+173
+00:05:39,300 --> 00:05:41,060
+you that, you know, maybe deliberate spelling
+
+174
+00:05:41,660 --> 00:05:42,730
+is a sufficiently rare phenomenon
+
+175
+00:05:43,500 --> 00:05:44,480
+that maybe is not really worth
+
+176
+00:05:44,840 --> 00:05:47,120
+all your time trying to write
+
+177
+00:05:47,710 --> 00:05:48,780
+algorithms to detect that.
+
+178
+00:05:49,480 --> 00:05:50,480
+But if you find a lot
+
+179
+00:05:50,780 --> 00:05:52,070
+of spammers are using, you
+
+180
+00:05:52,140 --> 00:05:54,150
+know, unusual punctuation then
+
+181
+00:05:54,290 --> 00:05:55,250
+maybe that's a strong sign
+
+182
+00:05:55,670 --> 00:05:56,730
+that it might actually be
+
+183
+00:05:57,000 --> 00:05:58,510
+worth your while to spend
+
+184
+00:05:58,780 --> 00:06:00,280
+the time to develop more sophisticated
+
+185
+00:06:00,910 --> 00:06:02,190
+features based on the punctuation.
+
+186
+00:06:03,330 --> 00:06:04,870
+So, this sort of error
+
+187
+00:06:05,040 --> 00:06:06,390
+analysis which is really
+
+188
+00:06:06,690 --> 00:06:08,430
+the process of manually examining
+
+189
+00:06:09,190 --> 00:06:10,540
+the mistakes that the algorithm
+
+190
+00:06:10,780 --> 00:06:12,220
+makes, can often help
+
+191
+00:06:12,560 --> 00:06:14,620
+guide you to the most fruitful avenues to pursue.
+
+192
+00:06:16,000 --> 00:06:17,410
+And this also explains why I
+
+193
+00:06:17,590 --> 00:06:19,260
+often recommend implementing a quick
+
+194
+00:06:19,550 --> 00:06:21,250
+and dirty implementation of an algorithm.
+
+195
+00:06:22,040 --> 00:06:22,940
+What we really want to do
+
+196
+00:06:23,260 --> 00:06:24,290
+is figure out what are
+
+197
+00:06:24,310 --> 00:06:26,770
+the most difficult examples for an algorithm to classify.
+
+198
+00:06:27,860 --> 00:06:29,920
+And very often for different
+
+199
+00:06:30,460 --> 00:06:31,730
+algorithms, for different learning algorithms,
+
+200
+00:06:32,010 --> 00:06:33,500
+they'll often find, you
+
+201
+00:06:33,560 --> 00:06:35,920
+know, similar categories of examples difficult.
+
+202
+00:06:37,010 --> 00:06:37,970
+And by having a quick and
+
+203
+00:06:38,060 --> 00:06:39,840
+dirty implementation, that's often a
+
+204
+00:06:39,910 --> 00:06:40,850
+quick way to let you
+
+205
+00:06:41,430 --> 00:06:43,070
+identify some errors and quickly
+
+206
+00:06:43,620 --> 00:06:44,690
+identify what are the
+
+207
+00:06:44,790 --> 00:06:47,760
+hard examples so that you can focus your efforts on those.
+
+208
+00:06:49,230 --> 00:06:51,220
+Lastly, when developing learning algorithms,
+
+209
+00:06:52,260 --> 00:06:53,880
+one other useful tip is
+
+210
+00:06:54,190 --> 00:06:55,230
+to make sure that you have
+
+211
+00:06:55,590 --> 00:06:56,450
+a way, that you have a
+
+212
+00:06:56,810 --> 00:06:59,710
+numerical evaluation of your learning algorithm.
+
+213
+00:07:02,130 --> 00:07:03,220
+Now what I mean by that is that
+
+214
+00:07:03,460 --> 00:07:04,670
+if you're developing a learning algorithm,
+
+215
+00:07:05,230 --> 00:07:07,180
+it is often incredibly helpful
+
+216
+00:07:08,060 --> 00:07:09,170
+if you have a way of
+
+217
+00:07:09,460 --> 00:07:10,830
+evaluating your learning algorithm
+
+218
+00:07:11,290 --> 00:07:13,100
+that just gives you back a single real number.
+
+219
+00:07:13,650 --> 00:07:14,880
+Maybe accuracy, maybe error.
+
+220
+00:07:15,620 --> 00:07:18,390
+But the single real number that tells you how well your learning algorithm is doing.
+
+221
+00:07:20,280 --> 00:07:21,330
+I'll talk more about this specific
+
+222
+00:07:21,770 --> 00:07:24,650
+concepts in later videos, but here's a specific example.
+
+223
+00:07:25,790 --> 00:07:26,600
+Let's say we are trying to
+
+224
+00:07:26,690 --> 00:07:27,990
+decide whether or not we
+
+225
+00:07:28,060 --> 00:07:29,140
+should treat words like discount,
+
+226
+00:07:29,590 --> 00:07:32,060
+discounts, discounter, discounting, as the same word.
+
+227
+00:07:32,370 --> 00:07:33,390
+So maybe one way to
+
+228
+00:07:33,520 --> 00:07:34,770
+do that is to just
+
+229
+00:07:35,400 --> 00:07:38,780
+look at the first few characters in a word.
+
+230
+00:07:38,960 --> 00:07:40,240
+Like, you know, if you just look at
+
+231
+00:07:40,300 --> 00:07:41,690
+the first few characters of
+
+232
+00:07:41,780 --> 00:07:44,640
+a word, then you figure
+
+233
+00:07:44,920 --> 00:07:45,970
+out that maybe all of these
+
+234
+00:07:46,130 --> 00:07:47,990
+words are roughly -   have similar meanings.
+
+235
+00:07:50,460 --> 00:07:52,090
+In natural language processing, the
+
+236
+00:07:52,250 --> 00:07:53,270
+way that this is done is
+
+237
+00:07:53,510 --> 00:07:55,960
+actually using a type of software called stemming software.
+
+238
+00:07:56,940 --> 00:07:58,080
+If you ever want to do
+
+239
+00:07:58,160 --> 00:07:59,880
+this yourself, search on a
+
+240
+00:07:59,950 --> 00:08:01,240
+web search engine for the
+
+241
+00:08:01,500 --> 00:08:02,660
+Porter Stemmer and that
+
+242
+00:08:02,960 --> 00:08:04,320
+would be, you know, one reasonable piece of
+
+243
+00:08:04,620 --> 00:08:05,830
+software for doing this sort
+
+244
+00:08:06,110 --> 00:08:07,020
+of stemming, which will let
+
+245
+00:08:07,130 --> 00:08:08,140
+you treat all of these discount,
+
+246
+00:08:08,800 --> 00:08:10,540
+discounts, and so on as the same word.
+
+247
+00:08:13,950 --> 00:08:15,930
+But using a stemming software
+
+248
+00:08:16,630 --> 00:08:17,710
+that basically looks at the
+
+249
+00:08:17,830 --> 00:08:19,290
+first few alphabets of the
+
+250
+00:08:19,450 --> 00:08:21,630
+word more or less, it can help but it can hurt.
+
+251
+00:08:22,240 --> 00:08:23,490
+And it can hurt because, for
+
+252
+00:08:23,900 --> 00:08:25,360
+example, this software may
+
+253
+00:08:25,930 --> 00:08:27,850
+mistake the words universe and
+
+254
+00:08:27,990 --> 00:08:29,980
+university as being the
+
+255
+00:08:30,070 --> 00:08:31,220
+same thing because, you know,
+
+256
+00:08:31,450 --> 00:08:33,220
+these two words start off
+
+257
+00:08:33,480 --> 00:08:35,480
+with very similar characters, with the same alphabets.
+
+258
+00:08:37,300 --> 00:08:39,050
+So if you're trying
+
+259
+00:08:39,280 --> 00:08:40,290
+to decide whether or not
+
+260
+00:08:40,630 --> 00:08:42,490
+to use stemming software for
+
+261
+00:08:42,670 --> 00:08:45,960
+a stem classifier, it is not always easy to tell.
+
+262
+00:08:46,350 --> 00:08:47,810
+And in particular, error analysis
+
+263
+00:08:48,510 --> 00:08:49,590
+may not actually be helpful
+
+264
+00:08:51,030 --> 00:08:52,860
+for deciding if this
+
+265
+00:08:53,060 --> 00:08:54,410
+sort of stemming idea is a good idea.
+
+266
+00:08:55,570 --> 00:08:56,740
+Instead, the best way
+
+267
+00:08:57,020 --> 00:08:58,320
+to figure out if using stemming
+
+268
+00:08:58,690 --> 00:08:59,970
+software is good to help
+
+269
+00:09:00,190 --> 00:09:01,570
+your classifier is if you
+
+270
+00:09:01,740 --> 00:09:02,980
+have a way to very quickly
+
+271
+00:09:03,370 --> 00:09:05,170
+just try it and see if it works.
+
+272
+00:09:08,560 --> 00:09:09,530
+And in order to do this,
+
+273
+00:09:10,260 --> 00:09:11,350
+having a way to numerically
+
+274
+00:09:12,250 --> 00:09:14,570
+evaluate your algorithm, is going to be very helpful.
+
+275
+00:09:15,940 --> 00:09:17,670
+Concretely, maybe the most
+
+276
+00:09:18,110 --> 00:09:19,190
+natural thing to do is
+
+277
+00:09:19,350 --> 00:09:20,250
+to look at the cross validation
+
+278
+00:09:20,900 --> 00:09:23,510
+error of the algorithm's performance with and without stemming.
+
+279
+00:09:24,590 --> 00:09:25,560
+So, if you run your
+
+280
+00:09:25,800 --> 00:09:27,190
+algorithm without stemming and you
+
+281
+00:09:27,330 --> 00:09:28,430
+end up with, let's say,
+
+282
+00:09:29,080 --> 00:09:31,260
+five percent classification error, and
+
+283
+00:09:31,360 --> 00:09:32,410
+you re-run it and you
+
+284
+00:09:32,540 --> 00:09:33,780
+end up with, let's say, three
+
+285
+00:09:34,110 --> 00:09:36,170
+percent classification error, then this
+
+286
+00:09:36,440 --> 00:09:37,920
+decrease in error very quickly
+
+287
+00:09:38,640 --> 00:09:39,980
+allows you to decide that,
+
+288
+00:09:40,310 --> 00:09:42,250
+you know, it looks like using stemming is a good idea.
+
+289
+00:09:43,080 --> 00:09:44,650
+For this particular problem, there's
+
+290
+00:09:44,940 --> 00:09:46,560
+a very natural single real
+
+291
+00:09:46,830 --> 00:09:50,210
+number evaluation metric, namely, the cross validation error.
+
+292
+00:09:50,930 --> 00:09:52,700
+We'll see later, examples where coming
+
+293
+00:09:53,080 --> 00:09:54,360
+up with this, sort of, single
+
+294
+00:09:54,790 --> 00:09:58,220
+row number evaluation metric may need a little bit more work.
+
+295
+00:09:58,790 --> 00:09:59,840
+But as we'll see in
+
+296
+00:09:59,930 --> 00:10:01,620
+the later video, doing so would
+
+297
+00:10:01,750 --> 00:10:02,860
+also then let you
+
+298
+00:10:02,990 --> 00:10:04,290
+make these decisions much more quickly
+
+299
+00:10:04,760 --> 00:10:06,380
+of, say, whether or not to use stemming.
+
+300
+00:10:08,700 --> 00:10:09,950
+And just this one more quick example.
+
+301
+00:10:10,680 --> 00:10:11,670
+Let's say that you're also trying
+
+302
+00:10:12,040 --> 00:10:13,450
+to decide whether or not
+
+303
+00:10:13,650 --> 00:10:15,710
+to distinguish between upper versus lower case.
+
+304
+00:10:15,990 --> 00:10:16,910
+So, you know, is the red
+
+305
+00:10:17,060 --> 00:10:18,850
+mom with uppercase M
+
+306
+00:10:19,060 --> 00:10:20,390
+versus lower case m,
+
+307
+00:10:20,700 --> 00:10:21,720
+I mean, should that be treated as
+
+308
+00:10:21,780 --> 00:10:23,810
+the same word or as different words?
+
+309
+00:10:23,970 --> 00:10:26,890
+Should these be treated as the same feature or as different features?
+
+310
+00:10:27,010 --> 00:10:28,060
+And so once again,
+
+311
+00:10:28,350 --> 00:10:29,150
+because we have a way
+
+312
+00:10:29,300 --> 00:10:30,790
+to evaluate our algorithm, if
+
+313
+00:10:31,060 --> 00:10:32,350
+you try this out here, if
+
+314
+00:10:32,650 --> 00:10:34,910
+I stop distinguishing upper
+
+315
+00:10:35,140 --> 00:10:36,490
+and lower case, maybe I
+
+316
+00:10:36,600 --> 00:10:38,580
+end up with 3.2%
+
+317
+00:10:38,700 --> 00:10:39,820
+error and I find that
+
+318
+00:10:40,020 --> 00:10:41,750
+therefore this does worse
+
+319
+00:10:42,260 --> 00:10:43,360
+than, you know, if I use only
+
+320
+00:10:43,640 --> 00:10:45,110
+stemming, and so this lets
+
+321
+00:10:45,370 --> 00:10:47,420
+me very quickly decide to go
+
+322
+00:10:48,270 --> 00:10:49,720
+ahead and to distinguish or to
+
+323
+00:10:49,820 --> 00:10:51,540
+not distinguish between upper and lower case.
+
+324
+00:10:52,140 --> 00:10:53,390
+So when you' re developing
+
+325
+00:10:53,690 --> 00:10:55,260
+a learning algorithm, very often
+
+326
+00:10:55,650 --> 00:10:56,840
+you'll be trying out lots of
+
+327
+00:10:57,050 --> 00:10:59,930
+new ideas and lots of new versions of your learning algorithm.
+
+328
+00:11:00,960 --> 00:11:02,050
+If every time you try
+
+329
+00:11:02,350 --> 00:11:03,740
+out a new idea if you
+
+330
+00:11:03,840 --> 00:11:05,610
+end up manually examining a
+
+331
+00:11:05,750 --> 00:11:06,730
+bunch of examples, you begin to
+
+332
+00:11:06,860 --> 00:11:08,530
+see better or worse, you
+
+333
+00:11:08,640 --> 00:11:09,410
+know, that's going to make it
+
+334
+00:11:09,580 --> 00:11:10,610
+really hard to make decisions
+
+335
+00:11:10,980 --> 00:11:12,410
+on do you use stemming or not.
+
+336
+00:11:12,580 --> 00:11:13,640
+Do you distinguish upper or lowercase or not?
+
+337
+00:11:15,180 --> 00:11:16,590
+But by having a single rule
+
+338
+00:11:16,770 --> 00:11:18,520
+number evaluation metric, you can
+
+339
+00:11:18,680 --> 00:11:21,150
+then just look and see oh, did the error go up or go down?
+
+340
+00:11:22,420 --> 00:11:23,620
+And you can use that much
+
+341
+00:11:23,940 --> 00:11:25,760
+more rapidly, try out
+
+342
+00:11:25,840 --> 00:11:27,820
+new ideas and almost right
+
+343
+00:11:27,990 --> 00:11:29,550
+away tell if your new
+
+344
+00:11:29,690 --> 00:11:31,480
+idea has improved or worsened
+
+345
+00:11:32,440 --> 00:11:33,230
+the performance of the learning algorithm
+
+346
+00:11:33,930 --> 00:11:35,440
+and this will let
+
+347
+00:11:35,560 --> 00:11:38,340
+you often make much faster progress.
+
+348
+00:11:38,530 --> 00:11:39,720
+So the recommended, strongly recommended
+
+349
+00:11:40,220 --> 00:11:41,790
+way to do error analysis is
+
+350
+00:11:42,370 --> 00:11:44,760
+on the cross validation set rather than the test set.
+
+351
+00:11:45,490 --> 00:11:46,970
+But, you know, there are
+
+352
+00:11:47,240 --> 00:11:48,260
+people that will do this on
+
+353
+00:11:48,370 --> 00:11:49,480
+the test set even though that's
+
+354
+00:11:49,730 --> 00:11:51,530
+definitely a less mathematically appropriate
+
+355
+00:11:52,190 --> 00:11:54,560
+set of your list, recommended what
+
+356
+00:11:54,730 --> 00:11:55,660
+you think to do than to
+
+357
+00:11:55,780 --> 00:11:57,240
+do error analysis on your
+
+358
+00:11:57,450 --> 00:11:58,760
+cross validation sector.
+
+359
+00:11:59,140 --> 00:12:01,160
+So, to wrap up this video, when starting
+
+360
+00:12:01,830 --> 00:12:03,340
+on the new machine learning problem, what
+
+361
+00:12:03,610 --> 00:12:05,370
+I almost always recommend is
+
+362
+00:12:05,610 --> 00:12:06,930
+to implement a quick and
+
+363
+00:12:07,030 --> 00:12:08,710
+dirty implementation of your learning algorithm.
+
+364
+00:12:09,780 --> 00:12:11,760
+And I've almost never seen
+
+365
+00:12:12,120 --> 00:12:15,370
+anyone spend too little time on this quick and dirty implementation.
+
+366
+00:12:18,640 --> 00:12:20,210
+I pretty much only ever see
+
+367
+00:12:20,480 --> 00:12:22,050
+people spend much too much
+
+368
+00:12:22,370 --> 00:12:23,720
+time building their first, you know,
+
+369
+00:12:24,580 --> 00:12:25,800
+supposedly quick and dirty implementations.
+
+370
+00:12:26,590 --> 00:12:28,100
+So really, don't worry about
+
+371
+00:12:29,070 --> 00:12:31,210
+it being too quick, or don't worry about it being too dirty.
+
+372
+00:12:32,120 --> 00:12:33,580
+But really implement something as
+
+373
+00:12:33,690 --> 00:12:35,220
+quickly as you can, and once
+
+374
+00:12:35,450 --> 00:12:37,550
+you have the initial implementation this
+
+375
+00:12:37,820 --> 00:12:38,860
+is then a powerful tool for
+
+376
+00:12:39,230 --> 00:12:40,420
+deciding where to spend your
+
+377
+00:12:40,610 --> 00:12:42,170
+time next, because first we
+
+378
+00:12:42,390 --> 00:12:43,390
+can look at the errors it makes,
+
+379
+00:12:43,630 --> 00:12:44,720
+and do this sort of error analysis
+
+380
+00:12:45,280 --> 00:12:46,360
+to see what mistakes it makes
+
+381
+00:12:47,010 --> 00:12:48,420
+and use that to inspire further development.
+
+382
+00:12:49,030 --> 00:12:50,880
+And second, assuming your
+
+383
+00:12:51,000 --> 00:12:53,360
+quick and dirty implementation incorporated a
+
+384
+00:12:53,620 --> 00:12:55,700
+single real number evaluation metric, this
+
+385
+00:12:55,940 --> 00:12:57,660
+can then be a vehicle for
+
+386
+00:12:57,730 --> 00:12:58,980
+you to try out different ideas
+
+387
+00:12:59,810 --> 00:13:00,810
+and quickly see if the
+
+388
+00:13:01,030 --> 00:13:02,170
+different ideas you're trying out
+
+389
+00:13:02,440 --> 00:13:03,830
+are improving the performance of
+
+390
+00:13:03,920 --> 00:13:05,420
+your algorithm and therefore let
+
+391
+00:13:05,570 --> 00:13:06,470
+you maybe much more quickly
+
+392
+00:13:06,860 --> 00:13:08,440
+make decisions about what things
+
+393
+00:13:08,760 --> 00:13:09,900
+to fold, and what things to
+
+394
+00:13:10,240 --> 00:13:11,520
+incorporate into your learning algorithm.

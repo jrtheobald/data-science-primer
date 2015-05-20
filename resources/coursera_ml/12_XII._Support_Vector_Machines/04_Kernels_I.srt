@@ -1,0 +1,1723 @@
+1
+00:00:00,080 --> 00:00:01,140
+In this video, I'd like
+
+2
+00:00:01,370 --> 00:00:03,120
+to start adapting support vector
+
+3
+00:00:03,390 --> 00:00:06,280
+machines in order to develop complex nonlinear classifiers.
+
+4
+00:00:07,630 --> 00:00:10,410
+The main technique for doing that is something called kernels.
+
+5
+00:00:11,730 --> 00:00:13,690
+Let's see what this kernels are and how to use them.
+
+6
+00:00:15,860 --> 00:00:16,930
+If you have a training set that
+
+7
+00:00:17,030 --> 00:00:18,270
+looks like this, and you
+
+8
+00:00:18,400 --> 00:00:20,000
+want to find a
+
+9
+00:00:20,150 --> 00:00:21,670
+nonlinear decision boundary to distinguish
+
+10
+00:00:22,270 --> 00:00:23,950
+the positive and negative examples, maybe
+
+11
+00:00:24,350 --> 00:00:25,900
+a decision boundary that looks like that.
+
+12
+00:00:27,040 --> 00:00:27,950
+One way to do so is
+
+13
+00:00:28,230 --> 00:00:29,760
+to come up with a set
+
+14
+00:00:29,970 --> 00:00:32,180
+of complex polynomial features, right? So, set of
+
+15
+00:00:32,340 --> 00:00:33,420
+features that looks like this,
+
+16
+00:00:34,140 --> 00:00:34,990
+so that you end up
+
+17
+00:00:35,140 --> 00:00:37,120
+with a hypothesis X that
+
+18
+00:00:38,050 --> 00:00:40,380
+predicts 1 if you know
+
+19
+00:00:40,570 --> 00:00:41,790
+that theta 0 and plus theta 1 X1
+
+20
+00:00:41,860 --> 00:00:45,000
+plus dot dot dot all those polynomial features is
+
+21
+00:00:45,180 --> 00:00:47,410
+greater than 0, and
+
+22
+00:00:47,540 --> 00:00:49,170
+predict 0, otherwise.
+
+23
+00:00:51,070 --> 00:00:52,760
+And another way
+
+24
+00:00:52,980 --> 00:00:54,330
+of writing this, to introduce
+
+25
+00:00:54,840 --> 00:00:56,240
+a level of new notation that
+
+26
+00:00:56,500 --> 00:00:57,860
+I'll use later, is that
+
+27
+00:00:58,200 --> 00:00:59,370
+we can think of a hypothesis
+
+28
+00:00:59,730 --> 00:01:01,610
+as computing a decision boundary
+
+29
+00:01:02,120 --> 00:01:03,380
+using this. So, theta
+
+30
+00:01:03,820 --> 00:01:04,870
+0 plus theta 1 f1 plus
+
+31
+00:01:05,070 --> 00:01:06,130
+theta 2, f2 plus theta
+
+32
+00:01:06,610 --> 00:01:08,730
+3, f3 plus and so on.
+
+33
+00:01:09,590 --> 00:01:12,790
+Where I'm going to
+
+34
+00:01:13,050 --> 00:01:14,070
+use this new denotation
+
+35
+00:01:14,730 --> 00:01:15,930
+f1, f2, f3 and so
+
+36
+00:01:16,270 --> 00:01:17,610
+on to denote these new sort of features
+
+37
+00:01:19,350 --> 00:01:20,630
+that I'm computing, so f1 is
+
+38
+00:01:21,370 --> 00:01:24,250
+just X1, f2 is equal
+
+39
+00:01:24,600 --> 00:01:27,060
+to X2, f3 is
+
+40
+00:01:27,140 --> 00:01:28,560
+equal to this one
+
+41
+00:01:28,770 --> 00:01:29,790
+here. So, X1X2. So,
+
+42
+00:01:29,900 --> 00:01:32,200
+f4 is equal to
+
+43
+00:01:33,840 --> 00:01:35,590
+X1 squared where f5 is
+
+44
+00:01:35,680 --> 00:01:37,740
+to be x2 squared and so
+
+45
+00:01:38,520 --> 00:01:39,780
+on and we seen previously that
+
+46
+00:01:40,350 --> 00:01:41,190
+coming up with these high
+
+47
+00:01:41,370 --> 00:01:42,870
+order polynomials is one
+
+48
+00:01:43,110 --> 00:01:44,390
+way to come up with lots more features,
+
+49
+00:01:45,470 --> 00:01:47,070
+the question is, is
+
+50
+00:01:47,250 --> 00:01:48,600
+there a different choice of
+
+51
+00:01:48,670 --> 00:01:51,350
+features or is there better sort of features than this high order
+
+52
+00:01:51,690 --> 00:01:53,510
+polynomials because you know
+
+53
+00:01:53,830 --> 00:01:54,820
+it's not clear that this high
+
+54
+00:01:55,120 --> 00:01:56,350
+order polynomial is what we want,
+
+55
+00:01:56,860 --> 00:01:57,920
+and what we talked about
+
+56
+00:01:58,170 --> 00:01:59,560
+computer vision talk about when
+
+57
+00:01:59,780 --> 00:02:01,940
+the input is an image with lots of pixels.
+
+58
+00:02:02,540 --> 00:02:04,670
+We also saw how using high order polynomials
+
+59
+00:02:05,140 --> 00:02:06,360
+becomes very computationally
+
+60
+00:02:07,320 --> 00:02:08,270
+expensive because there are
+
+61
+00:02:08,280 --> 00:02:09,830
+a lot of these higher order polynomial terms.
+
+62
+00:02:11,240 --> 00:02:12,280
+So, is there a different or
+
+63
+00:02:12,430 --> 00:02:13,160
+a better choice of the features
+
+64
+00:02:14,110 --> 00:02:15,100
+that we can use to plug
+
+65
+00:02:15,410 --> 00:02:16,770
+into this sort of
+
+66
+00:02:17,500 --> 00:02:19,200
+hypothesis form.
+
+67
+00:02:19,420 --> 00:02:20,470
+So, here is one idea for how to
+
+68
+00:02:20,580 --> 00:02:23,580
+define new features f1, f2, f3.
+
+69
+00:02:24,970 --> 00:02:25,930
+On this line I am
+
+70
+00:02:26,100 --> 00:02:27,600
+going to define only three new
+
+71
+00:02:27,890 --> 00:02:28,770
+features, but for real problems
+
+72
+00:02:29,500 --> 00:02:30,650
+we can get to define a much larger number.
+
+73
+00:02:31,060 --> 00:02:32,060
+But here's what I'm going to do
+
+74
+00:02:32,260 --> 00:02:33,400
+in this phase
+
+75
+00:02:33,640 --> 00:02:34,980
+of features X1, X2, and
+
+76
+00:02:35,400 --> 00:02:36,520
+I'm going to leave X0
+
+77
+00:02:36,720 --> 00:02:37,800
+out of this, the
+
+78
+00:02:38,060 --> 00:02:39,230
+interceptor X0, but
+
+79
+00:02:39,330 --> 00:02:40,320
+in this phase X1 X2, I'm going to just,
+
+80
+00:02:42,550 --> 00:02:43,560
+you know, manually pick a few points, and then
+
+81
+00:02:43,750 --> 00:02:45,210
+call these points l1, we
+
+82
+00:02:45,450 --> 00:02:46,720
+are going to pick
+
+83
+00:02:46,820 --> 00:02:49,560
+a different point, let's call
+
+84
+00:02:50,080 --> 00:02:51,390
+that l2 and let's pick
+
+85
+00:02:51,710 --> 00:02:52,880
+the third one and call
+
+86
+00:02:53,170 --> 00:02:55,800
+this one l3, and for
+
+87
+00:02:55,900 --> 00:02:56,830
+now let's just say that I'm
+
+88
+00:02:56,930 --> 00:02:59,220
+going to choose these three points manually.
+
+89
+00:02:59,870 --> 00:03:02,860
+I'm going to call these three points line ups, so line up one, two, three.
+
+90
+00:03:03,720 --> 00:03:04,630
+What I'm going to do is
+
+91
+00:03:04,790 --> 00:03:07,190
+define my new features as follows, given
+
+92
+00:03:07,510 --> 00:03:10,070
+an example X, let me
+
+93
+00:03:10,170 --> 00:03:13,130
+define my first feature f1
+
+94
+00:03:13,330 --> 00:03:16,010
+to be some
+
+95
+00:03:16,260 --> 00:03:18,960
+measure of the similarity between
+
+96
+00:03:19,330 --> 00:03:21,460
+my training example X and
+
+97
+00:03:21,680 --> 00:03:26,270
+my first landmark and
+
+98
+00:03:26,520 --> 00:03:27,840
+this specific formula that I'm
+
+99
+00:03:27,950 --> 00:03:29,600
+going to use to measure similarity is
+
+100
+00:03:30,160 --> 00:03:31,830
+going to be this is E to
+
+101
+00:03:31,940 --> 00:03:34,220
+the minus the length of
+
+102
+00:03:34,470 --> 00:03:37,880
+X minus l1, squared, divided
+
+103
+00:03:38,320 --> 00:03:39,610
+by two sigma squared.
+
+104
+00:03:40,730 --> 00:03:41,640
+So, depending on whether or not
+
+105
+00:03:41,780 --> 00:03:43,420
+you watched the previous optional video,
+
+106
+00:03:44,390 --> 00:03:48,140
+this notation, you know, this is
+
+107
+00:03:48,460 --> 00:03:49,340
+the length of the vector
+
+108
+00:03:49,680 --> 00:03:51,260
+W. And so, this thing
+
+109
+00:03:51,460 --> 00:03:53,760
+here, this X
+
+110
+00:03:54,020 --> 00:03:55,990
+minus l1, this is
+
+111
+00:03:56,100 --> 00:03:57,440
+actually just the euclidean distance
+
+112
+00:03:58,610 --> 00:03:59,950
+squared, is the euclidean
+
+113
+00:04:00,410 --> 00:04:03,240
+distance between the point x and the landmark l1.
+
+114
+00:04:03,530 --> 00:04:04,610
+We will see more about this later.
+
+115
+00:04:06,440 --> 00:04:07,990
+But that's my first feature, and
+
+116
+00:04:08,120 --> 00:04:09,610
+my second feature f2 is
+
+117
+00:04:09,750 --> 00:04:11,750
+going to be, you know,
+
+118
+00:04:12,370 --> 00:04:14,040
+similarity function that measures
+
+119
+00:04:14,400 --> 00:04:17,310
+how similar X is to l2 and the game is going to be defined as
+
+120
+00:04:17,370 --> 00:04:19,360
+the following function.
+
+121
+00:04:25,970 --> 00:04:27,320
+This is E to the minus of the square of the euclidean distance
+
+122
+00:04:28,150 --> 00:04:29,050
+between X and the second
+
+123
+00:04:29,820 --> 00:04:31,310
+landmark, that is what the enumerator is and
+
+124
+00:04:31,510 --> 00:04:32,660
+then divided by 2 sigma squared
+
+125
+00:04:33,520 --> 00:04:35,280
+and similarly f3 is, you know,
+
+126
+00:04:35,850 --> 00:04:39,480
+similarity between X
+
+127
+00:04:39,840 --> 00:04:41,860
+and l3, which is
+
+128
+00:04:41,980 --> 00:04:44,510
+equal to, again, similar formula.
+
+129
+00:04:46,550 --> 00:04:48,070
+And what this similarity
+
+130
+00:04:48,830 --> 00:04:50,440
+function is, the mathematical term
+
+131
+00:04:50,730 --> 00:04:52,030
+for this, is that this is
+
+132
+00:04:52,160 --> 00:04:54,390
+going to be a kernel function.
+
+133
+00:04:55,340 --> 00:04:56,810
+And the specific kernel I'm using
+
+134
+00:04:57,140 --> 00:04:59,570
+here, this is actually called a Gaussian kernel.
+
+135
+00:05:00,630 --> 00:05:01,920
+And so this formula, this particular
+
+136
+00:05:02,500 --> 00:05:04,990
+choice of similarity function is called a Gaussian kernel.
+
+137
+00:05:05,770 --> 00:05:07,220
+But the way the terminology goes is that, you know, in
+
+138
+00:05:07,360 --> 00:05:09,110
+the abstract these different
+
+139
+00:05:09,600 --> 00:05:11,270
+similarity functions are called kernels and
+
+140
+00:05:11,600 --> 00:05:12,670
+we can have different similarity functions
+
+141
+00:05:13,750 --> 00:05:16,410
+and the specific example I'm giving here is called the Gaussian kernel.
+
+142
+00:05:17,110 --> 00:05:18,400
+We'll see other examples of other kernels.
+
+143
+00:05:18,840 --> 00:05:21,100
+But for now just think of these as similarity functions.
+
+144
+00:05:22,470 --> 00:05:24,100
+And so, instead of writing similarity between
+
+145
+00:05:24,500 --> 00:05:26,270
+X and l, sometimes we
+
+146
+00:05:26,480 --> 00:05:28,380
+also write this a kernel denoted
+
+147
+00:05:29,070 --> 00:05:32,360
+you know, lower case k between x and one of my landmarks all right.
+
+148
+00:05:34,120 --> 00:05:36,120
+So let's see what a
+
+149
+00:05:36,650 --> 00:05:38,480
+criminals actually do and
+
+150
+00:05:38,810 --> 00:05:40,640
+why these sorts of similarity
+
+151
+00:05:41,280 --> 00:05:44,540
+functions, why these expressions might make sense.
+
+152
+00:05:46,690 --> 00:05:48,020
+So let's take my first landmark. My
+
+153
+00:05:48,330 --> 00:05:49,230
+landmark l1, which is
+
+154
+00:05:49,350 --> 00:05:51,370
+one of those points I chose on my figure just now.
+
+155
+00:05:53,000 --> 00:05:54,160
+So the similarity of the kernel between x and l1 is given by this expression.
+
+156
+00:05:57,530 --> 00:05:58,600
+Just to make sure, you know, we
+
+157
+00:05:58,690 --> 00:05:59,600
+are on the same page about what
+
+158
+00:05:59,780 --> 00:06:01,860
+the numerator term is, the
+
+159
+00:06:01,960 --> 00:06:03,140
+numerator can also be
+
+160
+00:06:03,330 --> 00:06:04,620
+written as a sum from
+
+161
+00:06:04,880 --> 00:06:06,470
+J equals 1 through N on sort of the distance.
+
+162
+00:06:07,000 --> 00:06:08,700
+So this is the component wise distance
+
+163
+00:06:09,270 --> 00:06:10,900
+between the vector X and
+
+164
+00:06:11,070 --> 00:06:12,050
+the vector l. And again
+
+165
+00:06:12,380 --> 00:06:14,460
+for the purpose of these
+
+166
+00:06:14,720 --> 00:06:16,180
+slides I'm ignoring X0.
+
+167
+00:06:16,680 --> 00:06:17,910
+So just ignoring the intercept
+
+168
+00:06:18,220 --> 00:06:19,960
+term X0, which is always equal to 1.
+
+169
+00:06:21,430 --> 00:06:22,470
+So, you know, this is
+
+170
+00:06:22,630 --> 00:06:25,780
+how you compute the kernel with similarity between X and a landmark.
+
+171
+00:06:27,270 --> 00:06:28,200
+So let's see what this function does.
+
+172
+00:06:29,110 --> 00:06:31,870
+Suppose X is close to one of the landmarks.
+
+173
+00:06:33,320 --> 00:06:34,910
+Then this euclidean distance
+
+174
+00:06:35,360 --> 00:06:36,690
+formula and the numerator will
+
+175
+00:06:36,990 --> 00:06:38,770
+be close to 0, right.
+
+176
+00:06:38,890 --> 00:06:40,070
+So, that is this term
+
+177
+00:06:40,580 --> 00:06:41,880
+here, the distance was great,
+
+178
+00:06:42,170 --> 00:06:43,130
+the distance using X and 0
+
+179
+00:06:43,240 --> 00:06:45,130
+will be close to zero, and so
+
+180
+00:06:46,390 --> 00:06:47,440
+f1, this is a simple
+
+181
+00:06:47,710 --> 00:06:50,100
+feature, will be approximately E
+
+182
+00:06:50,290 --> 00:06:52,760
+to the minus 0 and
+
+183
+00:06:52,800 --> 00:06:54,650
+then the numerator squared over 2 is equal to squared
+
+184
+00:06:55,650 --> 00:06:56,670
+so that E to the
+
+185
+00:06:56,770 --> 00:06:58,070
+0, E to minus 0,
+
+186
+00:06:58,370 --> 00:06:59,810
+E to 0 is going to be close to one.
+
+187
+00:07:01,640 --> 00:07:03,480
+And I'll put the approximation symbol here
+
+188
+00:07:03,700 --> 00:07:05,430
+because the distance may
+
+189
+00:07:05,530 --> 00:07:06,930
+not be exactly 0, but
+
+190
+00:07:07,120 --> 00:07:08,040
+if X is closer to landmark
+
+191
+00:07:08,340 --> 00:07:09,190
+this term will be close
+
+192
+00:07:09,440 --> 00:07:12,070
+to 0 and so f1 would be close 1.
+
+193
+00:07:13,400 --> 00:07:15,220
+Conversely, if X is
+
+194
+00:07:15,520 --> 00:07:17,350
+far from 01 then this
+
+195
+00:07:17,550 --> 00:07:18,940
+first feature f1 will
+
+196
+00:07:19,820 --> 00:07:21,190
+be E to the minus
+
+197
+00:07:21,540 --> 00:07:24,040
+of some large number squared,
+
+198
+00:07:24,960 --> 00:07:25,980
+divided divided by two sigma
+
+199
+00:07:26,260 --> 00:07:27,690
+squared and E to
+
+200
+00:07:27,810 --> 00:07:28,800
+the minus of a large number
+
+201
+00:07:29,630 --> 00:07:31,450
+is going to be close to 0.
+
+202
+00:07:33,320 --> 00:07:34,610
+So what these
+
+203
+00:07:34,750 --> 00:07:36,080
+features do is they measure how
+
+204
+00:07:36,290 --> 00:07:37,500
+similar X is from one
+
+205
+00:07:37,670 --> 00:07:39,160
+of your landmarks and the feature
+
+206
+00:07:39,530 --> 00:07:40,290
+f is going to be close
+
+207
+00:07:40,540 --> 00:07:42,360
+to one when X is
+
+208
+00:07:42,540 --> 00:07:43,810
+close to your landmark and is
+
+209
+00:07:44,020 --> 00:07:45,310
+going to be 0 or close
+
+210
+00:07:45,380 --> 00:07:46,520
+to zero when X is
+
+211
+00:07:46,790 --> 00:07:48,850
+far from your landmark.
+
+212
+00:07:49,320 --> 00:07:49,980
+Each of these landmarks.
+
+213
+00:07:50,590 --> 00:07:51,620
+On the previous line, I drew
+
+214
+00:07:52,250 --> 00:07:54,260
+three landmarks, l1, l2,l3.
+
+215
+00:07:56,190 --> 00:08:00,030
+Each of these landmarks, defines a new feature
+
+216
+00:08:00,660 --> 00:08:02,270
+f1, f2 and f3.
+
+217
+00:08:02,680 --> 00:08:03,660
+That is, given the the
+
+218
+00:08:03,710 --> 00:08:05,160
+training example X, we can
+
+219
+00:08:05,380 --> 00:08:06,750
+now compute three new
+
+220
+00:08:06,930 --> 00:08:08,720
+features: f1, f2, and
+
+221
+00:08:09,520 --> 00:08:11,010
+f3, given, you know, the three
+
+222
+00:08:11,340 --> 00:08:13,530
+landmarks that I wrote just now.
+
+223
+00:08:13,760 --> 00:08:15,030
+But first, let's look
+
+224
+00:08:15,240 --> 00:08:16,450
+at this exponentiation function, let's look
+
+225
+00:08:16,710 --> 00:08:18,190
+at this similarity function and plot
+
+226
+00:08:18,570 --> 00:08:20,790
+in some figures and just, you know, understand
+
+227
+00:08:21,230 --> 00:08:22,460
+better what this really looks like.
+
+228
+00:08:23,510 --> 00:08:26,320
+For this example, let's say I have two features X1 and X2.
+
+229
+00:08:26,570 --> 00:08:27,430
+And let's say my first
+
+230
+00:08:27,820 --> 00:08:29,290
+landmark, l1 is at
+
+231
+00:08:29,520 --> 00:08:32,550
+a location, 3 5. So
+
+232
+00:08:33,650 --> 00:08:35,750
+and let's say I set sigma squared equals one for now.
+
+233
+00:08:36,500 --> 00:08:37,550
+If I plot what this feature
+
+234
+00:08:37,890 --> 00:08:40,420
+looks like, what I get is this figure.
+
+235
+00:08:41,210 --> 00:08:42,510
+So the vertical axis, the height
+
+236
+00:08:42,760 --> 00:08:44,030
+of the surface is the value
+
+237
+00:08:45,240 --> 00:08:46,280
+of f1 and down here
+
+238
+00:08:46,630 --> 00:08:48,490
+on the horizontal axis are, if
+
+239
+00:08:48,710 --> 00:08:50,580
+I have some training example, and there
+
+240
+00:08:51,660 --> 00:08:53,050
+is x1 and there is x2.
+
+241
+00:08:53,320 --> 00:08:54,940
+Given a certain training example, the
+
+242
+00:08:55,120 --> 00:08:56,890
+training example here which shows
+
+243
+00:08:56,980 --> 00:08:58,140
+the value of x1 and x2
+
+244
+00:08:58,140 --> 00:08:59,390
+at a height above the surface,
+
+245
+00:08:59,950 --> 00:09:02,220
+shows the corresponding value of
+
+246
+00:09:02,410 --> 00:09:03,830
+f1 and down below this is
+
+247
+00:09:03,960 --> 00:09:04,890
+the same figure I had showed,
+
+248
+00:09:05,040 --> 00:09:06,600
+using a quantifiable plot, with
+
+249
+00:09:06,810 --> 00:09:08,320
+x1 on horizontal
+
+250
+00:09:09,090 --> 00:09:10,340
+axis, x2 on horizontal
+
+251
+00:09:10,820 --> 00:09:12,500
+axis and so, this
+
+252
+00:09:12,820 --> 00:09:13,700
+figure on the bottom is just
+
+253
+00:09:13,940 --> 00:09:15,440
+a contour plot of the 3D surface.
+
+254
+00:09:16,540 --> 00:09:17,800
+You notice that when
+
+255
+00:09:18,030 --> 00:09:19,540
+X is equal to
+
+256
+00:09:19,820 --> 00:09:24,140
+3 5 exactly, then we
+
+257
+00:09:24,380 --> 00:09:25,680
+the f1 takes on the
+
+258
+00:09:25,760 --> 00:09:26,990
+value 1, because that's at
+
+259
+00:09:27,170 --> 00:09:29,400
+the maximum and X
+
+260
+00:09:29,860 --> 00:09:31,150
+moves away as X goes
+
+261
+00:09:31,680 --> 00:09:33,650
+further away then this
+
+262
+00:09:33,860 --> 00:09:35,270
+feature takes on values
+
+263
+00:09:36,460 --> 00:09:37,160
+that are close to 0.
+
+264
+00:09:38,750 --> 00:09:40,120
+And so, this is really a feature,
+
+265
+00:09:40,400 --> 00:09:42,100
+f1 measures, you know, how
+
+266
+00:09:42,400 --> 00:09:43,680
+close X is to the first
+
+267
+00:09:44,040 --> 00:09:46,050
+landmark and if
+
+268
+00:09:46,520 --> 00:09:47,610
+varies between 0 and one
+
+269
+00:09:47,790 --> 00:09:48,940
+depending on how close X
+
+270
+00:09:49,160 --> 00:09:50,650
+is to the first landmark l1.
+
+271
+00:09:52,360 --> 00:09:53,710
+Now the other was due on
+
+272
+00:09:53,920 --> 00:09:55,530
+this slide is show the effects
+
+273
+00:09:56,090 --> 00:09:59,740
+of varying this parameter sigma squared.
+
+274
+00:10:00,040 --> 00:10:01,770
+So, sigma squared is the parameter of the
+
+275
+00:10:02,530 --> 00:10:04,120
+Gaussian kernel and as you vary it, you get slightly different effects.
+
+276
+00:10:05,150 --> 00:10:06,380
+Let's set sigma squared to be
+
+277
+00:10:06,650 --> 00:10:07,570
+equal to 0.5 and see
+
+278
+00:10:07,710 --> 00:10:09,850
+what we get. We set sigma square to 0.5,
+
+279
+00:10:10,090 --> 00:10:11,170
+what you find is that the
+
+280
+00:10:11,430 --> 00:10:12,670
+kernel looks similar, except for the
+
+281
+00:10:12,730 --> 00:10:14,200
+width of the bump becomes narrower.
+
+282
+00:10:14,790 --> 00:10:16,400
+The contours shrink a bit too.
+
+283
+00:10:17,120 --> 00:10:18,360
+So if sigma squared equals to 0.5
+
+284
+00:10:18,740 --> 00:10:19,820
+then as you start
+
+285
+00:10:20,250 --> 00:10:21,650
+from X equals 3
+
+286
+00:10:21,910 --> 00:10:23,140
+5 and as you move away,
+
+287
+00:10:24,750 --> 00:10:26,370
+then the feature f1
+
+288
+00:10:27,050 --> 00:10:28,520
+falls to zero much more
+
+289
+00:10:28,730 --> 00:10:30,830
+rapidly and conversely,
+
+290
+00:10:32,090 --> 00:10:33,930
+if you has increase since
+
+291
+00:10:34,670 --> 00:10:36,280
+where three in that
+
+292
+00:10:36,510 --> 00:10:37,700
+case and as I
+
+293
+00:10:37,800 --> 00:10:39,090
+move away from, you know l. So
+
+294
+00:10:39,630 --> 00:10:40,770
+this point here is really
+
+295
+00:10:41,110 --> 00:10:42,410
+l, right, that's l1 is at
+
+296
+00:10:42,610 --> 00:10:45,210
+location 3 5, right. So it's shown up here.
+
+297
+00:10:48,190 --> 00:10:49,480
+And if sigma squared is
+
+298
+00:10:49,660 --> 00:10:50,460
+large, then as you move
+
+299
+00:10:50,690 --> 00:10:54,040
+away from l1, the
+
+300
+00:10:54,320 --> 00:10:56,170
+value of the feature falls
+
+301
+00:10:56,740 --> 00:10:57,670
+away much more slowly.
+
+302
+00:11:03,590 --> 00:11:05,200
+So, given this definition of
+
+303
+00:11:05,290 --> 00:11:06,730
+the features, let's see what
+
+304
+00:11:06,960 --> 00:11:08,420
+source of hypothesis we can learn.
+
+305
+00:11:09,550 --> 00:11:11,360
+Given the training example X, we
+
+306
+00:11:11,480 --> 00:11:12,930
+are going to compute these features
+
+307
+00:11:14,670 --> 00:11:16,360
+f1, f2, f3 and a
+
+308
+00:11:17,550 --> 00:11:18,980
+hypothesis is going to
+
+309
+00:11:19,040 --> 00:11:20,510
+predict one when theta 0
+
+310
+00:11:20,760 --> 00:11:22,050
+plus theta 1 f1 plus theta 2 f2,
+
+311
+00:11:22,330 --> 00:11:26,210
+and so on is greater than or equal to 0.
+
+312
+00:11:26,250 --> 00:11:27,100
+For this particular example, let's say
+
+313
+00:11:27,290 --> 00:11:28,460
+that I've already found a learning
+
+314
+00:11:28,620 --> 00:11:29,520
+algorithm and let's say that, you know,
+
+315
+00:11:30,190 --> 00:11:31,220
+somehow I ended up with
+
+316
+00:11:31,900 --> 00:11:32,880
+these values of the parameter.
+
+317
+00:11:33,510 --> 00:11:34,600
+So if theta 0 equals
+
+318
+00:11:34,830 --> 00:11:36,010
+minus 0.5, theta 1 equals
+
+319
+00:11:36,390 --> 00:11:37,780
+1, theta 2 equals
+
+320
+00:11:38,180 --> 00:11:39,570
+1, and theta 3
+
+321
+00:11:40,370 --> 00:11:42,480
+equals 0 And what
+
+322
+00:11:42,720 --> 00:11:44,530
+I want to do is consider what
+
+323
+00:11:44,670 --> 00:11:46,100
+happens if we have a
+
+324
+00:11:46,200 --> 00:11:48,060
+training example that takes
+
+325
+00:11:49,260 --> 00:11:51,710
+has location at this
+
+326
+00:11:52,510 --> 00:11:55,050
+magenta dot, right where I just drew this dot over here.
+
+327
+00:11:55,380 --> 00:11:56,180
+So let's say I have a training
+
+328
+00:11:56,290 --> 00:11:58,690
+example X, what would my hypothesis predict?
+
+329
+00:11:59,000 --> 00:12:01,430
+Well, If I look at this formula.
+
+330
+00:12:04,580 --> 00:12:05,890
+Because my training example X
+
+331
+00:12:06,050 --> 00:12:07,820
+is close to l1, we have
+
+332
+00:12:08,230 --> 00:12:10,190
+that f1 is going
+
+333
+00:12:10,250 --> 00:12:11,830
+to be close to 1 the because
+
+334
+00:12:12,250 --> 00:12:13,200
+my training example X is
+
+335
+00:12:13,360 --> 00:12:15,050
+far from l2 and l3 I
+
+336
+00:12:15,360 --> 00:12:16,880
+have that, you know, f2 would be close to
+
+337
+00:12:17,590 --> 00:12:20,500
+0 and f3 will be close to 0.
+
+338
+00:12:21,550 --> 00:12:22,700
+So, if I look at
+
+339
+00:12:22,880 --> 00:12:23,970
+that formula, I have theta
+
+340
+00:12:24,230 --> 00:12:25,670
+0 plus theta 1
+
+341
+00:12:26,600 --> 00:12:29,970
+times 1 plus theta 2 times some value.
+
+342
+00:12:30,510 --> 00:12:32,390
+Not exactly 0, but let's say close to 0.
+
+343
+00:12:33,140 --> 00:12:36,400
+Then plus theta 3 times something close to 0.
+
+344
+00:12:37,480 --> 00:12:39,810
+And this is going to be equal to plugging in these values now.
+
+345
+00:12:41,050 --> 00:12:43,470
+So, that gives minus 0.5
+
+346
+00:12:44,160 --> 00:12:46,820
+plus 1 times 1 which is 1, and so on.
+
+347
+00:12:46,960 --> 00:12:47,740
+Which is equal to 0.5 which is greater than or equal to 0.
+
+348
+00:12:48,000 --> 00:12:50,820
+So, at this point,
+
+349
+00:12:51,160 --> 00:12:54,280
+we're going to predict Y equals
+
+350
+00:12:54,740 --> 00:12:57,320
+1, because that's greater than or equal to zero.
+
+351
+00:12:58,910 --> 00:12:59,950
+Now let's take a different point.
+
+352
+00:13:00,800 --> 00:13:02,100
+Now lets' say I take a
+
+353
+00:13:02,140 --> 00:13:03,060
+different point, I'm going to
+
+354
+00:13:03,260 --> 00:13:04,370
+draw this one in a different
+
+355
+00:13:04,770 --> 00:13:07,080
+color, in cyan say, for
+
+356
+00:13:07,250 --> 00:13:08,470
+a point out there, if that
+
+357
+00:13:08,710 --> 00:13:10,580
+were my training example X, then
+
+358
+00:13:11,270 --> 00:13:12,190
+if you make a similar computation,
+
+359
+00:13:12,950 --> 00:13:14,390
+you find that f1, f2,
+
+360
+00:13:15,420 --> 00:13:16,850
+Ff3 are all going to be close to 0.
+
+361
+00:13:18,160 --> 00:13:19,910
+And so, we have theta
+
+362
+00:13:20,240 --> 00:13:23,940
+0 plus theta 1, f1,
+
+363
+00:13:24,230 --> 00:13:26,010
+plus so on and this
+
+364
+00:13:26,200 --> 00:13:27,830
+will be about equal to
+
+365
+00:13:28,020 --> 00:13:30,810
+minus 0.5, because theta
+
+366
+00:13:31,170 --> 00:13:32,110
+0 is minus 0.5 and
+
+367
+00:13:32,190 --> 00:13:33,920
+f1, f2, f3 are all zero.
+
+368
+00:13:34,910 --> 00:13:37,510
+So this will be minus 0.5, this is less than zero.
+
+369
+00:13:37,860 --> 00:13:38,910
+And so, at this
+
+370
+00:13:39,090 --> 00:13:40,220
+point out there, we're going to
+
+371
+00:13:40,470 --> 00:13:42,010
+predict Y equals zero.
+
+372
+00:13:44,190 --> 00:13:45,100
+And if you do
+
+373
+00:13:45,270 --> 00:13:46,230
+this yourself for a range
+
+374
+00:13:46,380 --> 00:13:47,460
+of different points, be sure to
+
+375
+00:13:47,670 --> 00:13:48,660
+convince yourself that if you
+
+376
+00:13:48,730 --> 00:13:50,340
+have a training example that's
+
+377
+00:13:50,890 --> 00:13:52,390
+close to L2, say,
+
+378
+00:13:52,970 --> 00:13:55,730
+then at this point we'll also predict Y equals one.
+
+379
+00:13:56,800 --> 00:13:58,110
+And in fact, what you end
+
+380
+00:13:58,240 --> 00:13:59,300
+up doing is, you know,
+
+381
+00:13:59,350 --> 00:14:00,920
+if you look around this boundary, this
+
+382
+00:14:01,140 --> 00:14:02,300
+space, what we'll find is that
+
+383
+00:14:02,820 --> 00:14:03,900
+for points near l1
+
+384
+00:14:04,090 --> 00:14:05,560
+and l2 we end up predicting positive.
+
+385
+00:14:06,550 --> 00:14:07,780
+And for points far away from
+
+386
+00:14:08,050 --> 00:14:09,260
+l1 and l2, that's for
+
+387
+00:14:09,470 --> 00:14:12,220
+points far away from these two
+
+388
+00:14:12,480 --> 00:14:13,780
+landmarks, we end up predicting
+
+389
+00:14:14,390 --> 00:14:15,560
+that the class is equal to 0.
+
+390
+00:14:16,510 --> 00:14:17,380
+As so, what we end up doing,is
+
+391
+00:14:17,890 --> 00:14:20,270
+that the decision boundary of
+
+392
+00:14:20,400 --> 00:14:22,110
+this hypothesis would end
+
+393
+00:14:22,280 --> 00:14:24,210
+up looking something like this where
+
+394
+00:14:24,370 --> 00:14:25,630
+inside this red decision boundary
+
+395
+00:14:26,580 --> 00:14:28,240
+would predict Y equals
+
+396
+00:14:28,630 --> 00:14:30,250
+1 and outside we predict
+
+397
+00:14:32,570 --> 00:14:32,570
+Y equals 0.
+
+398
+00:14:33,020 --> 00:14:34,770
+And so this is
+
+399
+00:14:34,850 --> 00:14:36,010
+how with this definition
+
+400
+00:14:36,870 --> 00:14:38,560
+of the landmarks and of the kernel function.
+
+401
+00:14:39,370 --> 00:14:40,940
+We can learn pretty complex non-linear
+
+402
+00:14:41,420 --> 00:14:42,800
+decision boundary, like what I
+
+403
+00:14:42,930 --> 00:14:44,150
+just drew where we predict
+
+404
+00:14:44,560 --> 00:14:46,990
+positive when we're close to either one of the two landmarks.
+
+405
+00:14:47,570 --> 00:14:48,880
+And we predict negative when we're
+
+406
+00:14:49,260 --> 00:14:50,680
+very far away from any
+
+407
+00:14:50,950 --> 00:14:52,990
+of the landmarks.
+
+408
+00:14:53,440 --> 00:14:55,000
+And so this is part of
+
+409
+00:14:55,050 --> 00:14:57,300
+the idea of kernels of and
+
+410
+00:14:57,600 --> 00:14:58,620
+how we use them with the
+
+411
+00:14:58,770 --> 00:14:59,810
+support vector machine, which is that
+
+412
+00:14:59,990 --> 00:15:01,720
+we define these extra features using
+
+413
+00:15:02,040 --> 00:15:03,900
+landmarks and similarity functions
+
+414
+00:15:04,770 --> 00:15:06,730
+to learn more complex nonlinear classifiers.
+
+415
+00:15:08,210 --> 00:15:09,290
+So hopefully that gives you
+
+416
+00:15:09,390 --> 00:15:10,410
+a sense of the idea of
+
+417
+00:15:10,590 --> 00:15:11,680
+kernels and how we could
+
+418
+00:15:11,890 --> 00:15:14,110
+use it to define new features for the Support Vector Machine.
+
+419
+00:15:15,510 --> 00:15:17,670
+But there are a couple of questions that we haven't answered yet.
+
+420
+00:15:18,010 --> 00:15:19,550
+One is, how do we get these landmarks?
+
+421
+00:15:20,120 --> 00:15:20,930
+How do we choose these landmarks?
+
+422
+00:15:21,050 --> 00:15:22,910
+And another is, what
+
+423
+00:15:23,090 --> 00:15:24,500
+other similarity functions, if any,
+
+424
+00:15:24,750 --> 00:15:25,680
+can we use other than the
+
+425
+00:15:25,780 --> 00:15:29,000
+one we talked about, which is called the Gaussian kernel.
+
+426
+00:15:29,190 --> 00:15:29,970
+In the next video we give
+
+427
+00:15:29,990 --> 00:15:31,290
+answers to these questions and put
+
+428
+00:15:31,490 --> 00:15:33,150
+everything together to show how
+
+429
+00:15:33,740 --> 00:15:35,060
+support vector machines with kernels
+
+430
+00:15:35,720 --> 00:15:36,960
+can be a powerful way
+
+431
+00:15:37,200 --> 00:15:38,610
+to learn complex nonlinear functions.

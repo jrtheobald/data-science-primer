@@ -1,0 +1,245 @@
+By now you've seen all
+of the main pieces of the
+recommender system algorithm or the collaborative filtering algorithm.
+In this video I want
+to just share one last implementational detail,
+namely mean normalization, which
+can sometimes just make the
+algorithm work a little bit better.
+To motivate the idea of mean normalization, let's
+consider an example of where
+there's a user that has not rated any movies.
+So, in addition to our
+four users, Alice, Bob, Carol,
+and Dave, I've added a
+fifth user, Eve, who hasn't rated any movies.
+Let's see what our collaborative filtering
+algorithm will do on this user.
+Let's say that n is equal to 2 and so
+we're going to learn two features
+and we are going to have
+to learn a parameter vector theta
+5, which is going to be
+in R2, remember this
+is now vectors in Rn not Rn+1,
+we'll learn the parameter vector theta 5 for our user number 5, Eve.
+So if we look in
+the first term in this
+optimization objective, well the
+user Eve hasn't rated any
+movies, so there are
+no movies for
+which Rij is equal to
+one for the user Eve and
+so this first term plays no
+role at all in determining theta 5
+because there are no movies that Eve has rated.
+And so the only term that
+effects theta 5 is this term.
+And so we're saying that we
+want to choose vector theta 5 so
+that the last regularization term is
+as small as possible.
+In other words we want to minimize this
+lambda over 2 theta 5 subscript 1 squared
+plus theta 5
+subscript 2 squared so
+that's the component of the
+regularization term that corresponds to
+user 5, and of course
+if your goal is to
+minimize this term, then
+what you're going to end up
+with is just theta 5 equals 0 0.
+Because a regularization term
+is encouraging us to set
+parameters close to 0
+and if there is
+no data to try to
+pull the parameters away from
+0, because this first term
+doesn't effect theta 5,
+we just end up with theta 5
+equals the vector of all zeros. And
+so when we go to
+predict how user 5 would
+rate any movie, we have
+that theta 5 transpose xi,
+for any i, that's just going
+to be equal to zero.
+Because theta 5 is 0 for any value of
+x, this inner product is going to be equal to 0. And what we're
+going to have therefore, is that
+we're going to predict that Eve
+is going to rate every single
+movie with zero stars.
+But this doesn't seem very useful does it?
+I mean if you look at the different movies,
+Love at Last, this first movie,
+a couple people rated it 5 stars.
+And for even the Swords vs. Karate, someone rated it 5 stars.
+So some people do like some movies.
+It seems not useful to
+just predict that Eve is going to rate everything 0 stars.
+And in fact if we're predicting
+that eve is going to rate everything 0 stars,
+we also don't have any
+good way of recommending any movies
+to her, because you know
+all of these movies are getting exactly the
+same predicted rating for Eve
+so there's no one movie with
+a higher predicted rating that
+we could recommend to her, so, that's not very good.
+The idea of mean normalization will let us fix this problem.
+So here's how it works.
+As before let me group all of my
+movie ratings into this matrix
+Y, so just take all of
+these ratings and group them
+into matrix Y.  And this
+column over here of all
+question marks corresponds to
+Eve's not having rated any movies.
+Now to perform mean normalization what I'm going to
+do is compute the average
+rating that each movie obtained.
+And I'm going to store that
+in a vector that we'll call mu.
+So the first movie got two 5-star and two 0-star ratings,
+so the average of that is a 2.5-star rating.
+The second movie had
+an average of 2.5-stars and so on.
+And the final movie that has 0, 0, 5, 0.
+And the average of 0, 0,
+5, 0, that averages out to
+an average of 1.25
+rating. And what I'm going to
+do is look at all
+the movie ratings and I'm going
+to subtract off the mean rating.
+So this first element 5 I'm going to subtract off 2.5 and that gives me 2.5.
+And the second element 5 subtract off of 2.5,
+get a 2.5.
+And then the 0,
+0, subtract off 2.5 and you get -2.5, -2.5.
+In other words, what
+I'm going to do is take
+my matrix of movie ratings,
+take this wide matrix, and
+subtract form each row the average rating for that movie.
+So, what I'm doing is
+just normalizing each movie to
+have an average rating of zero.
+And so just one last example.
+If you look at this last row, 0 0 5 0.
+We're going to subtract 1.25, and
+so I end up with
+these values over here.
+So now and of course
+the question marks stay a question
+mark.
+So each movie in
+this new matrix Y has
+an average rating of 0.
+What I'm going to do then, is
+take this set of ratings
+and use it with my collaborative filtering algorithm.
+So I'm going to pretend that this
+was the data that I had
+gotten from my users, or pretend that
+these are the actual ratings I
+had gotten from the users, and I'm
+going to use this as my
+data set with which to
+learn my parameters theta
+J and my features XI
+- from these mean normalized movie ratings.
+When I want to make predictions
+of movie ratings, what I'm
+going to do is the
+following:  for user J on movie
+I, I'm gonna predict theta
+J transpose XI, where
+X and theta are the parameters
+that I've learned from this mean normalized data set.
+But, because on the data
+set, I had subtracted off the
+means in order to make
+a prediction on movie i,
+I'm going to need to add back in the mean,
+and so i'm going to add
+back in mu i. And
+so that's going to be
+my prediction where in my training
+data subtracted off all the
+means and so when we
+make predictions and we need
+to add back in these
+means mu i for movie i.  And
+so specifically if you user
+5 which is Eve, the same argument as
+the previous slide still applies in
+the sense that Eve had
+not rated any movies and
+so the learned parameter for
+user 5 is still going to
+be equal to 0, 0.
+And so what we're
+going to get then is that
+on a particular movie i we're
+going to predict for Eve theta
+5, transpose xi plus
+add back in mu i and
+so this first component is
+going to be equal to zero, if theta five is equal to zero.
+And so on movie i, we
+are going to end a predicting mu
+i. And, this actually makes sense.
+It means that
+on movie 1 we're
+going to predict Eve rates it 2.5.
+On movie 2 we're gonna predict Eve rates it 2.5.
+On movie 3 we're
+gonna predict Eve rates it at 2
+and so on.
+This actually makes sense, because it says
+that if Eve hasn't rated
+any movies and we just
+don't know anything about this new
+user Eve, what we're going
+to do is just predict for
+each of the movies, what are
+the average rating that those movies got.
+Finally, as an aside, in
+this video we talked about mean
+normalization, where we normalized
+each row of the matrix y,
+to have mean 0.
+In case you have some movies
+with no ratings, so it is
+analogous to a user who hasn't rated anything,
+but in case you have some
+movies with no ratings, you
+can also play with versions
+of the algorithm, where you
+normalize the different columns
+to have means zero, instead of
+normalizing the rows to have mean
+zero, although that's maybe
+less important, because if you
+really have a movie with no
+rating, maybe you just
+shouldn't recommend that movie to anyone, anyway.
+And so, taking
+care of the case of a user who hasn't
+rated anything might be more
+important than taking care of
+the case of a movie
+that hasn't gotten a single rating.
+So to summarize, that's how
+you can do mean normalization as
+a sort of pre-processing step for collaborative filtering.
+Depending on your data set,
+this might some times make your implementation
+work just a little bit better.

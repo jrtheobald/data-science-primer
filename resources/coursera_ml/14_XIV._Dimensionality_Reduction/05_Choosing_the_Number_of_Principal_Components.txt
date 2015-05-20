@@ -1,0 +1,313 @@
+In the PCA algorithm we take
+N dimensional features and reduce
+them to some K dimensional feature representation.
+This number K is a parameter
+of the PCA algorithm.
+This number K is also called
+the number of principle components
+or the number of principle components that we've retained.
+And in this video I'd like
+to give you some guidelines,
+tell you about how people
+tend to think about how to
+choose this parameter K for PCA.
+In order to choose k,
+that is to choose the number
+of principal components, here are a couple of useful concepts.
+What PCA tries to do
+is it tries to minimize
+the average squared projection error.
+So it tries to minimize
+this quantity, which I'm writing down,
+which is the difference between the
+original data X and the
+projected version, X-approx-i, which
+was defined last video, so
+it tries to minimize the squared
+distance between x and it's projection
+onto that lower dimensional surface.
+So that's the average square projection error.
+Also let me define the
+total variation in the
+data to be the
+average length squared of
+these examples Xi
+so the total variation in the
+data is the average of
+my training sets of the
+length of each of my training examples.
+And this one says, "On average, how
+far are my training examples
+from the vector, from just being all zeros?"
+How far is, how far
+on average are my training examples from the origin?
+When we're trying to choose k, a
+pretty common rule of thumb
+for choosing k is to choose
+the smaller values so that
+the ratio between these is less than 0.01.
+So in other words,
+a pretty common way to
+think about how we choose k
+is we want the average squared projection error.
+That is the average distance
+between x and it's projections
+divided by the total variation of the data.
+That is how much the data varies.
+We want this ratio to be
+less than, let's say, 0.01.
+Or to be less than 1%, which is another way of thinking about it.
+And the way most people think
+about choosing K is rather
+than choosing K directly the
+way most people talk about
+it is as what this
+number is, whether it is 0.01
+or some other number.
+And if it is 0.01, another way
+to say this to use the
+language of PCA is that 99% of the variance is retained.
+I don't really want to, don't
+worry about what this phrase
+really means technically but this
+phrase "99% of variance is retained" just means
+that this quantity on the left is less than 0.01.
+And so, if you
+are using PCA and if you want
+to tell someone, you know,
+how many principle components you've
+retained it would be
+more common to say well, I
+chose k so that 99% of the variance was retained.
+And that's kind of a useful thing
+to know, it means that you
+know, the average squared projection
+error divided by the total
+variation that was at most 1%.
+That's kind of an insightful
+thing to think about, whereas if
+you tell someone that, "Well I
+had to 100 principle
+components" or "k was equal
+to 100 in a thousand dimensional
+data" it's a little
+hard for people to interpret
+that.
+So this number 0.01 is what people often use.
+Other common values is 0.05,
+and so this would be 5%,
+and if you do that then
+you go and say well 95%
+of the variance is
+retained and, you know
+other numbers maybe 90% of the variance is
+retained, maybe as low as 85%.
+So 90% would correspond to say
+0.10, kinda 10%.
+And so range of values
+from, you know, 90, 95,
+99, maybe as low as 85% of
+the variables contained would be a fairly typical range in values.
+Maybe 95 to 99
+is really the most
+common range of values that people use.
+For many data sets you'd be
+surprised, in order to retain
+99% of the variance, you can
+often reduce the dimension of
+the data significantly and still retain most of the variance.
+Because for most real life
+data says many features are
+just highly correlated, and so
+it turns out to be possible
+to compress the data a
+lot and still retain you
+know 99% of the variance
+or 95% of the variance. So how do you implement this?
+Well, here's one algorithm that you might use.
+You may start off, if you
+want to choose the value of
+k, we might start off with k equals 1.
+And then we run through PCA.
+You know, so we compute, you
+reduce, compute z1, z2, up to zm.
+Compute all of those x1
+approx and so on up to xm approx
+and then we check if 99% of the variance is retained.
+Then we're good and we use k equals 1.
+But if it isn't then what we'll do we'll next try K equals 2.
+And then we'll again
+run through this entire procedure and
+check, you know is this expression satisfied.
+Is this less than 0.01. And if not then we do this again.
+Let's try k equals 3,
+then try k equals 4,
+and so on until maybe
+we get up to k equals
+17 and we find 99% of
+the data have is retained and then
+we use k equals 17, right?
+That is one way
+to choose the smallest value
+of k, so that and 99% of the variance is retained.
+But as you can imagine,
+this procedure seems horribly inefficient
+we're trying k equals one, k equals two, we're doing all these calculations.
+Fortunately when you implement
+PCA it actually, in
+this step, it actually gives us
+a quantity that makes it
+much easier to compute these things as well.
+Specifically when you're calling
+SVD to get these
+matrices u, s, and d,
+when you're calling usvd on the
+covariance matrix sigma, it also
+gives us back this matrix
+S and what
+S is, is going to
+be a square matrix an N by N matrix in fact,
+that is
+diagonal.
+So is diagonal entries s one
+one, s two two, s
+three three down to s
+n n are going to
+be the only non-zero elements of
+this matrix, and everything off
+the diagonals is going to be zero.
+Okay?
+So those big O's that I'm drawing,
+by that what I mean is
+that everything off the diagonal
+of this matrix all of those
+entries there are going to be zeros.
+And so, what is possible
+to show, and I won't prove
+this here, and it turns out
+that for a given value of
+k, this quantity
+over here can be computed much more simply.
+And that quantity can be computed
+as one minus sum from
+i equals 1 through
+K of Sii divided by
+sum from I equals 1
+through N of Sii.
+So just to say that it words, or
+just to take another
+view of how to explain that,
+if K equals 3 let's say.
+What we're going to do to
+compute the numerator is sum
+from one--  I equals 1
+through 3 of of Sii, so just
+compute the sum of these first three elements.
+So that's the numerator.
+And then for the denominator, well that's
+the sum of all of these diagonal entries.
+And one minus the ratio of
+that, that gives me this
+quantity over here, that I've
+circled in blue.
+And so, what we can do
+is just test if this
+is less than or equal to 0.01.
+Or equivalently, we can test
+if the sum from
+i equals 1 through k, s-i-i
+divided by sum from i
+equals 1 through n, s-i-i
+if this is greater than or
+equal to 4.99, if you
+want to be sure that 99% of the variance is retained.
+And so what you can do
+is just slowly increase k,
+set k equals one, set k equals
+two, set k equals three and so
+on, and just test this quantity
+to see what is the
+smallest value of k that ensures that 99% of the variance is retained.
+And if you do
+this, then you need to call
+the SVD function only once.
+Because that gives you the
+S matrix and once you
+have the S matrix, you can
+then just keep on doing
+this calculation by increasing
+the value of K in the
+numerator and so you
+don't need keep to calling SVD over
+and over again to test out the different values of K.
+So this procedure is much more
+efficient, and this can
+allow you to select the
+value of K without needing
+to run PCA from scratch
+over and over. You just run SVD once, this
+gives you all of these diagonal numbers,
+all of these numbers S11, S22 down to SNN,
+and then you can
+just you know, vary K
+in this expression to find
+the smallest value of K, so
+that 99% of the variance is retained.
+So to summarize, the way
+that I often use, the
+way that I often choose K
+when I am using PCA for compression
+is I would call SVD once
+in the covariance matrix, and then
+I would use this formula and
+pick the smallest value of
+K for which this expression is satisfied.
+And by the way, even if you
+were to pick some different value
+of K, even if you were
+to pick the value of K
+manually, you know maybe you
+have a thousand dimensional data
+and I just want to choose K equals one hundred.
+Then, if you want to explain
+to others what you just did,
+a good way to explain the performance
+of your implementation of PCA to
+them, is actually to take
+this quantity and compute what
+this is, and that will
+tell you what was the percentage of variance retained.
+And if you report that number, then,
+you know, people that are familiar
+with PCA, and people can
+use this to get a
+good understanding of how well
+your hundred dimensional representation is
+approximating your original data
+set, because there's 99% of variance retained.
+That's really a measure of your
+square of construction error, that
+ratio being 0.01, just
+gives people a good intuitive
+sense of whether your implementation
+of PCA is finding a
+good approximation of your original data set.
+So hopefully, that gives you
+an efficient procedure for choosing
+the number K. For choosing
+what dimension to reduce your
+data to, and if
+you apply PCA to very
+high dimensional data sets, you know, to like
+a thousand dimensional data, very often,
+just because data sets tend
+to have highly correlated
+features, this is just a
+property of most of the data sets you see,
+you often find that PCA
+will be able to retain ninety nine
+per cent of the variance or say,
+ninety five ninety nine, some
+high fraction of the variance,
+even while compressing the data
+by a very large factor.

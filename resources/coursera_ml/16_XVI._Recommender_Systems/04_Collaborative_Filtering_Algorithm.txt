@@ -1,0 +1,239 @@
+In the last couple videos, we
+talked about the ideas of
+how, first, if you're
+given features for movies, you
+can use that to learn parameters data for users.
+And second, if you're given parameters for the users,
+you can use that to learn features for the movies.
+In this video we're going
+to take those ideas and put
+them together to come up
+with a collaborative filtering algorithm.
+So one of the things we worked
+out earlier is that if
+you have features for the
+movies then you can solve
+this minimization problem to find
+the parameters theta for your users.
+And then we also
+worked that out, if you
+are given the parameters theta,
+you can also use that to
+estimate the features x, and
+you can do that by solving this minimization problem.
+So one thing you
+could do is actually go back and forth.
+Maybe randomly initialize the parameters
+and then solve for theta,
+solve for x, solve for theta,
+solve for x. But, it
+turns out that there is a
+more efficient algorithm that doesn't
+need to go back and forth
+between the x's and the
+thetas, but that can solve
+for theta and x simultaneously.
+And here it is. What we are going to do, is basically take
+both of these optimization objectives, and
+put them into the same objective.
+So I'm going to define the
+new optimization objective j, which
+is a cost function, that
+is a function of my features
+x and a function
+of my parameters theta.
+And, it's basically the two optimization objectives
+I had on top, but I put together.
+So, in order to
+explain this, first, I want to point out that this
+term over here, this squared
+error term, is the same
+as this squared error term and the
+summations look a little bit
+different, but let's see what the summations are really doing.
+The first summation is sum
+over all users J and
+then sum over all movies rated by that user.
+So, this is really summing over all
+pairs IJ, that correspond
+to a movie that was rated by a user.
+Sum over J says, for every
+user, the sum of
+all the movies rated by that user.
+This summation down here, just does things in the opposite order.
+This says for every movie
+I, sum over all
+the users J that have
+rated that movie and so, you
+know these summations, both of these
+are just summations over all pairs
+ij for which
+r of i J is equal to 1.
+It's just something over all the
+user movie pairs for which you have a rating.
+and so those two terms
+up there is just
+exactly this first term, and
+I've just written the summation here explicitly,
+where I'm just saying the sum
+of all pairs IJ, such that
+RIJ is equal to 1.
+So what we're going
+to do is define a
+combined optimization objective that
+we want to minimize in order
+to solve simultaneously for x and theta.
+And then the other terms in
+the optimization objective are this,
+which is a regularization in terms of theta.
+So that came down here and
+the final piece is this
+term which is
+my optimization objective for
+the x's and that became this.
+And this optimization objective
+j actually has an interesting property
+that if you were to hold
+the x's constant and just
+minimize with respect to the thetas then
+you'd be solving exactly this problem,
+whereas if you were to do
+the opposite, if you were to
+hold the thetas constant, and minimize
+j only with respect to
+the x's, then it becomes equivalent to this.
+Because either this term
+or this term is constant if
+you're minimizing only the respective x's or only respective thetas.
+So here's an optimization
+objective that puts together my
+cost functions in terms of x and in terms of theta.
+And in order to
+come up with just one
+optimization problem, what we're going
+to do, is treat this
+cost function, as a
+function of my features
+x and of my user
+pro user parameters data and
+just minimize this whole thing, as
+a function of both the
+Xs and a function of the thetas.
+And really the only difference
+between this and the older
+algorithm is that, instead
+of going back and forth, previously
+we talked about minimizing with respect
+to theta then minimizing with respect to x,
+whereas minimizing with respect to theta,
+minimizing with respect to x and so on.
+In this new version instead of
+sequentially going between the
+2 sets of parameters x and theta,
+what we are going to do
+is just minimize with respect
+to both sets of parameters simultaneously.
+Finally one last detail
+is that when we're learning the features this way.
+Previously we have been using
+this convention that
+we have a feature x0 equals
+one that corresponds to an interceptor.
+When we are using this
+sort of formalism where we're are actually learning the features,
+we are actually going to do away with this convention.
+And so the features we are going to learn x, will be in Rn.
+Whereas previously we had
+features x and Rn + 1 including the intercept term.
+By getting rid of x0 we now just have x in Rn.
+And so similarly, because the
+parameters theta is in
+the same dimension, we now
+also have theta in RN
+because if there's no
+x0, then there's no need
+parameter theta 0 as well.
+And the reason we do away
+with this convention is because
+we're now learning all the features, right?
+So there is no need
+to hard code the feature that is always equal to one.
+Because if the algorithm really wants
+a feature that is always equal
+to 1, it can choose to learn one for itself.
+So if the algorithm chooses,
+it can set the feature X1 equals 1.
+So there's no need
+to hard code the feature of
+001, the algorithm now has
+the flexibility to just learn it by itself. So, putting
+everything together, here is
+our collaborative filtering algorithm.
+first we are going to
+initialize x and
+theta to small random values.
+And this is a little bit
+like neural network training, where there
+we were also initializing all the parameters of a neural network to small random values.
+Next we're then going
+to minimize the cost function using
+great intercepts or one of the advance optimization algorithms.
+So, if you take derivatives you
+find that the great intercept
+like these and so this
+term here is the
+partial derivative of the cost function,
+I'm not going to write that out,
+with respect to the feature
+value Xik and similarly
+this term here is also
+a partial derivative value of
+the cost function with respect to the parameter
+theta that we're minimizing.
+And just as a reminder, in
+this formula that we no
+longer have this X0 equals
+1 and so we have
+that x is in Rn and theta is a Rn.
+In this new formalism, we're regularizing
+every one of our perimeters theta, you know, every one of our parameters Xn.
+There's no longer the special
+case theta zero, which was
+regularized differently, or which
+was not regularized compared to
+the parameters theta 1 down to theta.
+So there is now no longer a
+theta 0, which is why
+in these updates, I did not
+break out a special case for k equals 0.
+So we then use gradient descent
+to minimize the cost function
+j with respect to the
+features x and with respect to the parameters theta.
+And finally, given a
+user, if a user
+has some parameters, theta, and
+if there's a movie with
+some sort of learned features x,
+we would then predict that that
+movie would be given a
+star rating by that user
+of theta transpose j. Or
+just to fill those in,
+then we're saying that if user
+J has not yet
+rated movie I, then
+what we do is predict that
+user J is going to
+rate movie I according to
+theta J transpose Xi.
+So that's the collaborative
+filtering algorithm and if
+you implement this algorithm you actually get a pretty
+decent algorithm that will simultaneously
+learn good features for hopefully
+all the movies as well as
+learn parameters for all the
+users and hopefully give
+pretty good predictions for how
+different users will rate different movies that they have not yet rated

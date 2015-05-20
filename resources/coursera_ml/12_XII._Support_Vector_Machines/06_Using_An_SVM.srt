@@ -1,0 +1,2473 @@
+1
+00:00:00,140 --> 00:00:01,310
+So far we've been talking about
+
+2
+00:00:01,640 --> 00:00:03,290
+SVMs in a fairly abstract level.
+
+3
+00:00:03,980 --> 00:00:05,030
+In this video I'd like to
+
+4
+00:00:05,200 --> 00:00:06,460
+talk about what you actually need
+
+5
+00:00:06,740 --> 00:00:09,410
+to do in order to run or to use an SVM.
+
+6
+00:00:11,320 --> 00:00:12,300
+The support vector machine algorithm
+
+7
+00:00:12,850 --> 00:00:14,870
+poses a particular optimization problem.
+
+8
+00:00:15,530 --> 00:00:16,940
+But as I briefly mentioned in
+
+9
+00:00:17,120 --> 00:00:18,150
+an earlier video, I really
+
+10
+00:00:18,380 --> 00:00:20,570
+do not recommend writing your
+
+11
+00:00:20,630 --> 00:00:22,810
+own software to solve for the parameter's theta yourself.
+
+12
+00:00:23,950 --> 00:00:26,110
+So just as today, very
+
+13
+00:00:26,420 --> 00:00:27,730
+few of us, or maybe almost essentially
+
+14
+00:00:28,090 --> 00:00:29,400
+none of us would think of
+
+15
+00:00:29,530 --> 00:00:31,680
+writing code ourselves to invert a matrix
+
+16
+00:00:31,950 --> 00:00:33,940
+or take a square root of a number, and so on.
+
+17
+00:00:34,190 --> 00:00:36,570
+We just, you know, call some library function to do that.
+
+18
+00:00:36,700 --> 00:00:38,090
+In the same way, the
+
+19
+00:00:38,850 --> 00:00:40,310
+software for solving the SVM
+
+20
+00:00:40,620 --> 00:00:42,200
+optimization problem is very
+
+21
+00:00:42,440 --> 00:00:43,880
+complex, and there have
+
+22
+00:00:43,990 --> 00:00:44,960
+been researchers that have been
+
+23
+00:00:45,110 --> 00:00:47,560
+doing essentially numerical optimization research for many years.
+
+24
+00:00:47,850 --> 00:00:48,960
+So you come up with good
+
+25
+00:00:49,150 --> 00:00:50,550
+software libraries and good software
+
+26
+00:00:50,930 --> 00:00:52,270
+packages to do this.
+
+27
+00:00:52,470 --> 00:00:53,480
+And then strongly recommend just using
+
+28
+00:00:53,860 --> 00:00:55,260
+one of the highly optimized software
+
+29
+00:00:55,710 --> 00:00:57,780
+libraries rather than trying to implement something yourself.
+
+30
+00:00:58,730 --> 00:01:00,680
+And there are lots of good software libraries out there.
+
+31
+00:01:00,970 --> 00:01:02,060
+The two that I happen to
+
+32
+00:01:02,210 --> 00:01:03,220
+use the most often are the
+
+33
+00:01:03,400 --> 00:01:05,000
+linear SVM but there are really
+
+34
+00:01:05,410 --> 00:01:06,860
+lots of good software libraries for
+
+35
+00:01:07,030 --> 00:01:08,430
+doing this that you know, you can
+
+36
+00:01:08,600 --> 00:01:10,190
+link to many of the
+
+37
+00:01:10,450 --> 00:01:11,860
+major programming languages that you
+
+38
+00:01:11,950 --> 00:01:14,410
+may be using to code up learning algorithm.
+
+39
+00:01:15,280 --> 00:01:16,460
+Even though you shouldn't be writing
+
+40
+00:01:16,730 --> 00:01:18,330
+your own SVM optimization software,
+
+41
+00:01:19,120 --> 00:01:20,680
+there are a few things you need to do, though.
+
+42
+00:01:21,420 --> 00:01:23,130
+First is to come up
+
+43
+00:01:23,130 --> 00:01:24,230
+with with some choice of the
+
+44
+00:01:24,320 --> 00:01:25,640
+parameter's C. We talked a
+
+45
+00:01:25,940 --> 00:01:26,930
+little bit of the bias/variance properties of
+
+46
+00:01:27,040 --> 00:01:28,850
+this in the earlier video.
+
+47
+00:01:30,290 --> 00:01:31,480
+Second, you also need to
+
+48
+00:01:31,630 --> 00:01:33,040
+choose the kernel or the
+
+49
+00:01:33,410 --> 00:01:34,880
+similarity function that you want to use.
+
+50
+00:01:35,730 --> 00:01:37,080
+So one choice might
+
+51
+00:01:37,280 --> 00:01:38,980
+be if we decide not to use any kernel.
+
+52
+00:01:40,560 --> 00:01:41,510
+And the idea of no kernel
+
+53
+00:01:41,910 --> 00:01:43,600
+is also called a linear kernel.
+
+54
+00:01:44,130 --> 00:01:45,320
+So if someone says, I use
+
+55
+00:01:45,530 --> 00:01:46,760
+an SVM with a linear kernel,
+
+56
+00:01:47,180 --> 00:01:48,330
+what that means is you know, they use
+
+57
+00:01:48,490 --> 00:01:50,690
+an SVM without using without
+
+58
+00:01:51,020 --> 00:01:52,250
+using a kernel and it
+
+59
+00:01:52,360 --> 00:01:53,410
+was a version of the SVM
+
+60
+00:01:54,120 --> 00:01:55,870
+that just uses theta transpose X, right,
+
+61
+00:01:56,140 --> 00:01:57,620
+that predicts 1 theta 0
+
+62
+00:01:57,850 --> 00:01:59,420
+plus theta 1 X1
+
+63
+00:01:59,740 --> 00:02:01,000
+plus so on plus theta
+
+64
+00:02:01,690 --> 00:02:04,160
+N, X N is greater than equals 0.
+
+65
+00:02:05,520 --> 00:02:06,830
+This term linear kernel, you
+
+66
+00:02:06,950 --> 00:02:08,250
+can think of this as you know this
+
+67
+00:02:08,480 --> 00:02:09,290
+is the version of the SVM
+
+68
+00:02:10,340 --> 00:02:12,320
+that just gives you a standard linear classifier.
+
+69
+00:02:13,940 --> 00:02:14,700
+So that would be one
+
+70
+00:02:15,040 --> 00:02:16,160
+reasonable choice for some problems,
+
+71
+00:02:17,130 --> 00:02:18,080
+and you know, there would be many software
+
+72
+00:02:18,470 --> 00:02:20,900
+libraries, like linear, was
+
+73
+00:02:21,210 --> 00:02:22,320
+one example, out of many,
+
+74
+00:02:22,840 --> 00:02:23,880
+one example of a software library
+
+75
+00:02:24,560 --> 00:02:25,620
+that can train an SVM
+
+76
+00:02:25,980 --> 00:02:27,410
+without using a kernel, also
+
+77
+00:02:27,760 --> 00:02:29,470
+called a linear kernel.
+
+78
+00:02:29,850 --> 00:02:31,340
+So, why would you want to do this?
+
+79
+00:02:31,410 --> 00:02:32,820
+If you have a large number of
+
+80
+00:02:33,150 --> 00:02:34,280
+features, if N is
+
+81
+00:02:34,430 --> 00:02:37,800
+large, and M the
+
+82
+00:02:37,990 --> 00:02:39,590
+number of training examples is
+
+83
+00:02:39,670 --> 00:02:41,050
+small, then you know
+
+84
+00:02:41,230 --> 00:02:42,300
+you have a huge number of
+
+85
+00:02:42,360 --> 00:02:43,630
+features that if X, this is
+
+86
+00:02:43,710 --> 00:02:45,850
+an X is an Rn, Rn +1.
+
+87
+00:02:46,010 --> 00:02:46,940
+So if you have a
+
+88
+00:02:47,080 --> 00:02:48,700
+huge number of features already, with
+
+89
+00:02:48,800 --> 00:02:50,540
+a small training set, you know, maybe you
+
+90
+00:02:50,610 --> 00:02:51,430
+want to just fit a linear
+
+91
+00:02:51,710 --> 00:02:52,890
+decision boundary and not try
+
+92
+00:02:53,060 --> 00:02:54,420
+to fit a very complicated nonlinear
+
+93
+00:02:54,860 --> 00:02:56,980
+function, because might not have enough data.
+
+94
+00:02:57,560 --> 00:02:59,330
+And you might risk overfitting, if
+
+95
+00:02:59,470 --> 00:03:00,530
+you're trying to fit a very complicated function
+
+96
+00:03:01,540 --> 00:03:03,220
+in a very high dimensional feature space,
+
+97
+00:03:03,980 --> 00:03:04,990
+but if your training set sample
+
+98
+00:03:05,040 --> 00:03:07,120
+is small. So this
+
+99
+00:03:07,340 --> 00:03:08,600
+would be one reasonable setting where
+
+100
+00:03:08,740 --> 00:03:09,950
+you might decide to just
+
+101
+00:03:10,700 --> 00:03:11,960
+not use a kernel, or
+
+102
+00:03:12,250 --> 00:03:15,580
+equivalents to use what's called a linear kernel.
+
+103
+00:03:15,740 --> 00:03:16,740
+A second choice for the kernel that
+
+104
+00:03:16,820 --> 00:03:18,010
+you might make, is this Gaussian
+
+105
+00:03:18,370 --> 00:03:19,920
+kernel, and this is what we had previously.
+
+106
+00:03:21,270 --> 00:03:22,350
+And if you do this, then the
+
+107
+00:03:22,440 --> 00:03:23,130
+other choice you need to make
+
+108
+00:03:23,420 --> 00:03:25,980
+is to choose this parameter sigma squared
+
+109
+00:03:26,850 --> 00:03:29,800
+when we also talk a little bit about the bias variance tradeoffs
+
+110
+00:03:30,820 --> 00:03:32,360
+of how, if sigma squared is
+
+111
+00:03:32,600 --> 00:03:33,890
+large, then you tend
+
+112
+00:03:34,160 --> 00:03:35,580
+to have a higher bias, lower
+
+113
+00:03:35,770 --> 00:03:37,650
+variance classifier, but if
+
+114
+00:03:37,800 --> 00:03:39,700
+sigma squared is small, then you
+
+115
+00:03:40,060 --> 00:03:42,360
+have a higher variance, lower bias classifier.
+
+116
+00:03:43,940 --> 00:03:45,350
+So when would you choose a Gaussian kernel?
+
+117
+00:03:46,210 --> 00:03:48,050
+Well, if your omission
+
+118
+00:03:48,310 --> 00:03:49,540
+of features X, I mean
+
+119
+00:03:49,820 --> 00:03:51,370
+Rn, and if N
+
+120
+00:03:51,570 --> 00:03:53,890
+is small, and, ideally, you know,
+
+121
+00:03:55,660 --> 00:03:57,110
+if n is large, right,
+
+122
+00:03:58,470 --> 00:04:00,170
+so that's if, you know, we have
+
+123
+00:04:00,550 --> 00:04:02,340
+say, a two-dimensional training set,
+
+124
+00:04:03,130 --> 00:04:04,880
+like the example I drew earlier.
+
+125
+00:04:05,470 --> 00:04:08,320
+So n is equal to 2, but we have a pretty large training set.
+
+126
+00:04:08,680 --> 00:04:09,770
+So, you know, I've drawn in a
+
+127
+00:04:09,950 --> 00:04:10,890
+fairly large number of training examples,
+
+128
+00:04:11,650 --> 00:04:12,410
+then maybe you want to use
+
+129
+00:04:12,540 --> 00:04:14,400
+a kernel to fit a more
+
+130
+00:04:14,910 --> 00:04:16,260
+complex nonlinear decision boundary,
+
+131
+00:04:16,650 --> 00:04:18,750
+and the Gaussian kernel would be a fine way to do this.
+
+132
+00:04:19,480 --> 00:04:20,610
+I'll say more towards the end
+
+133
+00:04:20,720 --> 00:04:22,570
+of the video, a little bit
+
+134
+00:04:22,660 --> 00:04:23,760
+more about when you might choose a
+
+135
+00:04:23,970 --> 00:04:26,310
+linear kernel, a Gaussian kernel and so on.
+
+136
+00:04:27,860 --> 00:04:29,740
+But if concretely, if you
+
+137
+00:04:30,040 --> 00:04:31,210
+decide to use a Gaussian
+
+138
+00:04:31,720 --> 00:04:33,910
+kernel, then here's what you need to do.
+
+139
+00:04:35,380 --> 00:04:36,550
+Depending on what support vector machine
+
+140
+00:04:37,280 --> 00:04:38,990
+software package you use, it
+
+141
+00:04:39,100 --> 00:04:40,960
+may ask you to implement a
+
+142
+00:04:41,070 --> 00:04:42,200
+kernel function, or to implement
+
+143
+00:04:43,060 --> 00:04:43,880
+the similarity function.
+
+144
+00:04:45,020 --> 00:04:46,750
+So if you're using an
+
+145
+00:04:47,010 --> 00:04:49,820
+octave or MATLAB implementation of
+
+146
+00:04:50,000 --> 00:04:50,720
+an SVM, it may ask you
+
+147
+00:04:50,810 --> 00:04:52,560
+to provide a function to
+
+148
+00:04:52,690 --> 00:04:54,680
+compute a particular feature of the kernel.
+
+149
+00:04:55,110 --> 00:04:56,480
+So this is really computing f
+
+150
+00:04:56,770 --> 00:04:57,890
+subscript i for one
+
+151
+00:04:58,220 --> 00:04:59,560
+particular value of i, where
+
+152
+00:05:00,570 --> 00:05:02,310
+f here is just a
+
+153
+00:05:02,330 --> 00:05:03,570
+single real number, so maybe
+
+154
+00:05:03,840 --> 00:05:05,060
+I should move this better written
+
+155
+00:05:05,250 --> 00:05:07,230
+f(i), but what you
+
+156
+00:05:07,510 --> 00:05:08,130
+need to do is to write a kernel
+
+157
+00:05:08,480 --> 00:05:09,530
+function that takes this input, you know,
+
+158
+00:05:10,610 --> 00:05:11,910
+a training example or a
+
+159
+00:05:12,020 --> 00:05:13,140
+test example whatever it takes
+
+160
+00:05:13,280 --> 00:05:14,640
+in some vector X and takes
+
+161
+00:05:14,990 --> 00:05:16,220
+as input one of the
+
+162
+00:05:16,370 --> 00:05:18,270
+landmarks and but
+
+163
+00:05:18,880 --> 00:05:20,750
+only I've come down X1 and
+
+164
+00:05:20,950 --> 00:05:21,810
+X2 here, because the
+
+165
+00:05:21,900 --> 00:05:23,750
+landmarks are really training examples as well.
+
+166
+00:05:24,470 --> 00:05:26,160
+But what you
+
+167
+00:05:26,400 --> 00:05:27,490
+need to do is write software that
+
+168
+00:05:27,670 --> 00:05:28,960
+takes this input, you know, X1, X2
+
+169
+00:05:29,150 --> 00:05:30,320
+and computes this sort
+
+170
+00:05:30,580 --> 00:05:31,950
+of similarity function between them
+
+171
+00:05:32,530 --> 00:05:33,470
+and return a real number.
+
+172
+00:05:36,180 --> 00:05:37,430
+And so what some support vector machine
+
+173
+00:05:37,580 --> 00:05:39,040
+packages do is expect
+
+174
+00:05:39,510 --> 00:05:40,860
+you to provide this kernel function
+
+175
+00:05:41,410 --> 00:05:44,580
+that take this input you know, X1, X2 and returns a real number.
+
+176
+00:05:45,580 --> 00:05:46,460
+And then it will take it from there
+
+177
+00:05:46,850 --> 00:05:49,070
+and it will automatically generate all the features, and
+
+178
+00:05:49,410 --> 00:05:51,480
+so automatically take X and
+
+179
+00:05:51,600 --> 00:05:53,370
+map it to f1,
+
+180
+00:05:53,420 --> 00:05:54,420
+f2, down to f(m) using
+
+181
+00:05:54,750 --> 00:05:56,200
+this function that you write, and
+
+182
+00:05:56,310 --> 00:05:57,190
+generate all the features and
+
+183
+00:05:57,650 --> 00:05:59,080
+train the support vector machine from there.
+
+184
+00:05:59,870 --> 00:06:00,800
+But sometimes you do need to
+
+185
+00:06:00,880 --> 00:06:04,710
+provide this function yourself.
+
+186
+00:06:05,680 --> 00:06:06,770
+Other if you are using the Gaussian kernel, some SVM implementations will also include the Gaussian kernel
+
+187
+00:06:06,980 --> 00:06:09,950
+and a
+
+188
+00:06:10,040 --> 00:06:10,990
+few other kernels as well, since
+
+189
+00:06:11,230 --> 00:06:13,580
+the Gaussian kernel is probably the most common kernel.
+
+190
+00:06:14,880 --> 00:06:16,290
+Gaussian and linear kernels are
+
+191
+00:06:16,380 --> 00:06:18,210
+really the two most popular kernels by far.
+
+192
+00:06:19,130 --> 00:06:20,230
+Just one implementational note.
+
+193
+00:06:20,750 --> 00:06:21,820
+If you have features of very
+
+194
+00:06:22,080 --> 00:06:23,620
+different scales, it is important
+
+195
+00:06:24,700 --> 00:06:26,270
+to perform feature scaling before
+
+196
+00:06:26,600 --> 00:06:27,780
+using the Gaussian kernel.
+
+197
+00:06:28,580 --> 00:06:29,180
+And here's why.
+
+198
+00:06:30,150 --> 00:06:31,600
+If you imagine the computing
+
+199
+00:06:32,290 --> 00:06:33,570
+the norm between X and
+
+200
+00:06:33,790 --> 00:06:34,890
+l, right, so this term here,
+
+201
+00:06:35,390 --> 00:06:37,150
+and the numerator term over there.
+
+202
+00:06:38,300 --> 00:06:39,780
+What this is doing, the norm
+
+203
+00:06:40,070 --> 00:06:40,930
+between X and l, that's really
+
+204
+00:06:41,130 --> 00:06:42,140
+saying, you know, let's compute the vector
+
+205
+00:06:42,450 --> 00:06:43,290
+V, which is equal to
+
+206
+00:06:43,410 --> 00:06:44,980
+X minus l. And then
+
+207
+00:06:45,250 --> 00:06:47,940
+let's compute the norm does
+
+208
+00:06:48,130 --> 00:06:49,080
+vector V, which is the
+
+209
+00:06:49,170 --> 00:06:50,510
+difference between X. So the
+
+210
+00:06:50,580 --> 00:06:51,510
+norm of V is really
+
+211
+00:06:53,360 --> 00:06:54,140
+equal to V1 squared
+
+212
+00:06:54,250 --> 00:06:55,610
+plus V2 squared plus
+
+213
+00:06:55,830 --> 00:06:58,290
+dot dot dot, plus Vn squared.
+
+214
+00:06:58,900 --> 00:07:00,320
+Because here X is in
+
+215
+00:07:01,060 --> 00:07:02,200
+Rn, or Rn
+
+216
+00:07:02,290 --> 00:07:05,180
+plus 1, but I'm going to ignore, you know, X0.
+
+217
+00:07:06,540 --> 00:07:08,420
+So, let's pretend X is
+
+218
+00:07:08,510 --> 00:07:10,800
+an Rn, square on
+
+219
+00:07:10,950 --> 00:07:12,320
+the left side is what makes this correct.
+
+220
+00:07:12,570 --> 00:07:14,090
+So this is equal
+
+221
+00:07:14,400 --> 00:07:16,120
+to that, right?
+
+222
+00:07:17,210 --> 00:07:18,710
+And so written differently, this is
+
+223
+00:07:18,850 --> 00:07:20,100
+going to be X1 minus l1
+
+224
+00:07:20,290 --> 00:07:22,600
+squared, plus x2
+
+225
+00:07:22,910 --> 00:07:24,590
+minus l2 squared, plus
+
+226
+00:07:24,910 --> 00:07:26,580
+dot dot dot plus Xn minus
+
+227
+00:07:27,130 --> 00:07:28,540
+ln squared.
+
+228
+00:07:29,720 --> 00:07:30,790
+And now if your features
+
+229
+00:07:31,850 --> 00:07:33,460
+take on very different ranges of value.
+
+230
+00:07:33,940 --> 00:07:35,150
+So take a housing
+
+231
+00:07:35,360 --> 00:07:37,180
+prediction, for example, if
+
+232
+00:07:38,020 --> 00:07:40,490
+your data is some data about houses.
+
+233
+00:07:41,420 --> 00:07:43,000
+And if X is in the
+
+234
+00:07:43,140 --> 00:07:44,660
+range of thousands of square
+
+235
+00:07:44,950 --> 00:07:47,190
+feet, for the
+
+236
+00:07:48,010 --> 00:07:48,840
+first feature, X1.
+
+237
+00:07:49,700 --> 00:07:51,630
+But if your second feature, X2 is the number of bedrooms.
+
+238
+00:07:52,540 --> 00:07:53,610
+So if this is in the
+
+239
+00:07:53,730 --> 00:07:56,720
+range of one to five bedrooms, then
+
+240
+00:07:57,810 --> 00:07:59,320
+X1 minus l1 is going to be huge.
+
+241
+00:07:59,780 --> 00:08:00,820
+This could be like a thousand squared,
+
+242
+00:08:01,000 --> 00:08:02,880
+whereas X2 minus l2
+
+243
+00:08:03,200 --> 00:08:04,620
+is going to be much smaller and if
+
+244
+00:08:04,750 --> 00:08:06,800
+that's the case, then in this term,
+
+245
+00:08:08,320 --> 00:08:09,660
+those distances will be almost
+
+246
+00:08:10,060 --> 00:08:12,060
+essentially dominated by the
+
+247
+00:08:12,570 --> 00:08:13,280
+sizes of the houses
+
+248
+00:08:14,390 --> 00:08:15,760
+and the number of bathrooms would be largely ignored.
+
+249
+00:08:16,950 --> 00:08:18,060
+As so as, to avoid this in
+
+250
+00:08:18,230 --> 00:08:19,070
+order to make a machine work
+
+251
+00:08:19,360 --> 00:08:21,890
+well, do perform future scaling.
+
+252
+00:08:23,420 --> 00:08:24,830
+And that will sure that the SVM
+
+253
+00:08:25,810 --> 00:08:27,020
+gives, you know, comparable amount of attention
+
+254
+00:08:27,950 --> 00:08:28,870
+to all of your different features,
+
+255
+00:08:29,190 --> 00:08:30,450
+and not just to in
+
+256
+00:08:30,600 --> 00:08:31,870
+this example to size of
+
+257
+00:08:32,150 --> 00:08:33,440
+houses were big movement here the features.
+
+258
+00:08:34,700 --> 00:08:35,810
+When you try a support vector
+
+259
+00:08:36,110 --> 00:08:38,760
+machines chances are by
+
+260
+00:08:38,970 --> 00:08:40,000
+far the two most common
+
+261
+00:08:40,460 --> 00:08:41,750
+kernels you use will
+
+262
+00:08:41,850 --> 00:08:43,120
+be the linear kernel, meaning no
+
+263
+00:08:43,320 --> 00:08:45,600
+kernel, or the Gaussian kernel that we talked about.
+
+264
+00:08:46,520 --> 00:08:47,390
+And just one note of warning
+
+265
+00:08:47,900 --> 00:08:49,070
+which is that not all similarity
+
+266
+00:08:49,580 --> 00:08:50,590
+functions you might come up
+
+267
+00:08:50,770 --> 00:08:52,520
+with are valid kernels.
+
+268
+00:08:53,450 --> 00:08:54,840
+And the Gaussian kernel and the linear
+
+269
+00:08:55,090 --> 00:08:56,410
+kernel and other kernels that you
+
+270
+00:08:56,710 --> 00:08:57,850
+sometimes others will use, all
+
+271
+00:08:58,030 --> 00:08:59,840
+of them need to satisfy a technical condition.
+
+272
+00:09:00,380 --> 00:09:02,510
+It's called Mercer's Theorem and
+
+273
+00:09:02,630 --> 00:09:03,560
+the reason you need to this
+
+274
+00:09:03,710 --> 00:09:05,430
+is because support vector machine
+
+275
+00:09:06,380 --> 00:09:08,140
+algorithms or implementations of the
+
+276
+00:09:08,480 --> 00:09:09,560
+SVM have lots of clever
+
+277
+00:09:10,050 --> 00:09:11,380
+numerical optimization tricks.
+
+278
+00:09:12,110 --> 00:09:13,270
+In order to solve for the
+
+279
+00:09:13,340 --> 00:09:15,650
+parameter's theta efficiently and
+
+280
+00:09:16,590 --> 00:09:18,840
+in the original design envisaged,
+
+281
+00:09:19,470 --> 00:09:21,010
+those are decision made to restrict
+
+282
+00:09:21,540 --> 00:09:22,900
+our attention only to kernels
+
+283
+00:09:23,510 --> 00:09:25,860
+that satisfy this technical condition called Mercer's Theorem.
+
+284
+00:09:26,280 --> 00:09:27,360
+And what that does is, that
+
+285
+00:09:27,570 --> 00:09:28,540
+makes sure that all of these
+
+286
+00:09:28,820 --> 00:09:30,270
+SVM packages, all of these SVM
+
+287
+00:09:30,500 --> 00:09:32,210
+software packages can use the
+
+288
+00:09:32,310 --> 00:09:34,740
+large class of optimizations and
+
+289
+00:09:35,280 --> 00:09:37,470
+get the parameter theta very quickly.
+
+290
+00:09:39,320 --> 00:09:40,340
+So, what most people end up doing
+
+291
+00:09:40,840 --> 00:09:42,470
+is using either the linear
+
+292
+00:09:42,610 --> 00:09:44,210
+or Gaussian kernel, but there
+
+293
+00:09:44,430 --> 00:09:45,610
+are a few other kernels that also
+
+294
+00:09:45,940 --> 00:09:47,460
+satisfy Mercer's theorem and
+
+295
+00:09:47,560 --> 00:09:48,690
+that you may run across other
+
+296
+00:09:48,850 --> 00:09:50,050
+people using, although I personally
+
+297
+00:09:50,880 --> 00:09:53,780
+end up using other kernels you know, very, very rarely, if at all.
+
+298
+00:09:54,160 --> 00:09:56,990
+Just to mention some of the other kernels that you may run across.
+
+299
+00:09:57,990 --> 00:10:00,300
+One is the polynomial kernel.
+
+300
+00:10:01,570 --> 00:10:03,350
+And for that the similarity between
+
+301
+00:10:03,800 --> 00:10:05,520
+X and l is
+
+302
+00:10:05,730 --> 00:10:06,760
+defined as, there are
+
+303
+00:10:06,830 --> 00:10:07,880
+a lot of options, you can
+
+304
+00:10:08,640 --> 00:10:10,370
+take X transpose l squared.
+
+305
+00:10:10,960 --> 00:10:13,410
+So, here's one measure of how similar X and l are.
+
+306
+00:10:13,610 --> 00:10:14,930
+If X and l are very close with
+
+307
+00:10:15,500 --> 00:10:18,260
+each other, then the inner product will tend to be large.
+
+308
+00:10:20,200 --> 00:10:21,870
+And so, you know, this is a slightly
+
+309
+00:10:23,080 --> 00:10:23,520
+unusual kernel.
+
+310
+00:10:24,000 --> 00:10:25,130
+That is not used that often, but
+
+311
+00:10:26,490 --> 00:10:29,190
+you may run across some people using it.
+
+312
+00:10:30,050 --> 00:10:31,810
+This is one version of a polynomial kernel.
+
+313
+00:10:32,330 --> 00:10:35,090
+Another is X transpose l cubed.
+
+314
+00:10:36,690 --> 00:10:38,780
+These are all examples of the polynomial kernel.
+
+315
+00:10:39,040 --> 00:10:41,270
+X transpose l plus 1 cubed.
+
+316
+00:10:42,560 --> 00:10:43,620
+X transpose l plus maybe
+
+317
+00:10:43,910 --> 00:10:44,930
+a number different then one 5
+
+318
+00:10:44,970 --> 00:10:46,680
+and, you know, to the power of 4 and
+
+319
+00:10:47,700 --> 00:10:49,840
+so the polynomial kernel actually has two parameters.
+
+320
+00:10:50,610 --> 00:10:53,020
+One is, what number do you add over here?
+
+321
+00:10:53,520 --> 00:10:53,920
+It could be 0.
+
+322
+00:10:54,430 --> 00:10:58,660
+This is really plus 0 over there, as well as what's the degree of the polynomial over there.
+
+323
+00:10:58,680 --> 00:11:01,670
+So the degree power and these numbers.
+
+324
+00:11:02,250 --> 00:11:04,140
+And the more general form of the
+
+325
+00:11:04,280 --> 00:11:05,530
+polynomial kernel is X
+
+326
+00:11:05,720 --> 00:11:07,620
+transpose l, plus some
+
+327
+00:11:07,940 --> 00:11:11,510
+constant and then
+
+328
+00:11:11,800 --> 00:11:14,850
+to some degree in the
+
+329
+00:11:15,060 --> 00:11:16,720
+X1 and so both
+
+330
+00:11:16,940 --> 00:11:19,650
+of these are parameters for the polynomial kernel.
+
+331
+00:11:20,510 --> 00:11:22,820
+So the polynomial kernel almost always
+
+332
+00:11:23,350 --> 00:11:24,440
+or usually performs worse.
+
+333
+00:11:24,820 --> 00:11:25,950
+And the Gaussian kernel does not
+
+334
+00:11:26,270 --> 00:11:28,370
+use that much, but this is just something that you may run across.
+
+335
+00:11:29,320 --> 00:11:30,480
+Usually it is used only for
+
+336
+00:11:30,750 --> 00:11:31,710
+data where X and l
+
+337
+00:11:32,000 --> 00:11:33,180
+are all strictly non negative,
+
+338
+00:11:33,740 --> 00:11:34,720
+and so that ensures that these
+
+339
+00:11:34,910 --> 00:11:36,710
+inner products are never negative.
+
+340
+00:11:37,850 --> 00:11:40,010
+And this captures the intuition that
+
+341
+00:11:40,390 --> 00:11:41,340
+X and l are very similar
+
+342
+00:11:41,540 --> 00:11:44,110
+to each other, then maybe the inter product between them will be large.
+
+343
+00:11:44,420 --> 00:11:45,590
+They have some other properties as well
+
+344
+00:11:46,260 --> 00:11:48,080
+but people tend not to use it much.
+
+345
+00:11:49,130 --> 00:11:50,150
+And then, depending on what you're
+
+346
+00:11:50,260 --> 00:11:51,210
+doing, there are other, sort of more
+
+347
+00:11:52,330 --> 00:11:54,950
+esoteric kernels as well, that you may come across.
+
+348
+00:11:55,670 --> 00:11:57,180
+You know, there's a string kernel, this
+
+349
+00:11:57,340 --> 00:11:58,430
+is sometimes used if your
+
+350
+00:11:58,550 --> 00:12:01,350
+input data is text strings or other types of strings.
+
+351
+00:12:02,270 --> 00:12:02,940
+There are things like the
+
+352
+00:12:03,260 --> 00:12:06,000
+chi-square kernel, the histogram intersection kernel, and so on.
+
+353
+00:12:06,690 --> 00:12:08,420
+There are sort of more esoteric kernels that
+
+354
+00:12:08,660 --> 00:12:09,840
+you can use to measure similarity
+
+355
+00:12:10,760 --> 00:12:12,030
+between different objects.
+
+356
+00:12:12,660 --> 00:12:13,800
+So for example, if you're trying to
+
+357
+00:12:14,380 --> 00:12:15,840
+do some sort of text classification
+
+358
+00:12:16,170 --> 00:12:17,060
+problem, where the input
+
+359
+00:12:17,200 --> 00:12:19,300
+x is a string then
+
+360
+00:12:19,490 --> 00:12:20,490
+maybe we want to find the
+
+361
+00:12:20,550 --> 00:12:22,050
+similarity between two strings
+
+362
+00:12:22,430 --> 00:12:24,240
+using the string kernel, but I
+
+363
+00:12:24,520 --> 00:12:26,440
+personally you know end up very rarely,
+
+364
+00:12:26,990 --> 00:12:29,340
+if at all, using these more esoteric kernels.
+I
+
+365
+00:12:29,880 --> 00:12:30,970
+think I might have use the chi-square
+
+366
+00:12:31,170 --> 00:12:32,270
+kernel, may be once in
+
+367
+00:12:32,340 --> 00:12:33,670
+my life and the histogram kernel,
+
+368
+00:12:34,240 --> 00:12:35,580
+may be once or twice in my life. I've
+
+369
+00:12:35,630 --> 00:12:38,500
+actually never used the string kernel myself. But in
+
+370
+00:12:39,350 --> 00:12:41,560
+case you've run across this in other applications. You know, if
+
+371
+00:12:42,700 --> 00:12:43,640
+you do a quick web
+
+372
+00:12:43,860 --> 00:12:44,850
+search we do a quick Google
+
+373
+00:12:45,040 --> 00:12:46,000
+search or quick Bing search
+
+374
+00:12:46,590 --> 00:12:48,240
+you should have found definitions that these are the kernels as well.
+So
+
+375
+00:12:51,480 --> 00:12:55,680
+just two last details I want to talk about in this video. One in multiclass classification. So, you
+
+376
+00:12:56,370 --> 00:12:59,510
+have four classes or more generally
+
+377
+00:12:59,800 --> 00:13:01,880
+3 classes output some appropriate
+
+378
+00:13:02,530 --> 00:13:06,860
+decision bounday between your multiple classes. Most SVM, many SVM
+
+379
+00:13:07,220 --> 00:13:08,750
+packages already have built-in
+
+380
+00:13:09,030 --> 00:13:10,430
+multiclass classification functionality. So
+
+381
+00:13:11,100 --> 00:13:12,060
+if your using a pattern like
+
+382
+00:13:12,270 --> 00:13:13,320
+that, you just use the
+
+383
+00:13:13,540 --> 00:13:15,370
+both that functionality and that
+
+384
+00:13:15,490 --> 00:13:16,940
+should work fine. Otherwise,
+
+385
+00:13:17,790 --> 00:13:18,790
+one way to do this
+
+386
+00:13:19,000 --> 00:13:19,880
+is to use the one
+
+387
+00:13:20,000 --> 00:13:21,280
+versus all method that we
+
+388
+00:13:21,370 --> 00:13:23,690
+talked about when we are developing logistic regression. So
+
+389
+00:13:24,680 --> 00:13:25,410
+what you do is you trade
+
+390
+00:13:26,160 --> 00:13:27,550
+kSVM's if you have
+
+391
+00:13:27,700 --> 00:13:29,190
+k classes, one to distinguish
+
+392
+00:13:29,900 --> 00:13:31,060
+each of the classes from the rest.
+
+393
+00:13:31,850 --> 00:13:32,930
+And this would give you k parameter
+
+394
+00:13:33,520 --> 00:13:34,530
+vectors, so this will
+
+395
+00:13:34,680 --> 00:13:36,210
+give you, upi lmpw. theta 1, which
+
+396
+00:13:36,530 --> 00:13:38,170
+is trying to distinguish class y equals
+
+397
+00:13:38,630 --> 00:13:39,980
+one from all of
+
+398
+00:13:40,130 --> 00:13:41,340
+the other classes, then you
+
+399
+00:13:41,420 --> 00:13:42,910
+get the second parameter, vector
+
+400
+00:13:42,970 --> 00:13:43,910
+theta 2, which is what
+
+401
+00:13:44,020 --> 00:13:45,420
+you get when you, you know, have
+
+402
+00:13:45,720 --> 00:13:47,080
+y equals 2 as the positive class
+
+403
+00:13:47,460 --> 00:13:48,680
+and all the others as negative class
+
+404
+00:13:49,260 --> 00:13:50,550
+and so on up to
+
+405
+00:13:50,800 --> 00:13:52,400
+a parameter vector theta k,
+
+406
+00:13:52,750 --> 00:13:54,520
+which is the parameter vector for
+
+407
+00:13:54,600 --> 00:13:56,770
+distinguishing the final class
+
+408
+00:13:57,360 --> 00:13:59,380
+key from anything else, and
+
+409
+00:13:59,490 --> 00:14:00,590
+then lastly, this is exactly
+
+410
+00:14:01,270 --> 00:14:02,040
+the same as the one versus
+
+411
+00:14:02,420 --> 00:14:04,230
+all method we have for logistic regression.
+
+412
+00:14:04,760 --> 00:14:05,910
+Where we you just predict the class
+
+413
+00:14:06,390 --> 00:14:07,690
+i with the largest theta
+
+414
+00:14:08,030 --> 00:14:11,840
+transpose X.  So let's multiclass classification designate.
+
+415
+00:14:12,440 --> 00:14:13,750
+For the more common cases
+
+416
+00:14:14,300 --> 00:14:15,090
+that there is a good
+
+417
+00:14:15,180 --> 00:14:16,460
+chance that whatever software package
+
+418
+00:14:16,780 --> 00:14:18,010
+you use, you know, there will be
+
+419
+00:14:18,340 --> 00:14:19,650
+a reasonable chance that are already
+
+420
+00:14:19,920 --> 00:14:21,740
+have built in multiclass classification functionality,
+
+421
+00:14:21,920 --> 00:14:24,410
+and so you don't need to worry about this result.
+
+422
+00:14:25,280 --> 00:14:27,010
+Finally, we developed support vector
+
+423
+00:14:27,210 --> 00:14:28,650
+machines starting off with logistic
+
+424
+00:14:29,090 --> 00:14:31,500
+regression and then modifying the cost function a little bit.
+
+425
+00:14:31,910 --> 00:14:34,900
+The last thing we want to do in this video is, just say a little bit about.
+
+426
+00:14:35,550 --> 00:14:36,570
+when you will use one of
+
+427
+00:14:36,660 --> 00:14:38,840
+these two algorithms, so let's
+
+428
+00:14:39,080 --> 00:14:40,000
+say n is the number
+
+429
+00:14:40,160 --> 00:14:42,000
+of features and m is the number of training examples.
+
+430
+00:14:43,190 --> 00:14:45,250
+So, when should we use one algorithm versus the other?
+
+431
+00:14:47,130 --> 00:14:48,430
+Well, if n is larger
+
+432
+00:14:48,980 --> 00:14:50,140
+relative to your training set
+
+433
+00:14:50,360 --> 00:14:51,390
+size, so for example,
+
+434
+00:14:52,810 --> 00:14:53,990
+if you take a business
+
+435
+00:14:54,250 --> 00:14:55,180
+with a number of features this is
+
+436
+00:14:55,330 --> 00:14:56,870
+much larger than m and this
+
+437
+00:14:57,120 --> 00:14:58,210
+might be, for example, if you
+
+438
+00:14:58,320 --> 00:15:00,590
+have a text classification problem, where
+
+439
+00:15:01,550 --> 00:15:02,430
+you know, the dimension of the feature
+
+440
+00:15:02,700 --> 00:15:04,160
+vector is I don't know, maybe, 10 thousand.
+
+441
+00:15:05,370 --> 00:15:06,350
+And if your training
+
+442
+00:15:06,720 --> 00:15:08,290
+set size is maybe 10
+
+443
+00:15:08,510 --> 00:15:10,250
+you know, maybe, up to 1000.
+
+444
+00:15:10,500 --> 00:15:12,140
+So, imagine a spam
+
+445
+00:15:12,320 --> 00:15:14,250
+classification problem, where email
+
+446
+00:15:14,510 --> 00:15:15,840
+spam, where you have 10,000
+
+447
+00:15:16,150 --> 00:15:18,010
+features corresponding to 10,000 words
+
+448
+00:15:18,190 --> 00:15:19,550
+but you have, you know, maybe 10
+
+449
+00:15:19,780 --> 00:15:21,150
+training examples or maybe up to 1,000 examples.
+
+450
+00:15:22,450 --> 00:15:23,750
+So if n is large relative to
+
+451
+00:15:23,890 --> 00:15:25,090
+m, then what I
+
+452
+00:15:25,250 --> 00:15:26,480
+would usually do is use logistic
+
+453
+00:15:26,850 --> 00:15:27,990
+regression or use it
+
+454
+00:15:28,100 --> 00:15:29,030
+as the m without a kernel or
+
+455
+00:15:29,460 --> 00:15:30,790
+use it with a linear kernel.
+
+456
+00:15:31,620 --> 00:15:32,430
+Because, if you have so many
+
+457
+00:15:32,580 --> 00:15:33,830
+features with smaller training sets, you know,
+
+458
+00:15:34,530 --> 00:15:35,870
+a linear function will probably
+
+459
+00:15:36,330 --> 00:15:37,380
+do fine, and you don't have
+
+460
+00:15:37,640 --> 00:15:38,790
+really enough data to
+
+461
+00:15:38,910 --> 00:15:40,760
+fit a very complicated nonlinear function.
+
+462
+00:15:41,340 --> 00:15:42,410
+Now if is n is
+
+463
+00:15:42,520 --> 00:15:44,020
+small and m is
+
+464
+00:15:44,350 --> 00:15:45,890
+intermediate what I mean
+
+465
+00:15:45,940 --> 00:15:47,450
+by this is n is
+
+466
+00:15:48,040 --> 00:15:50,350
+maybe anywhere from 1 - 1000, 1 would be very small.
+
+467
+00:15:50,530 --> 00:15:51,470
+But maybe up to 1000
+
+468
+00:15:51,700 --> 00:15:54,270
+features and if
+
+469
+00:15:54,590 --> 00:15:56,180
+the number of training
+
+470
+00:15:56,330 --> 00:15:57,700
+examples is maybe anywhere from
+
+471
+00:15:58,210 --> 00:16:00,750
+10, you know, 10 to maybe up to 10,000 examples.
+
+472
+00:16:01,350 --> 00:16:03,160
+Maybe up to 50,000 examples.
+
+473
+00:16:03,630 --> 00:16:06,490
+If m is pretty big like maybe 10,000 but not a million.
+
+474
+00:16:06,760 --> 00:16:08,100
+Right? So if m is an
+
+475
+00:16:08,300 --> 00:16:09,950
+intermediate size then often
+
+476
+00:16:10,790 --> 00:16:12,980
+an SVM with a linear kernel will work well.
+
+477
+00:16:13,530 --> 00:16:14,580
+We talked about this early as
+
+478
+00:16:14,710 --> 00:16:15,800
+well, with the one concrete example,
+
+479
+00:16:16,350 --> 00:16:17,100
+this would be if you have
+
+480
+00:16:17,520 --> 00:16:19,720
+a two dimensional training set. So, if n
+
+481
+00:16:19,900 --> 00:16:21,010
+is equal to 2 where you
+
+482
+00:16:21,320 --> 00:16:23,710
+have, you know, drawing in a pretty large number of training examples.
+
+483
+00:16:24,710 --> 00:16:25,860
+So Gaussian kernel will do
+
+484
+00:16:26,130 --> 00:16:28,160
+a pretty good job separating positive and negative classes.
+
+485
+00:16:29,770 --> 00:16:30,890
+One third setting that's of
+
+486
+00:16:30,980 --> 00:16:32,420
+interest is if n is
+
+487
+00:16:32,520 --> 00:16:34,270
+small but m is large.
+
+488
+00:16:34,890 --> 00:16:36,560
+So if n is you know, again maybe
+
+489
+00:16:37,390 --> 00:16:39,280
+1 to 1000, could be larger.
+
+490
+00:16:40,200 --> 00:16:42,750
+But if m was, maybe
+
+491
+00:16:43,320 --> 00:16:46,400
+50,000 and greater to millions.
+
+492
+00:16:47,520 --> 00:16:50,270
+So, 50,000, a 100,000, million, trillion.
+
+493
+00:16:51,290 --> 00:16:54,020
+You have very very large training set sizes, right.
+
+494
+00:16:55,240 --> 00:16:56,160
+So if this is the case,
+
+495
+00:16:56,380 --> 00:16:57,630
+then a SVM of the
+
+496
+00:16:57,900 --> 00:16:59,850
+Gaussian Kernel will be somewhat slow to run.
+
+497
+00:17:00,160 --> 00:17:02,300
+Today's SVM packages, if you're
+
+498
+00:17:02,410 --> 00:17:04,900
+using a Gaussian Kernel, tend to struggle a bit.
+
+499
+00:17:05,050 --> 00:17:06,250
+If you have, you know, maybe 50
+
+500
+00:17:06,590 --> 00:17:07,530
+thousands okay, but if you
+
+501
+00:17:07,620 --> 00:17:10,250
+have a million training examples, maybe
+
+502
+00:17:10,450 --> 00:17:11,950
+or even a 100,000 with a
+
+503
+00:17:12,170 --> 00:17:13,730
+massive value of m. Today's
+
+504
+00:17:14,180 --> 00:17:15,590
+SVM packages are very good,
+
+505
+00:17:15,870 --> 00:17:17,100
+but they can still struggle
+
+506
+00:17:17,600 --> 00:17:18,400
+a little bit when you have a
+
+507
+00:17:19,010 --> 00:17:20,940
+massive, massive trainings that size when using a Gaussian Kernel.
+
+508
+00:17:22,050 --> 00:17:23,150
+So in that case, what I
+
+509
+00:17:23,350 --> 00:17:24,960
+would usually do is try to just
+
+510
+00:17:25,330 --> 00:17:26,660
+manually create have more
+
+511
+00:17:26,800 --> 00:17:28,600
+features and then use
+
+512
+00:17:28,930 --> 00:17:30,340
+logistic regression or an SVM
+
+513
+00:17:30,630 --> 00:17:32,060
+without the Kernel.
+
+514
+00:17:33,140 --> 00:17:34,030
+And in case you look at this
+
+515
+00:17:34,230 --> 00:17:35,900
+slide and you see logistic regression
+
+516
+00:17:36,460 --> 00:17:37,750
+or SVM without a kernel.
+
+517
+00:17:38,510 --> 00:17:39,890
+In both of these places, I
+
+518
+00:17:39,980 --> 00:17:41,750
+kind of paired them together. There's
+
+519
+00:17:42,060 --> 00:17:43,050
+a reason for that, is that
+
+520
+00:17:43,900 --> 00:17:45,640
+logistic regression and SVM without
+
+521
+00:17:46,000 --> 00:17:47,130
+the kernel, those are really pretty
+
+522
+00:17:47,350 --> 00:17:49,450
+similar algorithms and, you know, either
+
+523
+00:17:49,680 --> 00:17:51,170
+logistic regression or SVM
+
+524
+00:17:51,500 --> 00:17:53,230
+without a kernel will usually do
+
+525
+00:17:53,380 --> 00:17:54,780
+pretty similar things and give
+
+526
+00:17:54,900 --> 00:17:56,690
+pretty similar performance, but depending
+
+527
+00:17:57,060 --> 00:18:00,340
+on your implementational details, one may be more efficient than the other.
+
+528
+00:18:00,930 --> 00:18:02,220
+But, where one of
+
+529
+00:18:02,310 --> 00:18:03,530
+these algorithms applies, logistic
+
+530
+00:18:03,740 --> 00:18:05,190
+regression where SVM without a
+
+531
+00:18:05,420 --> 00:18:05,840
+kernel, the other one is to likely
+
+532
+00:18:06,650 --> 00:18:07,600
+to work pretty well as well.
+
+533
+00:18:08,540 --> 00:18:09,660
+But along with the power of
+
+534
+00:18:09,720 --> 00:18:11,610
+the SVM is when you
+
+535
+00:18:11,810 --> 00:18:14,100
+use different kernels to learn
+
+536
+00:18:14,430 --> 00:18:15,860
+complex nonlinear functions.
+
+537
+00:18:16,680 --> 00:18:20,300
+And this regime, you know, when you
+
+538
+00:18:20,550 --> 00:18:22,530
+have maybe up to 10,000 examples, maybe up to 50,000.
+
+539
+00:18:22,610 --> 00:18:25,010
+And your number of features,
+
+540
+00:18:26,580 --> 00:18:27,540
+this is reasonably large.
+
+541
+00:18:27,840 --> 00:18:29,230
+That's a very common regime
+
+542
+00:18:29,670 --> 00:18:30,910
+and maybe that's a regime
+
+543
+00:18:31,430 --> 00:18:33,830
+where a support vector machine with a kernel kernel will shine.
+
+544
+00:18:34,320 --> 00:18:35,640
+You can do things that are much
+
+545
+00:18:35,860 --> 00:18:39,850
+harder to do that will need logistic regression.
+
+546
+00:18:40,100 --> 00:18:40,930
+And finally, where do neural networks fit in?
+
+547
+00:18:41,120 --> 00:18:42,230
+Well for all of these
+
+548
+00:18:42,440 --> 00:18:43,890
+problems, for all of
+
+549
+00:18:43,960 --> 00:18:46,310
+these different regimes, a well
+
+550
+00:18:46,630 --> 00:18:49,110
+designed neural network is likely to work well as well.
+
+551
+00:18:50,320 --> 00:18:51,700
+The one disadvantage, or the one
+
+552
+00:18:51,830 --> 00:18:52,980
+reason that might not sometimes use
+
+553
+00:18:53,220 --> 00:18:54,690
+the neural network is that,
+
+554
+00:18:54,920 --> 00:18:56,080
+for some of these problems, the
+
+555
+00:18:56,180 --> 00:18:57,640
+neural network might be slow to train.
+
+556
+00:18:58,250 --> 00:18:59,080
+But if you have a very good
+
+557
+00:18:59,350 --> 00:19:01,190
+SVM implementation package, that
+
+558
+00:19:01,400 --> 00:19:04,120
+could run faster, quite a bit faster than your neural network.
+
+559
+00:19:05,130 --> 00:19:06,130
+And, although we didn't show this
+
+560
+00:19:06,350 --> 00:19:07,520
+earlier, it turns out that
+
+561
+00:19:07,630 --> 00:19:09,800
+the optimization problem that the
+
+562
+00:19:10,070 --> 00:19:11,120
+SVM has is a convex
+
+563
+00:19:12,320 --> 00:19:13,830
+optimization problem and so the
+
+564
+00:19:14,410 --> 00:19:15,800
+good SVM optimization software
+
+565
+00:19:16,160 --> 00:19:17,870
+packages will always find
+
+566
+00:19:18,240 --> 00:19:21,370
+the global minimum or something close to it.
+
+567
+00:19:21,720 --> 00:19:24,100
+And so for the SVM you don't need to worry about local optima.
+
+568
+00:19:25,280 --> 00:19:26,440
+In practice local optima aren't
+
+569
+00:19:26,580 --> 00:19:27,920
+a huge problem for neural networks
+
+570
+00:19:28,090 --> 00:19:29,120
+but they all solve, so this
+
+571
+00:19:29,310 --> 00:19:31,520
+is one less thing to worry about if you're using an SVM.
+
+572
+00:19:33,350 --> 00:19:34,560
+And depending on your problem, the neural
+
+573
+00:19:34,910 --> 00:19:37,050
+network may be slower, especially
+
+574
+00:19:37,580 --> 00:19:41,020
+in this sort of regime than the SVM.
+
+575
+00:19:41,420 --> 00:19:42,200
+In case the guidelines they gave
+
+576
+00:19:42,520 --> 00:19:43,500
+here, seem a little bit vague
+
+577
+00:19:43,860 --> 00:19:44,600
+and if you're looking at some problems, you know,
+
+578
+00:19:46,930 --> 00:19:48,050
+the guidelines are a bit
+
+579
+00:19:48,170 --> 00:19:49,190
+vague, I'm still not entirely
+
+580
+00:19:49,570 --> 00:19:50,730
+sure, should I use this
+
+581
+00:19:50,780 --> 00:19:52,690
+algorithm or that algorithm, that's actually okay.
+
+582
+00:19:52,950 --> 00:19:54,100
+When I face a machine learning
+
+583
+00:19:54,330 --> 00:19:55,570
+problem, you know, sometimes its actually
+
+584
+00:19:55,730 --> 00:19:57,010
+just not clear whether that's the
+
+585
+00:19:57,150 --> 00:19:58,700
+best algorithm to use, but as
+
+586
+00:19:59,540 --> 00:20:00,590
+you saw in the earlier videos, really,
+
+587
+00:20:01,200 --> 00:20:02,470
+you know, the algorithm does
+
+588
+00:20:02,700 --> 00:20:03,920
+matter, but what often matters
+
+589
+00:20:04,250 --> 00:20:06,400
+even more is things like, how much data do you have.
+
+590
+00:20:07,090 --> 00:20:08,280
+And how skilled are you, how
+
+591
+00:20:08,450 --> 00:20:09,500
+good are you at doing error
+
+592
+00:20:09,750 --> 00:20:11,450
+analysis and debugging learning
+
+593
+00:20:11,660 --> 00:20:13,090
+algorithms, figuring out how
+
+594
+00:20:13,220 --> 00:20:15,120
+to design new features and
+
+595
+00:20:15,280 --> 00:20:17,540
+figuring out what other features to give you learning algorithms and so on.
+
+596
+00:20:17,960 --> 00:20:19,110
+And often those things will matter
+
+597
+00:20:19,660 --> 00:20:20,700
+more than what you are
+
+598
+00:20:20,840 --> 00:20:22,370
+using logistic regression or an SVM.
+
+599
+00:20:23,280 --> 00:20:24,650
+But having said that,
+
+600
+00:20:25,010 --> 00:20:26,180
+the SVM is still widely
+
+601
+00:20:26,630 --> 00:20:27,890
+perceived as one of
+
+602
+00:20:27,950 --> 00:20:29,600
+the most powerful learning algorithms, and
+
+603
+00:20:29,740 --> 00:20:31,570
+there is this regime of when there's
+
+604
+00:20:31,790 --> 00:20:34,340
+a very effective way to learn complex non linear functions.
+
+605
+00:20:35,150 --> 00:20:36,840
+And so I actually, together with
+
+606
+00:20:37,040 --> 00:20:38,930
+logistic regressions, neural networks, SVM's,
+
+607
+00:20:39,090 --> 00:20:40,630
+using those to speed
+
+608
+00:20:40,760 --> 00:20:42,170
+learning algorithms you're I think
+
+609
+00:20:42,440 --> 00:20:43,610
+very well positioned to build
+
+610
+00:20:44,120 --> 00:20:45,120
+state of the art you know,
+
+611
+00:20:45,310 --> 00:20:46,710
+machine learning systems for a wide
+
+612
+00:20:46,960 --> 00:20:49,110
+region for applications and this
+
+613
+00:20:49,330 --> 00:20:52,460
+is another very powerful tool to have in your arsenal.
+
+614
+00:20:53,160 --> 00:20:54,270
+One that is used all
+
+615
+00:20:54,460 --> 00:20:55,850
+over the place in Silicon Valley,
+
+616
+00:20:56,390 --> 00:20:58,030
+or in industry and in
+
+617
+00:20:58,310 --> 00:20:59,860
+the Academia, to build many
+
+618
+00:21:00,120 --> 00:21:01,680
+high performance machine learning system.

@@ -1,0 +1,62 @@
+In the previous video, we talked about Stochastic gradient descent, and how that can be much faster than Batch gradient descent.
+In this video, let's talk about another variation on these ideas is called Mini-batch gradient descent
+they can work sometimes even a bit faster than stochastic gradient descent.
+To summarize the algorithms we talked about so far.
+In Batch gradient descent we will use all m examples in each generation.
+Whereas in Stochastic gradient descent we will use a single example in each generation.
+What Mini-batch gradient descent does is somewhere in between.
+Specifically, with this algorithm we're going to use b examples in each iteration where b is a parameter called the "mini batch size"
+so the idea is that this is somewhat in-between Batch gradient descent and Stochastic gradient descent.
+This is just like batch gradient descent, except that I'm going to use a much smaller batch size.
+A typical choice for the value of b might be b equals 10, lets say, and a typical range really might be anywhere from b equals 2 up to b equals 100.
+So that will be a pretty typical range of values for the Mini-batch size.
+And the idea is that rather than using one example at a time or m examples at a time we will use b examples at a time.
+So let me just write this out informally, we're going to get, let's say, b. For this example, let's say b equals 10.
+So we're going to get, the next 10 examples from my training set so that may be some set of examples xi, yi.
+If it's 10 examples then the indexing will be up to x (i+9), y (i+9)
+so that's 10 examples altogether and then we'll perform essentially a gradient descent update using these 10 examples.
+So, that's any rate times one tenth times sum over k equals i through i+9 of h subscript theta of x(k) minus y(k) times x(k)j.
+And so in this expression, where summing the gradient terms over my ten examples.
+So, that's number ten, that's, you know, my mini batch size and just i+9 again,
+the 9 comes from the choice of the parameter b, and then after this we will then increase, you know,
+i by tenth, we will go on to the next ten examples and then keep moving like this.
+So just to write out the entire algorithm in full.
+In order to simplify the indexing for this one at the right top,
+I'm going to assume we have a mini-batch size of ten and a training set size of a thousand,
+what we're going to do is have this sort of form, for i equals 1 and that in 21's the stepping,
+in steps of 10 because we look at 10 examples at a time.
+And then we perform this sort of gradient descent update using ten examples at a time
+so this 10 and this i+9 those are consequence of having chosen my mini-batch to be ten.
+And you know, this ultimate four-loop, this ends at 991 here because
+if I have 1000 training samples then I need 100 steps of size 10 in order to get through my training set.
+So this is mini-batch gradient descent.
+Compared to batch gradient descent, this also allows us to make progress much faster.
+So we have again our running example of, you know, U.S. Census data with 300 million training examples,
+then what we're saying is after looking at just the first 10 examples we can start to make progress
+in improving the parameters theta so we don't need to scan through the entire training set.
+We just need to look at the first 10 examples and this will start letting us make progress and then
+we can look at the second ten examples and modify the parameters a little bit again and so on.
+So, that is why Mini-batch gradient descent can be faster than batch gradient descent.
+Namely, you can start making progress in modifying the parameters after looking at just ten examples
+rather than needing to wait 'till you've scan through every single training example of 300 million of them.
+So, how about Mini-batch gradient descent versus Stochastic gradient descent.
+So, why do we want to look at b examples at a time rather than look at just a single example at a time as the Stochastic gradient descent?
+The answer is in vectorization.
+In particular, Mini-batch gradient descent is likely to outperform Stochastic gradient descent
+only if you have a good vectorized implementation.
+In that case, the sum over 10 examples can be performed in a more vectorized way
+which will allow you to partially parallelize your computation over the ten examples.
+So, in other words, by using appropriate vectorization to compute the rest of the terms,
+you can sometimes partially use the good numerical algebra libraries and parallelize your gradient computations over the b examples,
+whereas if you were looking at just a single example of time with Stochastic gradient descent then, you know,
+just looking at one example at a time their isn't much to parallelize over.
+At least there is less to parallelize over.
+One disadvantage of Mini-batch gradient descent is that there is now this extra parameter b,
+the Mini-batch size which you may have to fiddle with, and which may therefore take time.
+But if you have a good vectorized implementation this can sometimes run even faster that Stochastic gradient descent.
+So that was Mini-batch gradient descent which is an algorithm that in some sense does something
+that's somewhat in between what Stochastic gradient descent does and what Batch gradient descent does.
+And if you choose their reasonable value of b. I usually use b equals 10, but,
+you know, other values, anywhere from say 2 to 100, would be reasonably common.
+So we choose value of b and if you use a good vectorized implementation,
+sometimes it can be faster than both Stochastic gradient descent and faster than Batch gradient descent.

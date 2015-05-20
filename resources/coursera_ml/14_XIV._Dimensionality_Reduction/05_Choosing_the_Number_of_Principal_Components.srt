@@ -1,0 +1,1251 @@
+1
+00:00:00,090 --> 00:00:01,560
+In the PCA algorithm we take
+
+2
+00:00:01,980 --> 00:00:03,530
+N dimensional features and reduce
+
+3
+00:00:03,970 --> 00:00:06,260
+them to some K dimensional feature representation.
+
+4
+00:00:07,620 --> 00:00:09,090
+This number K is a parameter
+
+5
+00:00:09,820 --> 00:00:10,800
+of the PCA algorithm.
+
+6
+00:00:11,810 --> 00:00:13,240
+This number K is also called
+
+7
+00:00:13,620 --> 00:00:15,080
+the number of principle components
+
+8
+00:00:15,830 --> 00:00:17,480
+or the number of principle components that we've retained.
+
+9
+00:00:18,530 --> 00:00:19,640
+And in this video I'd like
+
+10
+00:00:19,810 --> 00:00:20,850
+to give you some guidelines,
+
+11
+00:00:21,730 --> 00:00:23,090
+tell you about how people
+
+12
+00:00:23,430 --> 00:00:24,490
+tend to think about how to
+
+13
+00:00:24,610 --> 00:00:26,740
+choose this parameter K for PCA.
+
+14
+00:00:28,650 --> 00:00:29,670
+In order to choose k,
+
+15
+00:00:30,110 --> 00:00:30,990
+that is to choose the number
+
+16
+00:00:31,360 --> 00:00:34,110
+of principal components, here are a couple of useful concepts.
+
+17
+00:00:36,430 --> 00:00:37,520
+What PCA tries to do
+
+18
+00:00:37,760 --> 00:00:38,760
+is it tries to minimize
+
+19
+00:00:40,070 --> 00:00:41,510
+the average squared projection error.
+
+20
+00:00:42,030 --> 00:00:43,200
+So it tries to minimize
+
+21
+00:00:43,430 --> 00:00:45,480
+this quantity, which I'm writing down,
+
+22
+00:00:46,410 --> 00:00:47,980
+which is the difference between the
+
+23
+00:00:48,150 --> 00:00:50,010
+original data X and the
+
+24
+00:00:50,690 --> 00:00:53,470
+projected version, X-approx-i, which
+
+25
+00:00:53,620 --> 00:00:54,930
+was defined last video, so
+
+26
+00:00:55,020 --> 00:00:55,900
+it tries to minimize the squared
+
+27
+00:00:56,160 --> 00:00:57,360
+distance between x and it's projection
+
+28
+00:00:58,330 --> 00:00:59,750
+onto that lower dimensional surface.
+
+29
+00:01:01,220 --> 00:01:02,990
+So that's the average square projection error.
+
+30
+00:01:03,990 --> 00:01:05,320
+Also let me define the
+
+31
+00:01:05,440 --> 00:01:07,020
+total variation in the
+
+32
+00:01:07,100 --> 00:01:08,730
+data to be the
+
+33
+00:01:09,020 --> 00:01:11,730
+average length squared of
+
+34
+00:01:12,140 --> 00:01:14,130
+these examples Xi
+
+35
+00:01:14,450 --> 00:01:16,010
+so the total variation in the
+
+36
+00:01:16,260 --> 00:01:17,930
+data is the average of
+
+37
+00:01:18,070 --> 00:01:19,250
+my training sets of the
+
+38
+00:01:19,370 --> 00:01:21,640
+length of each of my training examples.
+
+39
+00:01:22,190 --> 00:01:23,690
+And this one says, "On average, how
+
+40
+00:01:23,940 --> 00:01:24,850
+far are my training examples
+
+41
+00:01:25,690 --> 00:01:27,960
+from the vector, from just being all zeros?"
+
+42
+00:01:28,770 --> 00:01:30,460
+How far is, how far
+
+43
+00:01:30,820 --> 00:01:32,820
+on average are my training examples from the origin?
+
+44
+00:01:33,510 --> 00:01:34,450
+When we're trying to choose k, a
+
+45
+00:01:35,870 --> 00:01:37,210
+pretty common rule of thumb
+
+46
+00:01:37,400 --> 00:01:38,620
+for choosing k is to choose
+
+47
+00:01:38,800 --> 00:01:40,290
+the smaller values so that
+
+48
+00:01:40,980 --> 00:01:43,810
+the ratio between these is less than 0.01.
+
+49
+00:01:44,550 --> 00:01:45,540
+So in other words,
+
+50
+00:01:46,340 --> 00:01:47,370
+a pretty common way to
+
+51
+00:01:47,510 --> 00:01:48,460
+think about how we choose k
+
+52
+00:01:48,800 --> 00:01:51,180
+is we want the average squared projection error.
+
+53
+00:01:51,580 --> 00:01:54,700
+That is the average distance
+
+54
+00:01:55,240 --> 00:01:56,340
+between x and it's projections
+
+55
+00:01:57,570 --> 00:02:00,330
+divided by the total variation of the data.
+
+56
+00:02:00,800 --> 00:02:01,870
+That is how much the data varies.
+
+57
+00:02:02,940 --> 00:02:04,060
+We want this ratio to be
+
+58
+00:02:04,240 --> 00:02:06,760
+less than, let's say, 0.01.
+
+59
+00:02:06,830 --> 00:02:09,450
+Or to be less than 1%, which is another way of thinking about it.
+
+60
+00:02:10,860 --> 00:02:11,940
+And the way most people think
+
+61
+00:02:12,150 --> 00:02:13,640
+about choosing K is rather
+
+62
+00:02:13,860 --> 00:02:15,660
+than choosing K directly the
+
+63
+00:02:15,890 --> 00:02:17,110
+way most people talk about
+
+64
+00:02:17,480 --> 00:02:18,940
+it is as what this
+
+65
+00:02:19,160 --> 00:02:20,630
+number is, whether it is 0.01
+
+66
+00:02:20,740 --> 00:02:23,330
+or some other number.
+
+67
+00:02:23,720 --> 00:02:25,320
+And if it is 0.01, another way
+
+68
+00:02:25,490 --> 00:02:27,020
+to say this to use the
+
+69
+00:02:27,270 --> 00:02:30,120
+language of PCA is that 99% of the variance is retained.
+
+70
+00:02:32,060 --> 00:02:33,480
+I don't really want to, don't
+
+71
+00:02:33,850 --> 00:02:34,810
+worry about what this phrase
+
+72
+00:02:35,140 --> 00:02:36,920
+really means technically but this
+
+73
+00:02:37,830 --> 00:02:39,170
+phrase "99% of variance is retained" just means
+
+74
+00:02:39,420 --> 00:02:41,710
+that this quantity on the left is less than 0.01.
+
+75
+00:02:42,340 --> 00:02:43,910
+And so, if you
+
+76
+00:02:44,930 --> 00:02:46,510
+are using PCA and if you want
+
+77
+00:02:46,630 --> 00:02:47,730
+to tell someone, you know,
+
+78
+00:02:48,220 --> 00:02:49,860
+how many principle components you've
+
+79
+00:02:49,980 --> 00:02:51,080
+retained it would be
+
+80
+00:02:51,140 --> 00:02:52,360
+more common to say well, I
+
+81
+00:02:52,450 --> 00:02:55,360
+chose k so that 99% of the variance was retained.
+
+82
+00:02:55,990 --> 00:02:56,960
+And that's kind of a useful thing
+
+83
+00:02:57,660 --> 00:02:58,530
+to know, it means that you
+
+84
+00:02:58,620 --> 00:02:59,820
+know, the average squared projection
+
+85
+00:03:00,760 --> 00:03:01,720
+error divided by the total
+
+86
+00:03:01,900 --> 00:03:03,260
+variation that was at most 1%.
+
+87
+00:03:03,820 --> 00:03:04,770
+That's kind of an insightful
+
+88
+00:03:05,270 --> 00:03:06,790
+thing to think about, whereas if
+
+89
+00:03:06,920 --> 00:03:08,420
+you tell someone that, "Well I
+
+90
+00:03:09,170 --> 00:03:10,710
+had to 100 principle
+
+91
+00:03:10,890 --> 00:03:12,030
+components" or "k was equal
+
+92
+00:03:12,720 --> 00:03:13,850
+to 100 in a thousand dimensional
+
+93
+00:03:14,220 --> 00:03:15,350
+data" it's a little
+
+94
+00:03:15,420 --> 00:03:16,600
+hard for people to interpret
+
+95
+00:03:19,100 --> 00:03:19,100
+that.
+
+96
+00:03:19,320 --> 00:03:22,220
+So this number 0.01 is what people often use.
+
+97
+00:03:23,070 --> 00:03:25,380
+Other common values is 0.05,
+
+98
+00:03:26,840 --> 00:03:27,810
+and so this would be 5%,
+
+99
+00:03:27,990 --> 00:03:28,870
+and if you do that then
+
+100
+00:03:29,210 --> 00:03:30,390
+you go and say well 95%
+
+101
+00:03:30,740 --> 00:03:32,320
+of the variance is
+
+102
+00:03:32,480 --> 00:03:34,280
+retained and, you know
+
+103
+00:03:34,700 --> 00:03:36,710
+other numbers maybe 90% of the variance is
+
+104
+00:03:37,980 --> 00:03:40,030
+retained, maybe as low as 85%.
+
+105
+00:03:40,150 --> 00:03:42,410
+So 90% would correspond to say
+
+106
+00:03:44,340 --> 00:03:46,950
+0.10, kinda 10%.
+
+107
+00:03:47,250 --> 00:03:49,160
+And so range of values
+
+108
+00:03:49,900 --> 00:03:50,770
+from, you know, 90, 95,
+
+109
+00:03:50,870 --> 00:03:51,470
+99, maybe as low as 85% of
+
+110
+00:03:51,500 --> 00:03:55,100
+the variables contained would be a fairly typical range in values.
+
+111
+00:03:55,780 --> 00:03:56,900
+Maybe 95 to 99
+
+112
+00:03:57,690 --> 00:03:58,810
+is really the most
+
+113
+00:03:59,020 --> 00:04:02,080
+common range of values that people use.
+
+114
+00:04:02,130 --> 00:04:02,950
+For many data sets you'd be
+
+115
+00:04:03,010 --> 00:04:04,320
+surprised, in order to retain
+
+116
+00:04:04,790 --> 00:04:06,590
+99% of the variance, you can
+
+117
+00:04:06,790 --> 00:04:08,160
+often reduce the dimension of
+
+118
+00:04:08,200 --> 00:04:11,810
+the data significantly and still retain most of the variance.
+
+119
+00:04:12,440 --> 00:04:13,410
+Because for most real life
+
+120
+00:04:13,560 --> 00:04:15,210
+data says many features are
+
+121
+00:04:15,280 --> 00:04:17,060
+just highly correlated, and so
+
+122
+00:04:17,310 --> 00:04:17,940
+it turns out to be possible
+
+123
+00:04:18,490 --> 00:04:19,540
+to compress the data a
+
+124
+00:04:19,610 --> 00:04:20,990
+lot and still retain you
+
+125
+00:04:21,360 --> 00:04:22,310
+know 99% of the variance
+
+126
+00:04:22,530 --> 00:04:26,260
+or 95% of the variance. So how do you implement this?
+
+127
+00:04:26,810 --> 00:04:28,610
+Well, here's one algorithm that you might use.
+
+128
+00:04:28,890 --> 00:04:30,360
+You may start off, if you
+
+129
+00:04:30,540 --> 00:04:31,360
+want to choose the value of
+
+130
+00:04:31,470 --> 00:04:33,510
+k, we might start off with k equals 1.
+
+131
+00:04:33,550 --> 00:04:34,670
+And then we run through PCA.
+
+132
+00:04:35,350 --> 00:04:36,440
+You know, so we compute, you
+
+133
+00:04:36,570 --> 00:04:38,880
+reduce, compute z1, z2, up to zm.
+
+134
+00:04:39,520 --> 00:04:40,790
+Compute all of those x1
+
+135
+00:04:41,090 --> 00:04:42,540
+approx and so on up to xm approx
+
+136
+00:04:43,200 --> 00:04:45,110
+and then we check if 99% of the variance is retained.
+
+137
+00:04:47,140 --> 00:04:48,890
+Then we're good and we use k equals 1.
+
+138
+00:04:49,020 --> 00:04:51,960
+But if it isn't then what we'll do we'll next try K equals 2.
+
+139
+00:04:52,620 --> 00:04:53,810
+And then we'll again
+
+140
+00:04:54,200 --> 00:04:56,070
+run through this entire procedure and
+
+141
+00:04:56,170 --> 00:04:57,770
+check, you know is this expression satisfied.
+
+142
+00:04:58,470 --> 00:05:00,980
+Is this less than 0.01. And if not then we do this again.
+
+143
+00:05:01,220 --> 00:05:03,070
+Let's try k equals 3,
+
+144
+00:05:03,310 --> 00:05:04,910
+then try k equals 4,
+
+145
+00:05:04,970 --> 00:05:06,250
+and so on until maybe
+
+146
+00:05:06,630 --> 00:05:07,730
+we get up to k equals
+
+147
+00:05:08,070 --> 00:05:09,040
+17 and we find 99% of
+
+148
+00:05:09,090 --> 00:05:13,060
+the data have is retained and then
+
+149
+00:05:14,120 --> 00:05:15,110
+we use k equals 17, right?
+
+150
+00:05:15,570 --> 00:05:17,160
+That is one way
+
+151
+00:05:17,240 --> 00:05:18,790
+to choose the smallest value
+
+152
+00:05:19,130 --> 00:05:20,920
+of k, so that and 99% of the variance is retained.
+
+153
+00:05:22,380 --> 00:05:23,440
+But as you can imagine,
+
+154
+00:05:23,550 --> 00:05:25,140
+this procedure seems horribly inefficient
+
+155
+00:05:26,210 --> 00:05:28,120
+we're trying k equals one, k equals two, we're doing all these calculations.
+
+156
+00:05:29,580 --> 00:05:30,540
+Fortunately when you implement
+
+157
+00:05:31,130 --> 00:05:33,510
+PCA it actually, in
+
+158
+00:05:33,960 --> 00:05:35,530
+this step, it actually gives us
+
+159
+00:05:35,910 --> 00:05:37,080
+a quantity that makes it
+
+160
+00:05:37,320 --> 00:05:40,160
+much easier to compute these things as well.
+
+161
+00:05:41,110 --> 00:05:42,160
+Specifically when you're calling
+
+162
+00:05:42,820 --> 00:05:44,120
+SVD to get these
+
+163
+00:05:44,340 --> 00:05:45,550
+matrices u, s, and d,
+
+164
+00:05:45,610 --> 00:05:46,780
+when you're calling usvd on the
+
+165
+00:05:47,040 --> 00:05:48,560
+covariance matrix sigma, it also
+
+166
+00:05:48,860 --> 00:05:49,780
+gives us back this matrix
+
+167
+00:05:50,300 --> 00:05:52,170
+S and what
+
+168
+00:05:52,360 --> 00:05:53,430
+S is, is going to
+
+169
+00:05:53,520 --> 00:05:56,790
+be a square matrix an N by N matrix in fact,
+
+170
+00:05:57,640 --> 00:05:58,090
+that is
+
+171
+00:05:58,290 --> 00:05:58,290
+diagonal.
+
+172
+00:05:58,830 --> 00:06:00,380
+So is diagonal entries s one
+
+173
+00:06:00,540 --> 00:06:01,640
+one, s two two, s
+
+174
+00:06:01,980 --> 00:06:03,240
+three three down to s
+
+175
+00:06:03,590 --> 00:06:05,130
+n n are going to
+
+176
+00:06:05,260 --> 00:06:07,010
+be the only non-zero elements of
+
+177
+00:06:07,130 --> 00:06:08,880
+this matrix, and everything off
+
+178
+00:06:09,060 --> 00:06:11,470
+the diagonals is going to be zero.
+
+179
+00:06:11,590 --> 00:06:11,590
+Okay?
+
+180
+00:06:11,670 --> 00:06:12,530
+So those big O's that I'm drawing,
+
+181
+00:06:13,340 --> 00:06:14,260
+by that what I mean is
+
+182
+00:06:14,740 --> 00:06:16,330
+that everything off the diagonal
+
+183
+00:06:17,130 --> 00:06:18,220
+of this matrix all of those
+
+184
+00:06:18,480 --> 00:06:20,310
+entries there are going to be zeros.
+
+185
+00:06:22,300 --> 00:06:23,790
+And so, what is possible
+
+186
+00:06:24,190 --> 00:06:25,250
+to show, and I won't prove
+
+187
+00:06:25,480 --> 00:06:26,380
+this here, and it turns out
+
+188
+00:06:26,620 --> 00:06:27,880
+that for a given value of
+
+189
+00:06:27,980 --> 00:06:29,920
+k, this quantity
+
+190
+00:06:30,590 --> 00:06:37,820
+over here can be computed much more simply.
+
+191
+00:06:38,800 --> 00:06:40,310
+And that quantity can be computed
+
+192
+00:06:41,000 --> 00:06:42,900
+as one minus sum from
+
+193
+00:06:43,130 --> 00:06:44,400
+i equals 1 through
+
+194
+00:06:44,610 --> 00:06:47,960
+K of Sii divided by
+
+195
+00:06:48,640 --> 00:06:50,050
+sum from I equals 1
+
+196
+00:06:50,170 --> 00:06:52,010
+through N of Sii.
+
+197
+00:06:53,360 --> 00:06:54,820
+So just to say that it words, or
+
+198
+00:06:55,000 --> 00:06:56,170
+just to take another
+
+199
+00:06:56,450 --> 00:06:57,330
+view of how to explain that,
+
+200
+00:06:57,960 --> 00:06:59,370
+if K equals 3 let's say.
+
+201
+00:07:00,810 --> 00:07:01,970
+What we're going to do to
+
+202
+00:07:02,080 --> 00:07:03,200
+compute the numerator is sum
+
+203
+00:07:03,340 --> 00:07:04,680
+from one--  I equals 1
+
+204
+00:07:04,820 --> 00:07:05,830
+through 3 of of Sii, so just
+
+205
+00:07:06,240 --> 00:07:08,170
+compute the sum of these first three elements.
+
+206
+00:07:09,280 --> 00:07:09,710
+So that's the numerator.
+
+207
+00:07:10,980 --> 00:07:12,880
+And then for the denominator, well that's
+
+208
+00:07:13,090 --> 00:07:14,970
+the sum of all of these diagonal entries.
+
+209
+00:07:16,210 --> 00:07:17,470
+And one minus the ratio of
+
+210
+00:07:17,660 --> 00:07:19,080
+that, that gives me this
+
+211
+00:07:19,300 --> 00:07:21,330
+quantity over here, that I've
+
+212
+00:07:21,650 --> 00:07:23,440
+circled in blue.
+
+213
+00:07:23,650 --> 00:07:24,380
+And so, what we can do
+
+214
+00:07:24,650 --> 00:07:26,000
+is just test if this
+
+215
+00:07:26,430 --> 00:07:29,330
+is less than or equal to 0.01.
+
+216
+00:07:29,370 --> 00:07:30,460
+Or equivalently, we can test
+
+217
+00:07:30,830 --> 00:07:31,960
+if the sum from
+
+218
+00:07:32,180 --> 00:07:33,010
+i equals 1 through k, s-i-i
+
+219
+00:07:33,970 --> 00:07:35,180
+divided by sum from i
+
+220
+00:07:35,320 --> 00:07:37,090
+equals 1 through n, s-i-i
+
+221
+00:07:37,650 --> 00:07:38,580
+if this is greater than or
+
+222
+00:07:38,770 --> 00:07:40,600
+equal to 4.99, if you
+
+223
+00:07:40,720 --> 00:07:42,920
+want to be sure that 99% of the variance is retained.
+
+224
+00:07:44,770 --> 00:07:45,650
+And so what you can do
+
+225
+00:07:45,940 --> 00:07:48,360
+is just slowly increase k,
+
+226
+00:07:48,770 --> 00:07:49,820
+set k equals one, set k equals
+
+227
+00:07:50,100 --> 00:07:51,290
+two, set k equals three and so
+
+228
+00:07:52,140 --> 00:07:53,240
+on, and just test this quantity
+
+229
+00:07:54,720 --> 00:07:56,120
+to see what is the
+
+230
+00:07:56,350 --> 00:07:58,820
+smallest value of k that ensures that 99% of the variance is retained.
+
+231
+00:08:00,600 --> 00:08:01,810
+And if you do
+
+232
+00:08:02,000 --> 00:08:02,790
+this, then you need to call
+
+233
+00:08:03,170 --> 00:08:04,660
+the SVD function only once.
+
+234
+00:08:04,970 --> 00:08:05,830
+Because that gives you the
+
+235
+00:08:06,010 --> 00:08:07,060
+S matrix and once you
+
+236
+00:08:07,090 --> 00:08:08,350
+have the S matrix, you can
+
+237
+00:08:08,490 --> 00:08:09,540
+then just keep on doing
+
+238
+00:08:09,770 --> 00:08:11,370
+this calculation by increasing
+
+239
+00:08:11,930 --> 00:08:12,910
+the value of K in the
+
+240
+00:08:13,070 --> 00:08:14,450
+numerator and so you
+
+241
+00:08:14,560 --> 00:08:16,290
+don't need keep to calling SVD over
+
+242
+00:08:16,540 --> 00:08:18,620
+and over again to test out the different values of K.
+
+243
+00:08:18,910 --> 00:08:20,030
+So this procedure is much more
+
+244
+00:08:20,150 --> 00:08:21,700
+efficient, and this can
+
+245
+00:08:21,910 --> 00:08:24,020
+allow you to select the
+
+246
+00:08:24,090 --> 00:08:25,890
+value of K without needing
+
+247
+00:08:26,260 --> 00:08:27,620
+to run PCA from scratch
+
+248
+00:08:28,030 --> 00:08:30,650
+over and over. You just run SVD once, this
+
+249
+00:08:30,850 --> 00:08:32,350
+gives you all of these diagonal numbers,
+
+250
+00:08:32,780 --> 00:08:35,090
+all of these numbers S11, S22 down to SNN,
+
+251
+00:08:35,780 --> 00:08:36,820
+and then you can
+
+252
+00:08:36,920 --> 00:08:38,440
+just you know, vary K
+
+253
+00:08:38,730 --> 00:08:40,740
+in this expression to find
+
+254
+00:08:41,010 --> 00:08:42,250
+the smallest value of K, so
+
+255
+00:08:43,140 --> 00:08:44,030
+that 99% of the variance is retained.
+
+256
+00:08:44,850 --> 00:08:45,870
+So to summarize, the way
+
+257
+00:08:46,050 --> 00:08:47,850
+that I often use, the
+
+258
+00:08:47,970 --> 00:08:49,050
+way that I often choose K
+
+259
+00:08:49,420 --> 00:08:50,790
+when I am using PCA for compression
+
+260
+00:08:51,120 --> 00:08:52,590
+is I would call SVD once
+
+261
+00:08:52,950 --> 00:08:54,480
+in the covariance matrix, and then
+
+262
+00:08:54,540 --> 00:08:55,750
+I would use this formula and
+
+263
+00:08:56,030 --> 00:08:57,930
+pick the smallest value of
+
+264
+00:08:58,020 --> 00:09:00,390
+K for which this expression is satisfied.
+
+265
+00:09:01,580 --> 00:09:02,560
+And by the way, even if you
+
+266
+00:09:02,650 --> 00:09:03,850
+were to pick some different value
+
+267
+00:09:04,180 --> 00:09:04,960
+of K, even if you were
+
+268
+00:09:05,000 --> 00:09:05,920
+to pick the value of K
+
+269
+00:09:06,090 --> 00:09:07,250
+manually, you know maybe you
+
+270
+00:09:07,300 --> 00:09:08,620
+have a thousand dimensional data
+
+271
+00:09:09,540 --> 00:09:11,590
+and I just want to choose K equals one hundred.
+
+272
+00:09:12,430 --> 00:09:13,450
+Then, if you want to explain
+
+273
+00:09:13,690 --> 00:09:14,760
+to others what you just did,
+
+274
+00:09:15,230 --> 00:09:17,070
+a good way to explain the performance
+
+275
+00:09:17,750 --> 00:09:18,910
+of your implementation of PCA to
+
+276
+00:09:19,220 --> 00:09:20,300
+them, is actually to take
+
+277
+00:09:20,540 --> 00:09:21,670
+this quantity and compute what
+
+278
+00:09:21,890 --> 00:09:23,000
+this is, and that will
+
+279
+00:09:23,110 --> 00:09:25,770
+tell you what was the percentage of variance retained.
+
+280
+00:09:26,300 --> 00:09:28,070
+And if you report that number, then,
+
+281
+00:09:28,340 --> 00:09:29,720
+you know, people that are familiar
+
+282
+00:09:30,100 --> 00:09:31,610
+with PCA, and people can
+
+283
+00:09:31,880 --> 00:09:33,020
+use this to get a
+
+284
+00:09:33,080 --> 00:09:34,560
+good understanding of how well
+
+285
+00:09:34,900 --> 00:09:37,340
+your hundred dimensional representation is
+
+286
+00:09:37,690 --> 00:09:39,270
+approximating your original data
+
+287
+00:09:39,580 --> 00:09:41,300
+set, because there's 99% of variance retained.
+
+288
+00:09:41,990 --> 00:09:44,140
+That's really a measure of your
+
+289
+00:09:44,360 --> 00:09:45,860
+square of construction error, that
+
+290
+00:09:46,240 --> 00:09:47,870
+ratio being 0.01, just
+
+291
+00:09:48,430 --> 00:09:49,940
+gives people a good intuitive
+
+292
+00:09:50,430 --> 00:09:51,820
+sense of whether your implementation
+
+293
+00:09:52,580 --> 00:09:53,840
+of PCA is finding a
+
+294
+00:09:54,000 --> 00:09:56,530
+good approximation of your original data set.
+
+295
+00:09:58,440 --> 00:09:59,600
+So hopefully, that gives you
+
+296
+00:09:59,800 --> 00:10:01,260
+an efficient procedure for choosing
+
+297
+00:10:01,850 --> 00:10:02,800
+the number K. For choosing
+
+298
+00:10:03,260 --> 00:10:04,940
+what dimension to reduce your
+
+299
+00:10:05,160 --> 00:10:06,630
+data to, and if
+
+300
+00:10:06,750 --> 00:10:07,830
+you apply PCA to very
+
+301
+00:10:07,970 --> 00:10:09,740
+high dimensional data sets, you know, to like
+
+302
+00:10:09,990 --> 00:10:11,570
+a thousand dimensional data, very often,
+
+303
+00:10:11,980 --> 00:10:13,340
+just because data sets tend
+
+304
+00:10:13,530 --> 00:10:14,720
+to have highly correlated
+
+305
+00:10:15,070 --> 00:10:16,140
+features, this is just a
+
+306
+00:10:16,280 --> 00:10:17,190
+property of most of the data sets you see,
+
+307
+00:10:18,440 --> 00:10:19,420
+you often find that PCA
+
+308
+00:10:20,040 --> 00:10:21,610
+will be able to retain ninety nine
+
+309
+00:10:21,840 --> 00:10:22,940
+per cent of the variance or say,
+
+310
+00:10:23,110 --> 00:10:24,440
+ninety five ninety nine, some
+
+311
+00:10:24,720 --> 00:10:25,910
+high fraction of the variance,
+
+312
+00:10:26,360 --> 00:10:27,580
+even while compressing the data
+
+313
+00:10:28,560 --> 00:10:29,720
+by a very large factor.

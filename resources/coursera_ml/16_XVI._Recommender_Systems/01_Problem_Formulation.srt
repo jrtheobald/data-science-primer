@@ -1,0 +1,972 @@
+1
+00:00:00,080 --> 00:00:01,060
+In this next set of
+
+2
+00:00:01,180 --> 00:00:01,970
+videos, I would like to
+
+3
+00:00:02,300 --> 00:00:03,700
+tell you about recommender systems.
+
+4
+00:00:04,730 --> 00:00:05,810
+There are two reasons, I had
+
+5
+00:00:05,940 --> 00:00:08,590
+two motivations for why I wanted to talk about recommender systems.
+
+6
+00:00:09,640 --> 00:00:10,670
+The first is just that it
+
+7
+00:00:10,830 --> 00:00:13,830
+is an important application of machine learning.
+
+8
+00:00:14,160 --> 00:00:15,680
+Over the last few years, occasionally I
+
+9
+00:00:15,810 --> 00:00:16,840
+visit different, you know, technology
+
+10
+00:00:17,510 --> 00:00:18,720
+companies here in Silicon Valley
+
+11
+00:00:18,820 --> 00:00:20,040
+and I often talk to people
+
+12
+00:00:20,390 --> 00:00:21,270
+working on machine learning applications there
+
+13
+00:00:21,370 --> 00:00:23,010
+and so I've asked
+
+14
+00:00:23,200 --> 00:00:24,120
+people what are the most
+
+15
+00:00:24,260 --> 00:00:26,840
+important applications of machine
+
+16
+00:00:27,450 --> 00:00:28,530
+learning or what are the machine
+
+17
+00:00:28,550 --> 00:00:29,520
+learning applications that you would most like to get
+
+18
+00:00:29,790 --> 00:00:31,130
+an improvement in the performance of.
+
+19
+00:00:31,890 --> 00:00:32,690
+And one of the most frequent
+
+20
+00:00:33,020 --> 00:00:34,240
+answers I heard was that
+
+21
+00:00:34,590 --> 00:00:35,710
+there are many groups out in Silicon
+
+22
+00:00:36,020 --> 00:00:38,250
+Valley now, trying to build better recommender systems.
+
+23
+00:00:39,570 --> 00:00:40,460
+So, if you think about
+
+24
+00:00:40,800 --> 00:00:42,390
+what the websites are
+
+25
+00:00:42,540 --> 00:00:44,100
+like Amazon, or what Netflix
+
+26
+00:00:44,840 --> 00:00:46,100
+or what eBay, or what
+
+27
+00:00:46,830 --> 00:00:48,230
+iTunes Genius, made by Apple
+
+28
+00:00:48,480 --> 00:00:49,450
+does, there are many websites
+
+29
+00:00:50,050 --> 00:00:51,520
+or systems that try to
+
+30
+00:00:51,670 --> 00:00:53,140
+recommend new products to use.
+
+31
+00:00:53,360 --> 00:00:54,380
+So, Amazon recommends new books
+
+32
+00:00:54,630 --> 00:00:55,840
+to you, Netflix try to recommend
+
+33
+00:00:56,230 --> 00:00:58,090
+new movies to you, and so on.
+
+34
+00:00:58,430 --> 00:00:59,560
+And these sorts of recommender systems,
+
+35
+00:01:00,130 --> 00:01:01,480
+that look at what books you
+
+36
+00:01:01,560 --> 00:01:02,430
+may have purchased in the past,
+
+37
+00:01:02,890 --> 00:01:03,820
+or what movies you have rated
+
+38
+00:01:04,010 --> 00:01:05,100
+in the past, but these are
+
+39
+00:01:05,140 --> 00:01:06,390
+the systems that are responsible
+
+40
+00:01:07,470 --> 00:01:09,410
+for today, a substantial fraction of
+
+41
+00:01:09,620 --> 00:01:10,630
+Amazon's revenue and for a
+
+42
+00:01:10,710 --> 00:01:12,520
+company like Netflix, the recommendations
+
+43
+00:01:13,950 --> 00:01:14,710
+that they make to the users
+
+44
+00:01:15,180 --> 00:01:16,610
+is also responsible for a
+
+45
+00:01:16,830 --> 00:01:18,250
+substantial fraction of the movies
+
+46
+00:01:18,520 --> 00:01:20,700
+watched by their users. 
+And so an
+
+47
+00:01:20,780 --> 00:01:22,410
+improvement in performance of
+
+48
+00:01:22,520 --> 00:01:24,070
+a recommender system can have
+
+49
+00:01:24,680 --> 00:01:26,340
+a substantial and immediate
+
+50
+00:01:26,880 --> 00:01:28,010
+impact on the bottom line of
+
+51
+00:01:28,370 --> 00:01:31,380
+many of these
+
+52
+00:01:31,710 --> 00:01:32,660
+companies. Recommender systems is kind of a funny
+
+53
+00:01:32,870 --> 00:01:34,530
+problem, within academic machine
+
+54
+00:01:34,870 --> 00:01:35,890
+learning so that we could
+
+55
+00:01:35,980 --> 00:01:37,230
+go to an academic machine learning conference,
+
+56
+00:01:38,430 --> 00:01:39,950
+the problem of recommender systems,
+
+57
+00:01:40,190 --> 00:01:41,560
+actually receives relatively little attention,
+
+58
+00:01:42,430 --> 00:01:43,680
+or at least it's sort of a smaller
+
+59
+00:01:43,960 --> 00:01:46,200
+fraction of what goes on within Academia.
+
+60
+00:01:47,140 --> 00:01:48,010
+But if you look at what's happening,
+
+61
+00:01:48,570 --> 00:01:50,200
+many technology companies, the ability
+
+62
+00:01:50,700 --> 00:01:53,500
+to build these systems seems to be a high priority for many companies.
+
+63
+00:01:54,430 --> 00:01:56,460
+And that's one of the reasons why I want to talk about them in this class.
+
+64
+00:01:58,280 --> 00:01:59,420
+The second reason that I
+
+65
+00:01:59,520 --> 00:02:00,570
+want to talk about recommender systems
+
+66
+00:02:01,170 --> 00:02:02,460
+is that as we approach
+
+67
+00:02:02,910 --> 00:02:04,080
+the last few sets of videos
+
+68
+00:02:05,120 --> 00:02:06,300
+of this class I wanted to talk about
+
+69
+00:02:06,700 --> 00:02:07,740
+a few of the big ideas
+
+70
+00:02:08,410 --> 00:02:09,410
+in machine learning and share with you,
+
+71
+00:02:09,510 --> 00:02:11,560
+you know, some of the big ideas in machine learning.
+
+72
+00:02:12,400 --> 00:02:13,840
+And we've already seen
+
+73
+00:02:14,070 --> 00:02:15,870
+in this class that features are
+
+74
+00:02:15,990 --> 00:02:17,000
+important for machine learning, the
+
+75
+00:02:17,640 --> 00:02:19,170
+features you choose will have
+
+76
+00:02:19,400 --> 00:02:22,340
+a big effect on the performance of your learning algorithm.
+
+77
+00:02:23,290 --> 00:02:24,320
+So there's this big idea in machine
+
+78
+00:02:24,620 --> 00:02:25,890
+learning, which is that for
+
+79
+00:02:25,990 --> 00:02:27,630
+some problems, maybe not
+
+80
+00:02:27,790 --> 00:02:29,690
+all problems, but some problems, there
+
+81
+00:02:29,910 --> 00:02:31,610
+are algorithms that can try
+
+82
+00:02:31,950 --> 00:02:34,860
+to automatically learn a good set of features for you.
+
+83
+00:02:35,210 --> 00:02:35,970
+So rather than trying to hand
+
+84
+00:02:36,660 --> 00:02:37,840
+design, or hand code the
+
+85
+00:02:38,100 --> 00:02:39,120
+features, which is mostly what we've
+
+86
+00:02:39,340 --> 00:02:40,350
+been doing so far, there are a
+
+87
+00:02:40,430 --> 00:02:41,790
+few settings where you might
+
+88
+00:02:42,050 --> 00:02:42,650
+be able to have an
+
+89
+00:02:42,770 --> 00:02:43,780
+algorithm, just to learn what feature to
+
+90
+00:02:43,920 --> 00:02:45,200
+use, and the recommender
+
+91
+00:02:45,580 --> 00:02:47,690
+systems is just one example of that sort of setting.
+
+92
+00:02:47,880 --> 00:02:49,250
+There are many others, but engraved
+
+93
+00:02:49,690 --> 00:02:51,150
+through recommender systems, will be
+
+94
+00:02:51,320 --> 00:02:52,770
+able to go a little
+
+95
+00:02:53,090 --> 00:02:54,380
+bit into this idea of learning
+
+96
+00:02:54,710 --> 00:02:56,450
+the features and you'll be
+
+97
+00:02:56,540 --> 00:02:57,320
+able to see at least one example
+
+98
+00:02:58,170 --> 00:03:00,120
+of this, I think, big idea in machine learning as well.
+
+99
+00:03:01,220 --> 00:03:02,800
+So, without further ado, let's
+
+100
+00:03:02,990 --> 00:03:04,220
+get started, and talk
+
+101
+00:03:04,400 --> 00:03:06,120
+about the recommender system problem formulation.
+
+102
+00:03:08,110 --> 00:03:09,690
+As my running example, I'm
+
+103
+00:03:09,870 --> 00:03:11,210
+going to use the
+
+104
+00:03:11,390 --> 00:03:13,230
+modern problem of predicting movie ratings.
+
+105
+00:03:14,150 --> 00:03:14,640
+So, here's a problem.
+
+106
+00:03:15,100 --> 00:03:16,520
+Imagine that you're a
+
+107
+00:03:16,660 --> 00:03:18,140
+website or a company that
+
+108
+00:03:18,910 --> 00:03:21,340
+sells or rents out movies, or what have you.
+
+109
+00:03:21,560 --> 00:03:22,880
+And so, you know, Amazon, and Netflix, and
+
+110
+00:03:23,610 --> 00:03:24,930
+I think iTunes are all examples
+
+111
+00:03:26,540 --> 00:03:28,180
+of companies that do this,
+
+112
+00:03:28,750 --> 00:03:30,450
+and let's say you let
+
+113
+00:03:30,930 --> 00:03:32,610
+your users rate different movies,
+
+114
+00:03:33,560 --> 00:03:34,130
+using a 1 to 5 star rating.
+
+115
+00:03:34,560 --> 00:03:36,300
+So, users may, you know,
+
+116
+00:03:36,400 --> 00:03:39,070
+something one, two, three, four or five stars.
+
+117
+00:03:40,420 --> 00:03:41,440
+In order to make this example
+
+118
+00:03:41,980 --> 00:03:43,170
+just a little bit nicer, I'm
+
+119
+00:03:43,360 --> 00:03:44,860
+going to allow 0 to
+
+120
+00:03:45,180 --> 00:03:46,720
+5 stars as well,
+
+121
+00:03:47,300 --> 00:03:49,170
+because that just makes some of the math come out just nicer.
+
+122
+00:03:49,360 --> 00:03:51,580
+Although most of these websites use the 1 to 5 star scale.
+
+123
+00:03:53,000 --> 00:03:54,520
+So here, I have 5 movies.
+
+124
+00:03:55,110 --> 00:03:56,600
+You know, Love That
+
+125
+00:03:56,710 --> 00:03:58,050
+Lasts, Romance Forever, Cute Puppies of
+
+126
+00:03:58,160 --> 00:04:00,230
+Love, Nonstop Car Chases,
+
+127
+00:04:01,040 --> 00:04:03,340
+and Swords vs. Karate.
+
+128
+00:04:03,550 --> 00:04:04,380
+And we have 4 users, which,
+
+129
+00:04:05,020 --> 00:04:06,190
+calling, you know, Alice, Bob, Carol,
+
+130
+00:04:06,410 --> 00:04:07,610
+and Dave, with initials A, B,
+
+131
+00:04:07,690 --> 00:04:09,790
+C, and D, we'll call them users 1, 2, 3, and 4.
+
+132
+00:04:10,390 --> 00:04:11,940
+So, let's say Alice really
+
+133
+00:04:12,190 --> 00:04:13,360
+likes Love That Lasts and
+
+134
+00:04:13,460 --> 00:04:15,680
+rates that 5 stars, likes Romance
+
+135
+00:04:16,070 --> 00:04:17,220
+Forever, rates it 5 stars.
+
+136
+00:04:18,060 --> 00:04:19,050
+She did not watch Cute Puppies
+
+137
+00:04:19,370 --> 00:04:20,810
+of Love, and did rate it, so we
+
+138
+00:04:20,950 --> 00:04:22,190
+don't have a rating for that,
+
+139
+00:04:23,120 --> 00:04:24,400
+and Alice really did not
+
+140
+00:04:24,590 --> 00:04:27,170
+like Nonstop Car Chases or
+
+141
+00:04:27,240 --> 00:04:29,330
+Swords vs. Karate. And a different user
+
+142
+00:04:29,720 --> 00:04:31,390
+Bob, user two, maybe rated
+
+143
+00:04:31,630 --> 00:04:32,680
+a different set of movies, maybe
+
+144
+00:04:32,850 --> 00:04:33,580
+she likes to Love at Last,
+
+145
+00:04:34,300 --> 00:04:35,520
+did not to watch Romance Forever,
+
+146
+00:04:36,130 --> 00:04:37,960
+just have a rating of 4, a 0,
+
+147
+00:04:38,360 --> 00:04:42,530
+a 0, and maybe our 3rd user,
+
+148
+00:04:43,170 --> 00:04:44,280
+rates this 0, did not watch
+
+149
+00:04:44,550 --> 00:04:45,610
+that one, 0, 5, 5, and, you know, let's just
+
+150
+00:04:45,980 --> 00:04:48,150
+fill in some of the numbers.
+
+151
+00:04:52,150 --> 00:04:53,910
+And so just to introduce a
+
+152
+00:04:53,970 --> 00:04:55,090
+bit of notation, this notation
+
+153
+00:04:55,600 --> 00:04:57,200
+that we'll be using throughout, I'm going
+
+154
+00:04:57,400 --> 00:04:59,650
+to use NU to denote the number of users.
+
+155
+00:05:00,260 --> 00:05:02,800
+So in this example, NU will be equal to 4.
+
+156
+00:05:03,550 --> 00:05:04,750
+So the u-subscript stands for
+
+157
+00:05:05,040 --> 00:05:07,290
+users and Nm,
+
+158
+00:05:07,770 --> 00:05:08,900
+going to use to denote the number
+
+159
+00:05:09,090 --> 00:05:11,210
+of movies, so here I have five movies
+
+160
+00:05:11,610 --> 00:05:12,960
+so Nm equals equals 5.
+
+161
+00:05:13,320 --> 00:05:15,320
+And you know for this example, I have
+
+162
+00:05:15,950 --> 00:05:17,640
+for this example, I have loosely
+
+163
+00:05:18,920 --> 00:05:20,440
+3 maybe romantic or
+
+164
+00:05:20,700 --> 00:05:24,020
+romantic comedy movies and 2
+
+165
+00:05:24,260 --> 00:05:25,750
+action movies and you know, if
+
+166
+00:05:25,960 --> 00:05:27,460
+you look at this small example, it
+
+167
+00:05:27,580 --> 00:05:29,430
+looks like Alice and Bob are
+
+168
+00:05:29,550 --> 00:05:31,360
+giving high ratings to these
+
+169
+00:05:32,170 --> 00:05:33,650
+romantic comedies or movies
+
+170
+00:05:33,960 --> 00:05:34,850
+about love, and giving very
+
+171
+00:05:35,140 --> 00:05:36,790
+low ratings about the action
+
+172
+00:05:37,060 --> 00:05:39,470
+movies, and for Carol and Dave, it's the opposite, right?
+
+173
+00:05:39,620 --> 00:05:40,800
+Carol and Dave, users three
+
+174
+00:05:41,010 --> 00:05:42,170
+and four, really like the
+
+175
+00:05:42,350 --> 00:05:43,390
+action movies and give them
+
+176
+00:05:43,490 --> 00:05:45,020
+high ratings, but don't like
+
+177
+00:05:45,510 --> 00:05:46,910
+the romance and love-
+
+178
+00:05:47,060 --> 00:05:48,440
+type movies as much.
+
+179
+00:05:50,330 --> 00:05:51,720
+Specifically, in the recommender system
+
+180
+00:05:52,120 --> 00:05:54,170
+problem, we are given the following data.
+
+181
+00:05:54,700 --> 00:05:56,230
+Our data comprises the following:
+
+182
+00:05:56,390 --> 00:05:58,780
+we have these values r(i, j), and
+
+183
+00:05:58,910 --> 00:06:00,080
+r(i, j) is 1 if user
+
+184
+00:06:00,350 --> 00:06:01,580
+J has rated movie I.
+
+185
+00:06:01,950 --> 00:06:02,920
+So our users rate only
+
+186
+00:06:03,180 --> 00:06:04,200
+some of the movies, and so,
+
+187
+00:06:04,820 --> 00:06:06,050
+you know, we don't have
+
+188
+00:06:06,190 --> 00:06:08,140
+ratings for those movies.
+
+189
+00:06:08,310 --> 00:06:09,890
+And whenever r(i, j) is equal
+
+190
+00:06:10,450 --> 00:06:11,790
+to 1, whenever user j has
+
+191
+00:06:11,980 --> 00:06:13,150
+rated movie i, we also
+
+192
+00:06:13,660 --> 00:06:15,310
+get this number y(i, j),
+
+193
+00:06:16,090 --> 00:06:17,520
+which is the rating given by
+
+194
+00:06:17,740 --> 00:06:18,870
+user j to movie i. And
+
+195
+00:06:19,030 --> 00:06:20,370
+so, y(i, j) would be
+
+196
+00:06:20,540 --> 00:06:22,890
+a number from zero to
+
+197
+00:06:23,090 --> 00:06:24,360
+five, depending on the star
+
+198
+00:06:24,790 --> 00:06:25,810
+rating, zero to five
+
+199
+00:06:26,160 --> 00:06:28,470
+stars that user gave that particular movie.
+
+200
+00:06:30,240 --> 00:06:31,700
+So, the recommender system problem
+
+201
+00:06:32,200 --> 00:06:33,540
+is given this data
+
+202
+00:06:33,900 --> 00:06:35,210
+that has give these r(i, j)'s
+
+203
+00:06:35,440 --> 00:06:38,540
+and the y(i, j)'s to look
+
+204
+00:06:38,820 --> 00:06:40,150
+through the data and
+
+205
+00:06:40,320 --> 00:06:41,700
+look at all the movie ratings that
+
+206
+00:06:41,860 --> 00:06:42,940
+are missing and to try
+
+207
+00:06:43,220 --> 00:06:44,590
+to predict what these values
+
+208
+00:06:45,110 --> 00:06:47,290
+of the question marks should be.
+
+209
+00:06:47,520 --> 00:06:48,710
+In the particular example, I have
+
+210
+00:06:48,840 --> 00:06:49,920
+a very small number of movies
+
+211
+00:06:50,210 --> 00:06:51,250
+and a very small number of users
+
+212
+00:06:51,620 --> 00:06:52,790
+and so most users have rated most
+
+213
+00:06:53,020 --> 00:06:53,820
+movies but in the realistic
+
+214
+00:06:54,190 --> 00:06:55,870
+settings your users each
+
+215
+00:06:56,040 --> 00:06:57,120
+of your users may have rated
+
+216
+00:06:57,600 --> 00:06:58,940
+only a minuscule fraction of your
+
+217
+00:06:59,200 --> 00:07:00,170
+movies but looking at this
+
+218
+00:07:00,310 --> 00:07:01,430
+data, you know, if Alice and Bob
+
+219
+00:07:01,730 --> 00:07:02,990
+both like the romantic movies
+
+220
+00:07:03,740 --> 00:07:05,810
+maybe we think that Alice would have given this a five.
+
+221
+00:07:06,160 --> 00:07:07,290
+Maybe we think Bob would have
+
+222
+00:07:07,430 --> 00:07:08,570
+given this a 4.5
+
+223
+00:07:08,750 --> 00:07:10,560
+or some high value, as we
+
+224
+00:07:10,690 --> 00:07:11,710
+think maybe Carol and Dave
+
+225
+00:07:12,590 --> 00:07:15,050
+were doing these very low ratings.
+
+226
+00:07:15,610 --> 00:07:16,520
+And Dave, well, if Dave really likes action movies,
+
+227
+00:07:16,740 --> 00:07:17,790
+maybe he would have given
+
+228
+00:07:18,490 --> 00:07:19,540
+Swords and Karate a 4
+
+229
+00:07:20,020 --> 00:07:22,080
+rating or maybe a 5 rating, okay?
+
+230
+00:07:22,590 --> 00:07:23,700
+And so, our job in developing
+
+231
+00:07:24,330 --> 00:07:25,950
+a recommender system is to
+
+232
+00:07:26,460 --> 00:07:28,120
+come up with a learning
+
+233
+00:07:28,360 --> 00:07:29,440
+algorithm that can automatically
+
+234
+00:07:30,380 --> 00:07:31,490
+go fill in these missing values
+
+235
+00:07:31,880 --> 00:07:33,260
+for us so that we
+
+236
+00:07:33,390 --> 00:07:34,380
+can look at, say, the
+
+237
+00:07:34,490 --> 00:07:35,630
+movies that the user has
+
+238
+00:07:35,870 --> 00:07:37,370
+not yet watched, and recommend
+
+239
+00:07:38,230 --> 00:07:39,570
+new movies to that user to watch.
+
+240
+00:07:39,860 --> 00:07:42,500
+You try to predict what else might be interesting to a user.
+
+241
+00:07:45,210 --> 00:07:47,890
+So that's the formalism of the recommender system problem.
+
+242
+00:07:49,290 --> 00:07:50,450
+In the next video we'll start
+
+243
+00:07:50,770 --> 00:07:53,360
+to develop a learning algorithm to address this problem.

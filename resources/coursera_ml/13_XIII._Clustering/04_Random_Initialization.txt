@@ -1,0 +1,230 @@
+In this video, I'd like
+to talk about how to initialize
+K-means and more importantly, this will
+lead into a discussion of
+how to make K-means avoid local optima as well.
+Here's the K-means clustering algorithm
+that we talked about earlier.
+One step that we never really
+talked much about was this step
+of how you randomly initialize the cluster centroids.
+There are few different ways that
+one can imagine using to randomly
+initialize the cluster centroids.
+But, it turns out that
+there is one method that is
+much more recommended than most
+of the other options one might think about.
+So, let me tell you about
+that option since it's what often seems to work best.
+Here's how I usually initialize my cluster centroids.
+When running K-means, you should have
+the number of cluster centroids, K,
+set to be less than the
+number of training examples M. It
+would be really weird to run
+K-means with a number
+of cluster centroids that's, you know,
+equal or greater than the number of examples you have, right?
+So the way I
+usually initialize K-means is,
+I would randomly pick k training
+examples. So, and, what
+I do is then set Mu1
+of MuK equal to these k examples.
+Let me show you a concrete example.
+Lets say that k is
+equal to 2 and so
+on this example on the right let's say I want to find two clusters.
+So, what I'm going to
+do in order to initialize
+my cluster centroids is, I'm
+going to randomly pick a couple examples.
+And let's say, I pick
+this one and I pick that one.
+And the way I'm going
+to initialize my cluster centroids
+is, I'm just going to initialize
+my cluster centroids to be right on top of those examples.
+So that's my first cluster centroid
+and that's my second cluster centroid, and
+that's one random initialization of K-means.
+The one I drew looks like a particularly good one.
+And sometimes I might get less
+lucky and maybe I'll end
+up picking that as my first
+random initial example, and that as my second one.
+And here I'm picking two examples because k equals 2.
+Some we have randomly picked two
+training examples and if
+I chose those two then I'll
+end up with, may be
+this as my first cluster
+centroid and that as
+my second initial location of the cluster centroid.
+So, that's how you can randomly
+initialize the cluster centroids.
+And so at initialization, your
+first cluster centroid Mu1 will
+be equal to x(i) for
+some randomly value of i and
+Mu2 will be equal to x(j)
+for some different randomly chosen value
+of j and so on,
+if you have more clusters and more cluster centroid.
+And sort of the side common.
+I should say that in the
+earlier video where I first
+illustrated K-means with the animation.
+In that set of slides.
+Only for the purpose of illustration.
+I actually used a different
+method of initialization for my cluster centroids.
+But the method described on
+this slide, this is really the recommended way.
+And the way that you should probably use, when you implement K-means.
+So, as they suggested perhaps
+by these two illustrations on the right.
+You might really guess that K-means
+can end up converging to
+different solutions depending on
+exactly how the clusters
+were initialized, and so, depending on the random initialization.
+K-means can end up at different solutions.
+And, in particular, K-means can actually end up at local optima.
+If you're given the data sale like this.
+Well, it looks like, you know, there
+are three clusters, and so,
+if you run K-means and if
+it ends up at a good
+local optima this might be
+really the global optima, you might end up with that cluster ring.
+But if you had a particularly
+unlucky, random initialization, K-means
+can also get stuck at different
+local optima. So, in
+this example on the left
+it looks like this blue cluster has captured
+a lot of points of the left and then the they were on the green clusters
+each is captioned on the relatively small number of points.
+And so, this corresponds to
+a bad local optima because it
+has basically taken these two
+clusters and used them into
+1 and furthermore, has
+split the second cluster into
+two separate sub-clusters like
+so, and it has also
+taken the second cluster and
+split it into two
+separate sub-clusters like so, and
+so, both of these
+examples on the lower
+right correspond to different local
+optima of K-means and in fact,
+in this example here,
+the cluster, the red cluster
+has captured only a single optima example.
+And the term local
+optima, by the way, refers
+to local optima of this
+distortion function J, and
+what these solutions on the
+lower left, what these local
+optima correspond to is
+really solutions where K-means
+has gotten stuck to the local
+optima and it's not doing
+a very good job minimizing this
+distortion function J. So,
+if you're worried about K-means getting
+stuck in local optima, if
+you want to increase the odds
+of K-means finding the best
+possible clustering, like that shown
+on top here, what we
+can do, is try multiple, random initializations.
+So, instead of just initializing K-means
+once and hopping that that
+works, what we can do
+is, initialize K-means lots of
+times and run K-means lots of
+times, and use that to
+try to make sure we get
+as good a solution, as
+good a local or global optima as possible.
+Concretely, here's how you could go about doing that.
+Let's say, I decide to run
+K-meanss a hundred times
+so I'll execute this loop
+a hundred times and it's
+fairly typical a number of
+times when came to will be
+something from 50 up to may be 1000.
+So, let's say you decide to say K-means one hundred times.
+So what that means is that
+we would randomnly initialize K-means.
+And for each of
+these one hundred random intializations
+we would run K-means and
+that would give us a set
+of clusteringings, and a set of cluster
+centroids, and then we
+would then compute the distortion J,
+that is compute this cause function on
+the set of cluster assignments
+and cluster centroids that we got.
+Finally, having done this whole procedure a hundred times.
+You will have a hundred different ways
+of clustering the data and then
+finally what you do
+is all of these hundred
+ways you have found of clustering the data,
+just pick one, that gives us the lowest cost.
+That gives us the lowest distortion.
+And it turns out that
+if you are running K-means with
+a fairly small number of
+clusters , so you know if the number
+of clusters is anywhere from
+two up to maybe 10 -
+then doing multiple random initializations
+can often, can sometimes make
+sure that you find a better local optima.
+Make sure you find the better clustering data.
+But if K is very large, so, if
+K is much greater than 10,
+certainly if K were, you
+know, if you were trying to
+find hundreds of clusters, then,
+having multiple random initializations is
+less likely to make a huge difference
+and there is a much
+higher chance that your first
+random initialization will give
+you a pretty decent solution already
+and doing, doing multiple random
+initializations will probably give
+you a slightly better solution but, but maybe not that much.
+But it's really in the regime of where
+you have a relatively small number
+of clusters, especially if you
+have, maybe 2 or 3
+or 4 clusters that random
+initialization could make a huge difference in terms of
+making sure you do a good
+job minimizing the distortion
+function and giving you a good clustering.
+So, that's K-means
+with random initialization.
+If you're trying to learn a
+clustering with a relatively small
+number of clusters, 2, 3,
+4, 5, maybe, 6, 7, using
+multiple random initializations can
+sometimes, help you find much better clustering of the data.
+But, even if you are learning a large number of clusters, the initialization, the random
+initialization method that I describe here.
+That should give K-means a
+reasonable starting point to start
+from for finding a good set of clusters.

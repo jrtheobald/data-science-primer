@@ -1,0 +1,1342 @@
+1
+00:00:00,280 --> 00:00:01,330
+In the last video, we gave
+
+2
+00:00:01,570 --> 00:00:03,540
+a mathematical definition of how
+
+3
+00:00:03,700 --> 00:00:04,990
+to represent or how to
+
+4
+00:00:05,090 --> 00:00:07,160
+compute the hypotheses used by Neural Network.
+
+5
+00:00:08,420 --> 00:00:09,620
+In this video, I like
+
+6
+00:00:09,730 --> 00:00:11,280
+show you how to actually
+
+7
+00:00:11,450 --> 00:00:14,040
+carry out that computation efficiently, and
+
+8
+00:00:14,710 --> 00:00:16,050
+that is show you a vector rise implementation.
+
+9
+00:00:17,660 --> 00:00:18,930
+And second, and more importantly, I want
+
+10
+00:00:19,100 --> 00:00:21,110
+to start giving you intuition about
+
+11
+00:00:21,390 --> 00:00:22,590
+why these neural network representations
+
+12
+00:00:23,360 --> 00:00:24,640
+might be a good idea and how
+
+13
+00:00:25,010 --> 00:00:27,290
+they can help us to learn complex nonlinear hypotheses.
+
+14
+00:00:28,970 --> 00:00:29,880
+Consider this neural network.
+
+15
+00:00:30,520 --> 00:00:31,720
+Previously we said that
+
+16
+00:00:32,010 --> 00:00:33,070
+the sequence of steps that we
+
+17
+00:00:33,170 --> 00:00:34,090
+need in order to compute
+
+18
+00:00:34,650 --> 00:00:35,850
+the output of a hypotheses
+
+19
+00:00:36,320 --> 00:00:37,780
+is these equations given on
+
+20
+00:00:37,950 --> 00:00:38,770
+the left where we compute
+
+21
+00:00:39,540 --> 00:00:41,330
+the activation values of the
+
+22
+00:00:41,450 --> 00:00:43,220
+three hidden uses and then
+
+23
+00:00:43,420 --> 00:00:44,580
+we use those to compute the
+
+24
+00:00:44,650 --> 00:00:45,710
+final output of our hypotheses
+
+25
+00:00:46,680 --> 00:00:48,410
+h of x. 
+Now, I'm going
+
+26
+00:00:48,480 --> 00:00:50,200
+to define a few extra terms.
+
+27
+00:00:50,570 --> 00:00:52,210
+So, this term that I'm
+
+28
+00:00:52,410 --> 00:00:54,090
+underlining here, I'm going to
+
+29
+00:00:54,180 --> 00:00:55,560
+define that to be
+
+30
+00:00:56,230 --> 00:00:58,410
+z superscript 2 subscript 1.
+
+31
+00:00:58,790 --> 00:00:59,830
+So that we have that
+
+32
+00:01:00,650 --> 00:01:02,310
+a(2)1, which is this
+
+33
+00:01:02,470 --> 00:01:03,930
+term is equal to
+
+34
+00:01:04,170 --> 00:01:06,020
+g of z to 1.
+
+35
+00:01:06,130 --> 00:01:08,100
+And by the
+
+36
+00:01:08,180 --> 00:01:09,750
+way, these superscript 2, you
+
+37
+00:01:10,570 --> 00:01:11,580
+know, what that means is that
+
+38
+00:01:11,870 --> 00:01:12,960
+the z2 and this a2
+
+39
+00:01:13,080 --> 00:01:14,140
+as well, the superscript
+
+40
+00:01:14,840 --> 00:01:16,450
+2 in parentheses means that these
+
+41
+00:01:16,740 --> 00:01:18,330
+are values associated with layer
+
+42
+00:01:18,570 --> 00:01:19,810
+2, that is with the hidden
+
+43
+00:01:20,100 --> 00:01:21,390
+layer in the neural network.
+
+44
+00:01:22,820 --> 00:01:25,200
+Now this term here
+
+45
+00:01:25,990 --> 00:01:27,640
+I'm going to similarly define as
+
+46
+00:01:29,530 --> 00:01:30,140
+z(2)2.
+
+47
+00:01:30,490 --> 00:01:31,860
+And finally, this last
+
+48
+00:01:32,170 --> 00:01:33,100
+term here that I'm underlining,
+
+49
+00:01:34,160 --> 00:01:37,040
+let me define that as z(2)3.
+
+50
+00:01:37,090 --> 00:01:38,710
+So that similarly we have a(2)3
+
+51
+00:01:38,850 --> 00:01:43,200
+equals g of
+
+52
+00:01:44,990 --> 00:01:45,360
+z(2)3.
+
+53
+00:01:45,480 --> 00:01:46,760
+So these z values are just
+
+54
+00:01:47,290 --> 00:01:48,940
+a linear combination, a weighted
+
+55
+00:01:49,360 --> 00:01:51,200
+linear combination, of the
+
+56
+00:01:51,490 --> 00:01:52,800
+input values x0, x1,
+
+57
+00:01:53,060 --> 00:01:55,350
+x2, x3 that go into a particular neuron.
+
+58
+00:01:57,090 --> 00:01:58,260
+Now if you look at
+
+59
+00:01:58,900 --> 00:02:00,470
+this block of numbers,
+
+60
+00:02:01,990 --> 00:02:03,310
+you may notice that that block
+
+61
+00:02:03,490 --> 00:02:05,880
+of numbers corresponds suspiciously similar
+
+62
+00:02:06,950 --> 00:02:08,330
+to the matrix vector
+
+63
+00:02:08,800 --> 00:02:10,260
+operation, matrix vector multiplication
+
+64
+00:02:11,070 --> 00:02:12,710
+of x1 times the
+
+65
+00:02:12,790 --> 00:02:14,840
+vector x. Using this observation
+
+66
+00:02:15,580 --> 00:02:18,730
+we're going to be able to vectorize this computation
+
+67
+00:02:19,700 --> 00:02:20,280
+of the neural network.
+
+68
+00:02:21,470 --> 00:02:23,510
+Concretely, let's define the
+
+69
+00:02:23,680 --> 00:02:24,810
+feature vector x as usual
+
+70
+00:02:25,290 --> 00:02:27,020
+to be the vector of x0, x1,
+
+71
+00:02:27,260 --> 00:02:28,550
+x2, x3 where x0
+
+72
+00:02:29,010 --> 00:02:30,280
+as usual is always equal
+
+73
+00:02:30,610 --> 00:02:31,860
+1 and that defines
+
+74
+00:02:32,390 --> 00:02:33,420
+z2 to be the vector
+
+75
+00:02:34,360 --> 00:02:37,250
+of these z-values, you know, of z(2)1 z(2)2, z(2)3.
+
+76
+00:02:38,560 --> 00:02:40,210
+And notice that, there, z2 this
+
+77
+00:02:40,440 --> 00:02:42,500
+is a three dimensional vector.
+
+78
+00:02:43,910 --> 00:02:47,200
+We can now vectorize the computation
+
+79
+00:02:48,270 --> 00:02:48,860
+of a(2)1, a(2)2, a(2)3 as follows.
+
+80
+00:02:49,490 --> 00:02:50,690
+We can just write this in two steps.
+
+81
+00:02:51,500 --> 00:02:53,400
+We can compute z2 as theta
+
+82
+00:02:53,950 --> 00:02:55,490
+1 times x and that
+
+83
+00:02:55,790 --> 00:02:57,020
+would give us this vector z2;
+
+84
+00:02:57,400 --> 00:02:59,360
+and then a2 is
+
+85
+00:02:59,860 --> 00:03:02,180
+g of z2 and just
+
+86
+00:03:02,440 --> 00:03:03,860
+to be clear z2 here, This
+
+87
+00:03:04,200 --> 00:03:05,880
+is a three-dimensional vector and
+
+88
+00:03:06,060 --> 00:03:08,150
+a2 is also a three-dimensional
+
+89
+00:03:08,810 --> 00:03:10,410
+vector and thus this
+
+90
+00:03:10,690 --> 00:03:12,680
+activation g. This applies the
+
+91
+00:03:12,950 --> 00:03:15,290
+sigmoid function element-wise to each
+
+92
+00:03:15,550 --> 00:03:18,290
+of the z2's elements.
+And
+
+93
+00:03:18,380 --> 00:03:19,270
+by the way, to make our notation
+
+94
+00:03:19,950 --> 00:03:21,260
+a little more consistent with
+
+95
+00:03:21,440 --> 00:03:23,330
+what we'll do later, in this
+
+96
+00:03:23,590 --> 00:03:24,600
+input layer we have the
+
+97
+00:03:24,670 --> 00:03:25,840
+inputs x, but we
+
+98
+00:03:25,960 --> 00:03:26,950
+can also thing it is
+
+99
+00:03:27,300 --> 00:03:29,270
+as in activations of the first layers.
+
+100
+00:03:29,680 --> 00:03:30,430
+So, if I defined a1 to
+
+101
+00:03:30,470 --> 00:03:32,510
+be equal to x. So,
+
+102
+00:03:32,660 --> 00:03:34,270
+the a1 is vector, I can
+
+103
+00:03:34,500 --> 00:03:35,520
+now take this x here
+
+104
+00:03:36,230 --> 00:03:38,850
+and replace this with z2 equals theta1
+
+105
+00:03:39,570 --> 00:03:40,680
+times a1 just by defining
+
+106
+00:03:41,410 --> 00:03:43,350
+a1 to be activations in my input layer.
+
+107
+00:03:44,990 --> 00:03:46,000
+Now, with what I've written
+
+108
+00:03:46,280 --> 00:03:47,500
+so far I've now gotten
+
+109
+00:03:47,900 --> 00:03:49,940
+myself the values for a1,
+
+110
+00:03:50,820 --> 00:03:52,690
+a2, a3, and really
+
+111
+00:03:52,780 --> 00:03:53,980
+I should put the
+
+112
+00:03:54,290 --> 00:03:55,600
+superscripts there as well.
+
+113
+00:03:56,430 --> 00:03:57,530
+But I need one more
+
+114
+00:03:57,940 --> 00:03:59,810
+value, which is I also want this a(0)2
+
+115
+00:04:00,050 --> 00:04:02,050
+and that corresponds to
+
+116
+00:04:02,250 --> 00:04:04,350
+a bias unit in the
+
+117
+00:04:04,550 --> 00:04:06,420
+hidden layer that goes to the output there.
+
+118
+00:04:06,990 --> 00:04:07,780
+Of course, there was a
+
+119
+00:04:07,810 --> 00:04:08,850
+bias unit here too that,
+
+120
+00:04:09,000 --> 00:04:10,060
+you know, it just didn't draw
+
+121
+00:04:10,270 --> 00:04:11,820
+under here but to
+
+122
+00:04:11,970 --> 00:04:13,100
+take care of this extra bias unit,
+
+123
+00:04:13,870 --> 00:04:15,650
+what we're going to do is add
+
+124
+00:04:16,320 --> 00:04:18,720
+an extra a0 superscript 2,
+
+125
+00:04:18,890 --> 00:04:20,870
+that's equal to one, and after
+
+126
+00:04:21,010 --> 00:04:21,990
+taking this step we now have
+
+127
+00:04:22,290 --> 00:04:23,860
+that a2 is going to
+
+128
+00:04:24,010 --> 00:04:25,390
+be a four dimensional feature
+
+129
+00:04:25,690 --> 00:04:26,820
+vector because we just added
+
+130
+00:04:27,300 --> 00:04:28,490
+this extra, you know,
+
+131
+00:04:28,620 --> 00:04:30,260
+a0 which is equal to
+
+132
+00:04:30,500 --> 00:04:31,700
+1 corresponding to the bias unit
+
+133
+00:04:32,080 --> 00:04:33,550
+in the hidden layer.
+And finally,
+
+134
+00:04:35,080 --> 00:04:37,620
+to compute the actual
+
+135
+00:04:38,070 --> 00:04:40,100
+value output of our hypotheses, we
+
+136
+00:04:40,250 --> 00:04:41,190
+then simply need to compute
+
+137
+00:04:42,470 --> 00:04:44,980
+z3. So z3 is
+
+138
+00:04:45,350 --> 00:04:47,940
+equal to this term here that I'm just underlining.
+
+139
+00:04:48,800 --> 00:04:51,450
+This inner term there is z3.
+
+140
+00:04:53,980 --> 00:04:55,160
+And z3 is stated
+
+141
+00:04:55,500 --> 00:04:57,120
+2 times a2 and finally
+
+142
+00:04:57,810 --> 00:04:59,560
+my hypotheses output h of x which
+
+143
+00:04:59,750 --> 00:05:01,210
+is a3 that is
+
+144
+00:05:01,360 --> 00:05:03,910
+the activation of my
+
+145
+00:05:04,750 --> 00:05:06,040
+one and only unit in
+
+146
+00:05:06,290 --> 00:05:09,500
+the output layer. So, that's just the real number. You can write it as a3
+
+147
+00:05:10,050 --> 00:05:12,390
+or as a(3)1 and that's g of z3.
+
+148
+00:05:13,240 --> 00:05:15,020
+This process of computing h of x
+
+149
+00:05:15,940 --> 00:05:18,110
+is also called forward propagation
+
+150
+00:05:19,130 --> 00:05:20,440
+and is called that because we
+
+151
+00:05:20,550 --> 00:05:21,310
+start of with the activations
+
+152
+00:05:22,010 --> 00:05:24,400
+of the input-units and then
+
+153
+00:05:24,940 --> 00:05:26,770
+we sort of forward-propagate that to the
+
+154
+00:05:26,860 --> 00:05:29,390
+hidden layer and compute the activations of the
+
+155
+00:05:29,580 --> 00:05:30,400
+hidden layer and then we
+
+156
+00:05:30,540 --> 00:05:32,040
+sort of forward propagate that
+
+157
+00:05:32,760 --> 00:05:36,270
+and compute the activations of
+
+158
+00:05:37,480 --> 00:05:39,170
+the output layer, but this process of computing the activations from the input then
+
+159
+00:05:39,290 --> 00:05:40,400
+the hidden then the output layer,
+
+160
+00:05:40,940 --> 00:05:42,030
+and that's also called forward propagation
+
+161
+00:05:43,320 --> 00:05:44,150
+and what we just did is
+
+162
+00:05:44,310 --> 00:05:45,370
+we just worked out a vector
+
+163
+00:05:45,740 --> 00:05:47,140
+wise implementation of this
+
+164
+00:05:47,280 --> 00:05:48,890
+procedure.
+So, if you
+
+165
+00:05:48,970 --> 00:05:50,260
+implement it using these equations
+
+166
+00:05:50,800 --> 00:05:51,740
+that we have on the right, these
+
+167
+00:05:51,850 --> 00:05:53,280
+would give you an efficient way
+
+168
+00:05:53,460 --> 00:05:54,980
+or both of the efficient way of
+
+169
+00:05:55,120 --> 00:05:56,130
+computing h of x.
+
+170
+00:05:58,250 --> 00:05:59,860
+This forward propagation view also
+
+171
+00:06:00,860 --> 00:06:02,270
+helps us to understand what
+
+172
+00:06:02,550 --> 00:06:03,640
+Neural Networks might be doing
+
+173
+00:06:04,110 --> 00:06:05,290
+and why they might help us to
+
+174
+00:06:05,510 --> 00:06:07,170
+learn interesting nonlinear hypotheses.
+
+175
+00:06:08,670 --> 00:06:09,760
+Consider the following neural network
+
+176
+00:06:10,500 --> 00:06:11,820
+and let's say I cover up
+
+177
+00:06:12,040 --> 00:06:13,810
+the left path of this picture for now.
+
+178
+00:06:14,650 --> 00:06:16,170
+If you look at what's left in this picture.
+
+179
+00:06:17,030 --> 00:06:18,020
+This looks a lot like
+
+180
+00:06:18,260 --> 00:06:19,520
+logistic regression where what
+
+181
+00:06:19,660 --> 00:06:20,570
+we're doing is we're using
+
+182
+00:06:20,990 --> 00:06:22,000
+that note, that's just the
+
+183
+00:06:22,130 --> 00:06:23,770
+logistic regression unit and we're
+
+184
+00:06:24,120 --> 00:06:26,060
+using that to make a
+
+185
+00:06:26,380 --> 00:06:28,290
+prediction h of x. 
+And concretely,
+
+186
+00:06:28,440 --> 00:06:30,340
+what the hypotheses is outputting
+
+187
+00:06:30,710 --> 00:06:31,830
+is h of x is going
+
+188
+00:06:31,890 --> 00:06:33,760
+to be equal to g which
+
+189
+00:06:33,980 --> 00:06:38,110
+is my sigmoid activation function times theta 0
+
+190
+00:06:38,560 --> 00:06:40,450
+times a0 is equal
+
+191
+00:06:41,270 --> 00:06:43,380
+to 1 plus theta 1
+
+192
+00:06:45,220 --> 00:06:49,080
+plus theta 2
+
+193
+00:06:49,260 --> 00:06:52,090
+times a2 plus theta
+
+194
+00:06:52,830 --> 00:06:55,180
+3 times a3 whether
+
+195
+00:06:55,370 --> 00:06:56,910
+values a1, a2, a3
+
+196
+00:06:57,050 --> 00:06:59,860
+are those given by these three given units.
+
+197
+00:07:01,060 --> 00:07:02,790
+Now, to be actually consistent
+
+198
+00:07:03,490 --> 00:07:05,000
+to my early notation. Actually, we
+
+199
+00:07:05,170 --> 00:07:06,360
+need to, you know, fill in
+
+200
+00:07:06,470 --> 00:07:10,700
+these superscript 2's here everywhere
+
+201
+00:07:12,260 --> 00:07:13,920
+and I also have these
+
+202
+00:07:14,160 --> 00:07:16,800
+indices 1 there because I
+
+203
+00:07:16,930 --> 00:07:20,610
+have only one output unit, but if you focus on the blue parts of the notation.
+
+204
+00:07:20,930 --> 00:07:21,900
+This is, you know, this looks
+
+205
+00:07:22,150 --> 00:07:23,680
+awfully like the standard logistic
+
+206
+00:07:23,870 --> 00:07:25,530
+regression model, except that
+
+207
+00:07:25,600 --> 00:07:28,060
+I now have a capital theta instead of lower case theta.
+
+208
+00:07:29,170 --> 00:07:30,690
+And what this is
+
+209
+00:07:30,850 --> 00:07:32,520
+doing is just logistic regression.
+
+210
+00:07:33,660 --> 00:07:35,240
+But where the features fed into
+
+211
+00:07:35,590 --> 00:07:37,250
+logistic regression are these
+
+212
+00:07:38,200 --> 00:07:40,170
+values computed by the hidden layer.
+
+213
+00:07:41,340 --> 00:07:42,690
+Just to say that again, what
+
+214
+00:07:42,910 --> 00:07:44,420
+this neural network is doing is
+
+215
+00:07:45,130 --> 00:07:47,050
+just like logistic regression, except
+
+216
+00:07:47,440 --> 00:07:48,900
+that rather than using the
+
+217
+00:07:49,110 --> 00:07:50,770
+original features x1, x2, x3,
+
+218
+00:07:52,400 --> 00:07:54,260
+is using these new features a1, a2, a3.
+
+219
+00:07:54,440 --> 00:07:56,810
+Again, we'll put the superscripts
+
+220
+00:07:58,130 --> 00:08:00,380
+there, you know, to be consistent with the notation.
+
+221
+00:08:02,820 --> 00:08:04,610
+And the cool thing about this,
+
+222
+00:08:05,040 --> 00:08:06,220
+is that the features a1, a2,
+
+223
+00:08:06,720 --> 00:08:08,310
+a3, they themselves are learned
+
+224
+00:08:08,760 --> 00:08:09,930
+as functions of the input.
+
+225
+00:08:10,960 --> 00:08:12,640
+Concretely, the function mapping from
+
+226
+00:08:13,320 --> 00:08:14,540
+layer 1 to layer 2,
+
+227
+00:08:14,810 --> 00:08:16,390
+that is determined by some
+
+228
+00:08:16,750 --> 00:08:18,550
+other set of parameters, theta 1.
+
+229
+00:08:19,380 --> 00:08:20,210
+So it's as if the
+
+230
+00:08:20,270 --> 00:08:22,030
+neural network, instead of being
+
+231
+00:08:22,240 --> 00:08:24,050
+constrained to feed the
+
+232
+00:08:24,120 --> 00:08:25,760
+features x1, x2, x3 to logistic regression.
+
+233
+00:08:26,210 --> 00:08:27,440
+It gets to
+
+234
+00:08:27,720 --> 00:08:29,320
+learn its own features, a1,
+
+235
+00:08:29,810 --> 00:08:32,010
+a2, a3, to feed into the
+
+236
+00:08:32,130 --> 00:08:33,950
+logistic regression and as
+
+237
+00:08:34,650 --> 00:08:36,270
+you can imagine depending on
+
+238
+00:08:36,360 --> 00:08:37,690
+what parameters it chooses for
+
+239
+00:08:37,900 --> 00:08:39,880
+theta 1. 
+You can learn some pretty interesting
+
+240
+00:08:40,390 --> 00:08:42,460
+and complex features and therefore
+
+241
+00:08:43,780 --> 00:08:44,830
+you can end up with a
+
+242
+00:08:45,050 --> 00:08:46,650
+better hypotheses than if
+
+243
+00:08:46,840 --> 00:08:47,870
+you were constrained to use
+
+244
+00:08:48,020 --> 00:08:50,520
+the raw features x1, x2 or x3 or if
+
+245
+00:08:50,640 --> 00:08:52,530
+you will constrain to say choose the
+
+246
+00:08:52,620 --> 00:08:53,730
+polynomial terms, you know,
+
+247
+00:08:53,920 --> 00:08:55,550
+x1, x2, x3, and so on.
+
+248
+00:08:55,790 --> 00:08:57,250
+But instead, this algorithm has
+
+249
+00:08:57,530 --> 00:08:59,130
+the flexibility to try
+
+250
+00:08:59,420 --> 00:09:01,990
+to learn whatever features at once, using
+
+251
+00:09:02,680 --> 00:09:03,990
+these a1, a2, a3 in
+
+252
+00:09:04,110 --> 00:09:05,190
+order to feed into this
+
+253
+00:09:05,510 --> 00:09:07,830
+last unit that's essentially
+
+254
+00:09:09,240 --> 00:09:11,920
+a logistic regression here. 
+I realized
+
+255
+00:09:12,550 --> 00:09:13,970
+this example is described as
+
+256
+00:09:14,060 --> 00:09:15,500
+a somewhat high level and so
+
+257
+00:09:15,750 --> 00:09:16,520
+I'm not sure if this intuition
+
+258
+00:09:17,440 --> 00:09:18,870
+of the neural network, you know, having
+
+259
+00:09:19,720 --> 00:09:21,420
+more complex features will quite
+
+260
+00:09:21,630 --> 00:09:23,120
+make sense yet, but if
+
+261
+00:09:23,210 --> 00:09:24,440
+it doesn't yet in the next
+
+262
+00:09:24,810 --> 00:09:25,860
+two videos I'm going to
+
+263
+00:09:25,970 --> 00:09:27,300
+go through a specific example
+
+264
+00:09:28,250 --> 00:09:29,590
+of how a neural network can
+
+265
+00:09:29,830 --> 00:09:30,860
+use this hidden there to compute
+
+266
+00:09:31,250 --> 00:09:32,880
+more complex features to feed
+
+267
+00:09:33,130 --> 00:09:34,520
+into this final output layer
+
+268
+00:09:35,060 --> 00:09:37,100
+and how that can learn more complex hypotheses.
+
+269
+00:09:37,920 --> 00:09:39,120
+So, in case what I'm
+
+270
+00:09:39,180 --> 00:09:40,090
+saying here doesn't quite make
+
+271
+00:09:40,230 --> 00:09:41,650
+sense, stick with me
+
+272
+00:09:41,810 --> 00:09:42,960
+for the next two videos and
+
+273
+00:09:43,190 --> 00:09:44,370
+hopefully out there working through
+
+274
+00:09:44,580 --> 00:09:46,690
+those examples this explanation will
+
+275
+00:09:47,030 --> 00:09:48,640
+make a little bit more sense.
+
+276
+00:09:49,020 --> 00:09:49,740
+But just the point O. You
+
+277
+00:09:49,820 --> 00:09:51,120
+can have neural networks with
+
+278
+00:09:51,470 --> 00:09:52,990
+other types of diagrams as
+
+279
+00:09:53,080 --> 00:09:54,270
+well, and the way that
+
+280
+00:09:54,450 --> 00:09:58,000
+neural networks are connected, that's called the architecture.
+
+281
+00:09:58,390 --> 00:10:00,150
+So the term architecture refers to
+
+282
+00:10:00,490 --> 00:10:02,380
+how the different neurons are connected to each other.
+
+283
+00:10:03,220 --> 00:10:04,180
+This is an example
+
+284
+00:10:04,840 --> 00:10:06,300
+of a different neural network architecture
+
+285
+00:10:07,480 --> 00:10:08,750
+and once again you may
+
+286
+00:10:09,260 --> 00:10:10,770
+be able to get this intuition of
+
+287
+00:10:10,940 --> 00:10:12,180
+how the second layer,
+
+288
+00:10:12,900 --> 00:10:14,120
+here we have three heading units
+
+289
+00:10:14,910 --> 00:10:16,200
+that are computing some complex
+
+290
+00:10:16,660 --> 00:10:17,900
+function maybe of the
+
+291
+00:10:17,990 --> 00:10:19,530
+input layer, and then the
+
+292
+00:10:19,730 --> 00:10:20,750
+third layer can take the
+
+293
+00:10:20,840 --> 00:10:22,260
+second layer's features and compute
+
+294
+00:10:22,550 --> 00:10:24,070
+even more complex features in layer three
+
+295
+00:10:24,980 --> 00:10:25,880
+so that by the time you get
+
+296
+00:10:25,960 --> 00:10:27,160
+to the output layer, layer four,
+
+297
+00:10:27,900 --> 00:10:29,130
+you can have even more
+
+298
+00:10:29,370 --> 00:10:30,690
+complex features of what
+
+299
+00:10:30,860 --> 00:10:32,040
+you are able to compute in
+
+300
+00:10:32,280 --> 00:10:34,710
+layer three and so get very interesting nonlinear hypotheses.
+
+301
+00:10:36,730 --> 00:10:37,580
+By the way, in a network
+
+302
+00:10:37,810 --> 00:10:38,980
+like this, layer one, this is
+
+303
+00:10:39,130 --> 00:10:40,670
+called an input layer. Layer four
+
+304
+00:10:41,360 --> 00:10:43,170
+is still our output layer, and
+
+305
+00:10:43,340 --> 00:10:45,040
+this network has two hidden layers.
+
+306
+00:10:46,000 --> 00:10:47,440
+So anything that's not an
+
+307
+00:10:48,000 --> 00:10:49,020
+input layer or an output
+
+308
+00:10:49,340 --> 00:10:50,590
+layer is called a hidden layer.
+
+309
+00:10:53,390 --> 00:10:54,470
+So, hopefully from this video
+
+310
+00:10:54,760 --> 00:10:55,840
+you've gotten a sense of
+
+311
+00:10:56,140 --> 00:10:58,360
+how the feed forward propagation step
+
+312
+00:10:58,830 --> 00:11:00,230
+in a neural network works where you
+
+313
+00:11:00,390 --> 00:11:01,670
+start from the activations of
+
+314
+00:11:01,720 --> 00:11:03,150
+the input layer and forward
+
+315
+00:11:03,450 --> 00:11:04,480
+propagate that to the
+
+316
+00:11:04,570 --> 00:11:05,560
+first hidden layer, then the second
+
+317
+00:11:06,070 --> 00:11:08,200
+hidden layer, and then finally the output layer.
+
+318
+00:11:08,990 --> 00:11:10,250
+And you also saw how
+
+319
+00:11:10,560 --> 00:11:12,010
+we can vectorize that computation.
+
+320
+00:11:13,660 --> 00:11:14,830
+In the next, I realized
+
+321
+00:11:15,240 --> 00:11:16,680
+that some of the intuitions in this
+
+322
+00:11:16,850 --> 00:11:19,220
+video of how, you know, other certain
+
+323
+00:11:19,550 --> 00:11:22,570
+layers are computing complex features of the early layers.
+
+324
+00:11:22,910 --> 00:11:23,540
+I realized some of that intuition
+
+325
+00:11:24,190 --> 00:11:26,660
+may be still slightly abstract and kind of a high level.
+
+326
+00:11:27,450 --> 00:11:28,240
+And so what I would like
+
+327
+00:11:28,350 --> 00:11:29,460
+to do in the two videos
+
+328
+00:11:30,210 --> 00:11:31,540
+is work through a detailed example
+
+329
+00:11:32,510 --> 00:11:33,810
+of how a neural network can
+
+330
+00:11:33,960 --> 00:11:35,740
+be used to compute nonlinear
+
+331
+00:11:36,710 --> 00:11:38,030
+functions of the input and
+
+332
+00:11:38,330 --> 00:11:39,450
+hope that will give you a
+
+333
+00:11:39,540 --> 00:11:40,860
+good sense of the sorts of
+
+334
+00:11:41,010 --> 00:11:44,630
+complex nonlinear hypotheses we can get out of Neural Networks.

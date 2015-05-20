@@ -1,0 +1,233 @@
+In this next set of videos,
+I'd like to tell you about
+a problem called Anomaly Detection.
+This is a reasonably commonly
+use you type machine learning.
+And one of the interesting aspects
+is that it's mainly for
+unsupervised problem, that there's some
+aspects of it that are
+also very similar to sort of the supervised learning problem.
+So, what is anomaly detection?
+To explain it. Let me use
+the motivating example of: Imagine
+that you're a manufacturer of
+aircraft engines, and let's
+say that as your aircraft
+engines roll off the assembly
+line, you're doing, you know, QA or
+quality assurance testing, and as
+part of that testing you
+measure features of your
+aircraft engine, like maybe, you measure
+the heat generated, things like
+the vibrations and so on.
+I share some friends that worked
+on this problem a long time
+ago, and these were actually the
+sorts of features that they were
+collecting off actual aircraft
+engines so you
+now have a data set of
+X1 through Xm, if you have
+manufactured m aircraft engines,
+and if you plot your data, maybe it looks like this.
+So, each point here, each cross
+here as one of your unlabeled examples.
+So, the anomaly detection problem is the following.
+Let's say that on, you
+know, the next day, you
+have a new aircraft engine
+that rolls off the assembly line
+and your new aircraft engine has
+some set of features x-test.
+What the anomaly detection problem is,
+we want to know if this
+aircraft engine is anomalous in
+any way, in other words, we want
+to know if, maybe, this engine
+should undergo further testing
+because, or if it looks
+like an okay engine, and
+so it's okay to just ship
+it to a customer without further testing.
+So, if your new
+aircraft engine looks like
+a point over there, well, you
+know, that looks a lot
+like the aircraft engines we've seen
+before, and so maybe we'll say that it looks okay.
+Whereas, if your new aircraft
+engine, if x-test, you know, were
+a point that were out here,
+so that if X1 and
+X2 are the features of this new example.
+If x-tests were all the
+way out there, then we would call that an anomaly.
+and maybe send that aircraft engine
+for further testing before we
+ship it to a customer, since
+it looks very different than
+the rest of the aircraft engines we've seen before.
+More formally in the anomaly
+detection problem, we're give
+some data sets, x1 through
+Xm of examples, and we
+usually assume that these end
+examples are normal or
+non-anomalous examples, and we
+want an algorithm to tell us
+if some new example x-test is anomalous.
+The approach that we're going
+to take is that given this training
+set, given the unlabeled training
+set, we're going to
+build a model for p of
+x. In other words, we're
+going to build a model for the
+probability of x, where
+x are these features of, say, aircraft engines.
+And so, having built a
+model of the probability of x
+we're then going to say that
+for the new aircraft engine, if
+p of x-test is less
+than some epsilon then
+we flag this as an anomaly.
+So we see a new engine
+that, you know, has very low probability
+under a model p of
+x that we estimate from the data,
+then we flag this anomaly, whereas
+if p of x-test is, say,
+greater than or equal to some small threshold.
+Then we say that, you know, okay, it looks okay.
+And so, given the training set,
+like that plotted here, if
+you build a model, hopefully
+you will find that aircraft engines,
+or hopefully the model p of
+x will say that points that
+lie, you know, somewhere in the
+middle, that's pretty high probability,
+whereas points a little bit further out have lower probability.
+Points that are even further out
+have somewhat lower probability, and the
+point that's way out here,
+the point that's way
+out there, would be an anomaly.
+Whereas the point that's way in
+there, right in the
+middle, this would be
+okay because p of x
+right in the middle of that
+would be very high cause we've
+seen a lot of points in that region.
+Here are some examples of applications of anomaly detection.
+Perhaps the most common application of
+anomaly detection is actually
+for detection if you
+have many users, and if
+each of your users take different
+activities, you know maybe
+on your website or in the
+physical plant or something, you
+can compute features of the different users activities.
+And what you can do is build
+a model to say, you know,
+what is the probability of different
+users behaving different ways.
+What is the probability of a particular vector
+of features of a
+users behavior so you
+know examples of features of
+a users activity may be on
+the website it'd be things like,
+maybe x1 is how often does
+this user log in, x2, you know, maybe
+the number of what
+pages visited, or the
+number of transactions, maybe x3
+is, you know, the number of
+posts of the users on the
+forum, feature x4 could
+be what is the typing
+speed of the user and some
+websites can actually track that
+was the typing speed of this
+user in characters per second.
+And so you can model p of x based on this sort of data.
+And finally having your model
+p of x, you can
+try to identify users that
+are behaving very strangely on your
+website by checking which ones have
+probably effects less than epsilon and
+maybe send the profiles of those users for further review.
+Or demand additional identification from
+those users, or some such
+to guard against you know,
+strange behavior or fraudulent behavior on your website.
+This sort of technique will tend
+of flag the users that are
+behaving unusually, not just
+users that maybe behaving fraudulently.
+So not just constantly having
+stolen or users that are
+trying to do funny things, or just find unusual users.
+But this is actually the technique
+that is used by many online
+websites that sell things to
+try identify users behaving
+strangely that might be
+indicative of either fraudulent
+behavior or of computer accounts that have been stolen.
+Another example of anomaly detection is manufacturing.
+So, already talked about the
+aircraft engine thing where you can
+find unusual, say, aircraft
+engines and send those for further review.
+A third application would be
+monitoring computers in a data center.
+I actually have some friends who work on this too.
+So if you have a lot
+of machines in a computer
+cluster or in a
+data center, we can do
+things like compute features at each machine.
+So maybe some features capturing
+you know, how much memory used, number of
+disc accesses, CPU load.
+As well as more complex features
+like what is the CPU
+load on this machine divided by
+the amount of network traffic
+on this machine?
+Then given the dataset of how
+your computers in your data
+center usually behave, you can
+model the probability of x,
+so you can model the probability
+of these machines having
+different amounts of memory use
+or probability of these machines having
+different numbers of disc accesses
+or different CPU loads and so on.
+And if you ever have a machine
+whose probability of x,
+p of x, is very small then you
+know that machine is behaving unusually
+and maybe that machine is
+about to go down, and you
+can flag that for review by a system administrator.
+And this is actually being used
+today by various data
+centers to watch out for unusual
+things happening on their machines.
+So, that's anomaly detection.
+In the next video, I'll
+talk a bit about the Gaussian distribution and
+review properties of the Gaussian
+probability distribution, and in
+videos after that, we will
+apply it to develop an anomaly detection algorithm.

@@ -1,0 +1,244 @@
+In this next set of
+videos, I would like to
+tell you about recommender systems.
+There are two reasons, I had
+two motivations for why I wanted to talk about recommender systems.
+The first is just that it
+is an important application of machine learning.
+Over the last few years, occasionally I
+visit different, you know, technology
+companies here in Silicon Valley
+and I often talk to people
+working on machine learning applications there
+and so I've asked
+people what are the most
+important applications of machine
+learning or what are the machine
+learning applications that you would most like to get
+an improvement in the performance of.
+And one of the most frequent
+answers I heard was that
+there are many groups out in Silicon
+Valley now, trying to build better recommender systems.
+So, if you think about
+what the websites are
+like Amazon, or what Netflix
+or what eBay, or what
+iTunes Genius, made by Apple
+does, there are many websites
+or systems that try to
+recommend new products to use.
+So, Amazon recommends new books
+to you, Netflix try to recommend
+new movies to you, and so on.
+And these sorts of recommender systems,
+that look at what books you
+may have purchased in the past,
+or what movies you have rated
+in the past, but these are
+the systems that are responsible
+for today, a substantial fraction of
+Amazon's revenue and for a
+company like Netflix, the recommendations
+that they make to the users
+is also responsible for a
+substantial fraction of the movies
+watched by their users. 
+And so an
+improvement in performance of
+a recommender system can have
+a substantial and immediate
+impact on the bottom line of
+many of these
+companies. Recommender systems is kind of a funny
+problem, within academic machine
+learning so that we could
+go to an academic machine learning conference,
+the problem of recommender systems,
+actually receives relatively little attention,
+or at least it's sort of a smaller
+fraction of what goes on within Academia.
+But if you look at what's happening,
+many technology companies, the ability
+to build these systems seems to be a high priority for many companies.
+And that's one of the reasons why I want to talk about them in this class.
+The second reason that I
+want to talk about recommender systems
+is that as we approach
+the last few sets of videos
+of this class I wanted to talk about
+a few of the big ideas
+in machine learning and share with you,
+you know, some of the big ideas in machine learning.
+And we've already seen
+in this class that features are
+important for machine learning, the
+features you choose will have
+a big effect on the performance of your learning algorithm.
+So there's this big idea in machine
+learning, which is that for
+some problems, maybe not
+all problems, but some problems, there
+are algorithms that can try
+to automatically learn a good set of features for you.
+So rather than trying to hand
+design, or hand code the
+features, which is mostly what we've
+been doing so far, there are a
+few settings where you might
+be able to have an
+algorithm, just to learn what feature to
+use, and the recommender
+systems is just one example of that sort of setting.
+There are many others, but engraved
+through recommender systems, will be
+able to go a little
+bit into this idea of learning
+the features and you'll be
+able to see at least one example
+of this, I think, big idea in machine learning as well.
+So, without further ado, let's
+get started, and talk
+about the recommender system problem formulation.
+As my running example, I'm
+going to use the
+modern problem of predicting movie ratings.
+So, here's a problem.
+Imagine that you're a
+website or a company that
+sells or rents out movies, or what have you.
+And so, you know, Amazon, and Netflix, and
+I think iTunes are all examples
+of companies that do this,
+and let's say you let
+your users rate different movies,
+using a 1 to 5 star rating.
+So, users may, you know,
+something one, two, three, four or five stars.
+In order to make this example
+just a little bit nicer, I'm
+going to allow 0 to
+5 stars as well,
+because that just makes some of the math come out just nicer.
+Although most of these websites use the 1 to 5 star scale.
+So here, I have 5 movies.
+You know, Love That
+Lasts, Romance Forever, Cute Puppies of
+Love, Nonstop Car Chases,
+and Swords vs. Karate.
+And we have 4 users, which,
+calling, you know, Alice, Bob, Carol,
+and Dave, with initials A, B,
+C, and D, we'll call them users 1, 2, 3, and 4.
+So, let's say Alice really
+likes Love That Lasts and
+rates that 5 stars, likes Romance
+Forever, rates it 5 stars.
+She did not watch Cute Puppies
+of Love, and did rate it, so we
+don't have a rating for that,
+and Alice really did not
+like Nonstop Car Chases or
+Swords vs. Karate. And a different user
+Bob, user two, maybe rated
+a different set of movies, maybe
+she likes to Love at Last,
+did not to watch Romance Forever,
+just have a rating of 4, a 0,
+a 0, and maybe our 3rd user,
+rates this 0, did not watch
+that one, 0, 5, 5, and, you know, let's just
+fill in some of the numbers.
+And so just to introduce a
+bit of notation, this notation
+that we'll be using throughout, I'm going
+to use NU to denote the number of users.
+So in this example, NU will be equal to 4.
+So the u-subscript stands for
+users and Nm,
+going to use to denote the number
+of movies, so here I have five movies
+so Nm equals equals 5.
+And you know for this example, I have
+for this example, I have loosely
+3 maybe romantic or
+romantic comedy movies and 2
+action movies and you know, if
+you look at this small example, it
+looks like Alice and Bob are
+giving high ratings to these
+romantic comedies or movies
+about love, and giving very
+low ratings about the action
+movies, and for Carol and Dave, it's the opposite, right?
+Carol and Dave, users three
+and four, really like the
+action movies and give them
+high ratings, but don't like
+the romance and love-
+type movies as much.
+Specifically, in the recommender system
+problem, we are given the following data.
+Our data comprises the following:
+we have these values r(i, j), and
+r(i, j) is 1 if user
+J has rated movie I.
+So our users rate only
+some of the movies, and so,
+you know, we don't have
+ratings for those movies.
+And whenever r(i, j) is equal
+to 1, whenever user j has
+rated movie i, we also
+get this number y(i, j),
+which is the rating given by
+user j to movie i. And
+so, y(i, j) would be
+a number from zero to
+five, depending on the star
+rating, zero to five
+stars that user gave that particular movie.
+So, the recommender system problem
+is given this data
+that has give these r(i, j)'s
+and the y(i, j)'s to look
+through the data and
+look at all the movie ratings that
+are missing and to try
+to predict what these values
+of the question marks should be.
+In the particular example, I have
+a very small number of movies
+and a very small number of users
+and so most users have rated most
+movies but in the realistic
+settings your users each
+of your users may have rated
+only a minuscule fraction of your
+movies but looking at this
+data, you know, if Alice and Bob
+both like the romantic movies
+maybe we think that Alice would have given this a five.
+Maybe we think Bob would have
+given this a 4.5
+or some high value, as we
+think maybe Carol and Dave
+were doing these very low ratings.
+And Dave, well, if Dave really likes action movies,
+maybe he would have given
+Swords and Karate a 4
+rating or maybe a 5 rating, okay?
+And so, our job in developing
+a recommender system is to
+come up with a learning
+algorithm that can automatically
+go fill in these missing values
+for us so that we
+can look at, say, the
+movies that the user has
+not yet watched, and recommend
+new movies to that user to watch.
+You try to predict what else might be interesting to a user.
+So that's the formalism of the recommender system problem.
+In the next video we'll start
+to develop a learning algorithm to address this problem.

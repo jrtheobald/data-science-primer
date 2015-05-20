@@ -1,0 +1,1759 @@
+1
+00:00:00,530 --> 00:00:01,550
+In the last video, we started
+
+2
+00:00:01,950 --> 00:00:03,230
+to talk about the kernels idea
+
+3
+00:00:03,710 --> 00:00:04,590
+and how it can be used to
+
+4
+00:00:04,860 --> 00:00:07,900
+define new features for the support vector machine.
+
+5
+00:00:08,100 --> 00:00:08,910
+In this video, I'd like to throw
+
+6
+00:00:09,230 --> 00:00:10,670
+in some of the missing details and,
+
+7
+00:00:11,020 --> 00:00:12,070
+also, say a few words about
+
+8
+00:00:12,270 --> 00:00:14,100
+how to use these ideas in practice.
+
+9
+00:00:14,650 --> 00:00:15,850
+Such as, how they pertain
+
+10
+00:00:16,340 --> 00:00:20,120
+to, for example, the bias variance trade-off in support vector machines.
+
+11
+00:00:22,690 --> 00:00:23,680
+In the last video, I talked
+
+12
+00:00:24,000 --> 00:00:25,970
+about the process of picking a few landmarks.
+
+13
+00:00:26,660 --> 00:00:28,890
+You know, l1, l2, l3 and that
+
+14
+00:00:29,150 --> 00:00:30,220
+allowed us to define the
+
+15
+00:00:30,300 --> 00:00:31,900
+similarity function also called
+
+16
+00:00:32,200 --> 00:00:33,500
+the kernel or in this
+
+17
+00:00:33,690 --> 00:00:34,830
+example if you have
+
+18
+00:00:35,070 --> 00:00:37,410
+this similarity function this is a Gaussian kernel.
+
+19
+00:00:38,610 --> 00:00:40,370
+And that allowed us to build
+
+20
+00:00:40,660 --> 00:00:42,070
+this form of a hypothesis function.
+
+21
+00:00:43,180 --> 00:00:44,880
+But where do we get these landmarks from?
+
+22
+00:00:45,150 --> 00:00:45,670
+Where do we get l1, l2, l3 from?
+
+23
+00:00:45,690 --> 00:00:49,080
+And it seems, also, that for complex learning
+
+24
+00:00:49,610 --> 00:00:50,830
+problems, maybe we want a
+
+25
+00:00:50,920 --> 00:00:53,060
+lot more landmarks than just three of them that we might choose by hand.
+
+26
+00:00:55,160 --> 00:00:56,450
+So in practice this is
+
+27
+00:00:56,580 --> 00:00:57,730
+how the landmarks are chosen
+
+28
+00:00:57,830 --> 00:00:59,910
+which is that given the
+
+29
+00:01:00,150 --> 00:01:01,110
+machine learning problem. We have some
+
+30
+00:01:01,370 --> 00:01:02,230
+data set of some some positive
+
+31
+00:01:02,710 --> 00:01:04,460
+and negative examples. So, this is the idea here
+
+32
+00:01:05,310 --> 00:01:06,270
+which is that we're gonna take the
+
+33
+00:01:06,630 --> 00:01:08,200
+examples and for every
+
+34
+00:01:08,470 --> 00:01:09,780
+training example that we have,
+
+35
+00:01:10,490 --> 00:01:11,430
+we are just going to call
+
+36
+00:01:11,980 --> 00:01:13,270
+it. We're just going
+
+37
+00:01:13,440 --> 00:01:14,850
+to put landmarks as exactly
+
+38
+00:01:15,490 --> 00:01:17,600
+the same locations as the training examples.
+
+39
+00:01:18,930 --> 00:01:20,360
+So if I have one training
+
+40
+00:01:20,680 --> 00:01:21,880
+example if that is x1,
+
+41
+00:01:22,120 --> 00:01:23,460
+well then I'm going
+
+42
+00:01:23,670 --> 00:01:24,550
+to choose this is my first landmark
+
+43
+00:01:25,100 --> 00:01:26,470
+to be at xactly the same location
+
+44
+00:01:27,250 --> 00:01:28,170
+as my first training example.
+
+45
+00:01:29,260 --> 00:01:30,180
+And if I have a different training
+
+46
+00:01:30,470 --> 00:01:32,340
+example x2. Well we're
+
+47
+00:01:32,500 --> 00:01:33,980
+going to set the second landmark
+
+48
+00:01:35,060 --> 00:01:37,300
+to be the location of my second training example.
+
+49
+00:01:38,480 --> 00:01:39,320
+On the figure on the right, I
+
+50
+00:01:39,480 --> 00:01:40,480
+used red and blue dots
+
+51
+00:01:40,820 --> 00:01:41,930
+just as illustration, the color
+
+52
+00:01:42,420 --> 00:01:44,320
+of this figure, the color of
+
+53
+00:01:44,370 --> 00:01:46,030
+the dots on the figure on the right is not significant.
+
+54
+00:01:47,120 --> 00:01:47,930
+But what I'm going to end up
+
+55
+00:01:48,110 --> 00:01:49,660
+with using this method is I'm
+
+56
+00:01:49,790 --> 00:01:51,450
+going to end up with m
+
+57
+00:01:52,160 --> 00:01:53,690
+landmarks of l1, l2
+
+58
+00:01:54,950 --> 00:01:56,320
+down to l(m) if I
+
+59
+00:01:56,380 --> 00:01:58,180
+have m training examples with
+
+60
+00:01:58,420 --> 00:02:00,500
+one landmark per location of
+
+61
+00:02:00,810 --> 00:02:02,680
+my per location of each
+
+62
+00:02:02,860 --> 00:02:04,810
+of my training examples. And this is
+
+63
+00:02:04,950 --> 00:02:05,920
+nice because it is saying that
+
+64
+00:02:06,120 --> 00:02:07,630
+my features are basically going
+
+65
+00:02:07,700 --> 00:02:09,300
+to measure how close an
+
+66
+00:02:09,380 --> 00:02:10,800
+example is to one
+
+67
+00:02:10,970 --> 00:02:13,150
+of the things I saw in my training set.
+
+68
+00:02:13,440 --> 00:02:14,180
+So, just to write this outline a
+
+69
+00:02:14,350 --> 00:02:16,270
+little more concretely, given m
+
+70
+00:02:16,470 --> 00:02:17,870
+training examples, I'm going
+
+71
+00:02:18,050 --> 00:02:19,100
+to choose the the location
+
+72
+00:02:19,310 --> 00:02:20,430
+of my landmarks to be exactly
+
+73
+00:02:21,190 --> 00:02:23,920
+near the locations of my m training examples.
+
+74
+00:02:25,430 --> 00:02:26,600
+When you are given example x,
+
+75
+00:02:26,920 --> 00:02:28,090
+and in this example x can be
+
+76
+00:02:28,230 --> 00:02:29,260
+something in the training set,
+
+77
+00:02:29,570 --> 00:02:30,800
+it can be something in the cross validation
+
+78
+00:02:31,490 --> 00:02:32,470
+set, or it can be something in the test set.
+
+79
+00:02:33,320 --> 00:02:34,090
+Given an example x we are
+
+80
+00:02:34,320 --> 00:02:35,470
+going to compute, you know,
+
+81
+00:02:35,750 --> 00:02:37,220
+these features as so f1,
+
+82
+00:02:37,560 --> 00:02:39,180
+f2, and so on.
+
+83
+00:02:39,580 --> 00:02:41,120
+Where l1 is actually equal
+
+84
+00:02:41,490 --> 00:02:42,850
+to x1 and so on.
+
+85
+00:02:43,570 --> 00:02:46,080
+And these then give me a feature vector.
+
+86
+00:02:46,840 --> 00:02:49,540
+So let me write f as the feature vector.
+
+87
+00:02:50,270 --> 00:02:52,090
+I'm going to take these f1, f2 and
+
+88
+00:02:52,290 --> 00:02:53,370
+so on, and just group
+
+89
+00:02:53,580 --> 00:02:55,330
+them into feature vector.
+
+90
+00:02:56,330 --> 00:02:58,000
+Take those down to fm.
+
+91
+00:02:59,320 --> 00:03:01,080
+And, you know, just by convention.
+
+92
+00:03:01,610 --> 00:03:02,870
+If we want, we can add an
+
+93
+00:03:02,990 --> 00:03:06,250
+extra feature f0, which is always equal to 1.
+
+94
+00:03:06,450 --> 00:03:08,530
+So this plays a role similar to what we had previously.
+
+95
+00:03:09,480 --> 00:03:11,200
+For x0, which was our interceptor.
+
+96
+00:03:13,200 --> 00:03:14,450
+So, for example, if we
+
+97
+00:03:14,580 --> 00:03:16,550
+have a training example x(i), y(i),
+
+98
+00:03:18,270 --> 00:03:19,300
+the features we would compute for
+
+99
+00:03:20,080 --> 00:03:21,330
+this training example will be
+
+100
+00:03:21,440 --> 00:03:23,440
+as follows: given x(i), we
+
+101
+00:03:23,640 --> 00:03:26,560
+will then map it to, you know, f1(i).
+
+102
+00:03:27,980 --> 00:03:29,670
+Which is the similarity. I'm going to
+
+103
+00:03:29,960 --> 00:03:31,980
+abbreviate as SIM instead of writing out the whole
+
+104
+00:03:32,090 --> 00:03:33,380
+word
+
+105
+00:03:35,540 --> 00:03:35,540
+similarity, right?
+
+106
+00:03:37,050 --> 00:03:39,180
+And f2(i) equals the similarity
+
+107
+00:03:40,090 --> 00:03:42,780
+between x(i) and l2,
+
+108
+00:03:43,140 --> 00:03:45,050
+and so on,
+
+109
+00:03:45,230 --> 00:03:48,370
+down to fm(i) equals
+
+110
+00:03:49,600 --> 00:03:54,480
+the similarity between x(i) and l(m).
+
+111
+00:03:55,700 --> 00:03:58,700
+And somewhere in the middle.
+
+112
+00:03:59,160 --> 00:04:01,320
+Somewhere in this list, you know, at
+
+113
+00:04:01,480 --> 00:04:03,930
+the i-th component, I will
+
+114
+00:04:04,230 --> 00:04:05,740
+actually have one feature
+
+115
+00:04:06,150 --> 00:04:07,590
+component which is f subscript
+
+116
+00:04:08,170 --> 00:04:09,930
+i(i), which is
+
+117
+00:04:10,050 --> 00:04:11,180
+going to be the similarity
+
+118
+00:04:13,080 --> 00:04:14,550
+between x and l(i).
+
+119
+00:04:15,680 --> 00:04:16,990
+Where l(i) is equal to
+
+120
+00:04:17,190 --> 00:04:18,560
+x(i), and so you know
+
+121
+00:04:19,140 --> 00:04:20,320
+fi(i) is just going to
+
+122
+00:04:20,410 --> 00:04:22,250
+be the similarity between x and itself.
+
+123
+00:04:23,960 --> 00:04:25,380
+And if you're using the Gaussian kernel this is
+
+124
+00:04:25,620 --> 00:04:26,720
+actually e to the minus 0
+
+125
+00:04:27,170 --> 00:04:29,440
+over 2 sigma squared and so, this will be equal to 1 and that's okay.
+
+126
+00:04:29,790 --> 00:04:31,060
+So one of my features for this
+
+127
+00:04:31,370 --> 00:04:32,940
+training example is going to be equal to 1.
+
+128
+00:04:34,290 --> 00:04:35,570
+And then similar to what I have above.
+
+129
+00:04:35,990 --> 00:04:36,940
+I can take all of these
+
+130
+00:04:37,870 --> 00:04:39,910
+m features and group them into a feature vector.
+
+131
+00:04:40,340 --> 00:04:41,730
+So instead of representing my example,
+
+132
+00:04:42,710 --> 00:04:44,200
+using, you know, x(i) which is this what
+
+133
+00:04:44,430 --> 00:04:46,970
+R(n) plus R(n) one dimensional vector.
+
+134
+00:04:48,290 --> 00:04:49,590
+Depending on whether you can
+
+135
+00:04:49,990 --> 00:04:51,120
+set terms, is either R(n)
+
+136
+00:04:52,070 --> 00:04:52,750
+or R(n) plus 1.
+
+137
+00:04:53,440 --> 00:04:55,140
+We can now instead represent my
+
+138
+00:04:55,300 --> 00:04:56,700
+training example using this feature
+
+139
+00:04:56,980 --> 00:04:58,810
+vector f. I am
+
+140
+00:04:58,920 --> 00:05:01,240
+going to write this f superscript i.  Which
+
+141
+00:05:01,400 --> 00:05:03,060
+is going to be taking all
+
+142
+00:05:03,300 --> 00:05:06,010
+of these things and stacking them into a vector.
+
+143
+00:05:06,540 --> 00:05:09,180
+So, f1(i) down
+
+144
+00:05:09,430 --> 00:05:12,740
+to fm(i) and if you want and
+
+145
+00:05:13,030 --> 00:05:15,160
+well, usually we'll also add this
+
+146
+00:05:15,420 --> 00:05:16,990
+f0(i), where
+
+147
+00:05:17,130 --> 00:05:19,370
+f0(i) is equal to 1.
+
+148
+00:05:19,370 --> 00:05:20,970
+And so this vector
+
+149
+00:05:21,300 --> 00:05:23,260
+here gives me my
+
+150
+00:05:23,430 --> 00:05:25,180
+new feature vector with which
+
+151
+00:05:25,480 --> 00:05:28,310
+to represent my training example.
+
+152
+00:05:29,040 --> 00:05:30,980
+So given these kernels
+
+153
+00:05:31,530 --> 00:05:33,160
+and similarity functions, here's how
+
+154
+00:05:33,400 --> 00:05:35,030
+we use a simple vector machine.
+
+155
+00:05:35,720 --> 00:05:37,100
+If you already have a learning
+
+156
+00:05:37,300 --> 00:05:39,040
+set of parameters theta, then if you given a value of x and you want to make a prediction.
+
+157
+00:05:41,680 --> 00:05:42,850
+What we do is we compute the
+
+158
+00:05:43,060 --> 00:05:44,170
+features f, which is now
+
+159
+00:05:44,450 --> 00:05:46,920
+an R(m) plus 1 dimensional feature vector.
+
+160
+00:05:49,040 --> 00:05:50,640
+And we have m here because we have
+
+161
+00:05:51,610 --> 00:05:53,190
+m training examples and thus
+
+162
+00:05:53,570 --> 00:05:56,370
+m landmarks and what
+
+163
+00:05:57,330 --> 00:05:58,310
+we do is we predict
+
+164
+00:05:58,600 --> 00:06:00,180
+1 if theta transpose f
+
+165
+00:06:00,780 --> 00:06:01,860
+is greater than or equal to 0.
+
+166
+00:06:02,230 --> 00:06:02,430
+Right.
+
+167
+00:06:02,640 --> 00:06:03,770
+So, if theta transpose f, of course,
+
+168
+00:06:04,090 --> 00:06:07,200
+that's just equal to theta 0, f0 plus theta 1,
+
+169
+00:06:07,900 --> 00:06:08,990
+f1 plus dot dot
+
+170
+00:06:09,120 --> 00:06:11,200
+dot, plus theta m
+
+171
+00:06:12,170 --> 00:06:13,900
+f(m). And so my
+
+172
+00:06:14,050 --> 00:06:15,720
+parameter vector theta is also now
+
+173
+00:06:16,170 --> 00:06:17,730
+going to be an m
+
+174
+00:06:17,990 --> 00:06:21,260
+plus 1 dimensional vector.
+
+175
+00:06:21,780 --> 00:06:23,100
+And we have m here because where
+
+176
+00:06:23,260 --> 00:06:25,030
+the number of landmarks is equal
+
+177
+00:06:25,450 --> 00:06:26,600
+to the training set size.
+
+178
+00:06:26,910 --> 00:06:28,190
+So m was the training set size and now, the
+
+179
+00:06:29,100 --> 00:06:31,950
+parameter vector theta is going to be m plus one dimensional.
+
+180
+00:06:32,990 --> 00:06:33,990
+So that's how you make a prediction
+
+181
+00:06:34,360 --> 00:06:36,870
+if you already have a setting for the parameter's theta.
+
+182
+00:06:37,840 --> 00:06:39,160
+How do you get the parameter's theta?
+
+183
+00:06:39,680 --> 00:06:40,650
+Well you do that using the
+
+184
+00:06:40,920 --> 00:06:43,040
+SVM learning algorithm, and specifically
+
+185
+00:06:43,850 --> 00:06:46,460
+what you do is you would solve this minimization problem.
+
+186
+00:06:46,690 --> 00:06:48,170
+You've minimized the parameter's
+
+187
+00:06:48,540 --> 00:06:51,630
+theta of C times this cost function which we had before.
+
+188
+00:06:52,430 --> 00:06:54,770
+Only now, instead of looking
+
+189
+00:06:55,040 --> 00:06:56,650
+there instead of making
+
+190
+00:06:56,970 --> 00:06:59,300
+predictions using theta transpose
+
+191
+00:07:00,020 --> 00:07:01,410
+x(i) using our original
+
+192
+00:07:01,720 --> 00:07:03,320
+features, x(i). Instead we've
+
+193
+00:07:03,520 --> 00:07:04,840
+taken the features x(i)
+
+194
+00:07:05,090 --> 00:07:06,260
+and replace them with a new features
+
+195
+00:07:07,270 --> 00:07:09,080
+so we are using theta transpose
+
+196
+00:07:09,380 --> 00:07:10,840
+f(i) to make a
+
+197
+00:07:11,130 --> 00:07:12,480
+prediction on the i'f training
+
+198
+00:07:12,860 --> 00:07:13,860
+examples and we see that, you know,
+
+199
+00:07:14,230 --> 00:07:16,580
+in both places here and
+
+200
+00:07:16,700 --> 00:07:18,270
+it's by solving this minimization problem
+
+201
+00:07:18,760 --> 00:07:22,130
+that you get the parameters for your Support Vector Machine.
+
+202
+00:07:23,240 --> 00:07:24,640
+And one last detail is
+
+203
+00:07:24,870 --> 00:07:26,880
+because this optimization
+
+204
+00:07:27,510 --> 00:07:29,580
+problem we really have
+
+205
+00:07:30,570 --> 00:07:32,300
+n equals m features.
+
+206
+00:07:32,860 --> 00:07:33,650
+That is here.
+
+207
+00:07:34,520 --> 00:07:36,010
+The number of features we have.
+
+208
+00:07:37,100 --> 00:07:38,240
+Really, the effective number of
+
+209
+00:07:38,410 --> 00:07:39,390
+features we have is dimension
+
+210
+00:07:39,670 --> 00:07:41,020
+of f. So that n
+
+211
+00:07:41,730 --> 00:07:42,690
+is actually going to be equal
+
+212
+00:07:42,900 --> 00:07:44,470
+to m. So, if you want to, you can
+
+213
+00:07:44,610 --> 00:07:45,530
+think of this as a sum,
+
+214
+00:07:46,340 --> 00:07:47,280
+this really is a sum
+
+215
+00:07:47,590 --> 00:07:48,680
+from j equals 1 through
+
+216
+00:07:49,490 --> 00:07:50,390
+m. And then one way to think
+
+217
+00:07:50,470 --> 00:07:51,500
+about this, is you can
+
+218
+00:07:51,620 --> 00:07:53,250
+think of it as n being
+
+219
+00:07:53,550 --> 00:07:55,060
+equal to m, because if
+
+220
+00:07:55,570 --> 00:07:57,320
+f isn't a new feature, then
+
+221
+00:07:57,970 --> 00:07:59,650
+we have m plus 1
+
+222
+00:08:00,120 --> 00:08:02,920
+features, with the plus 1 coming from the interceptor.
+
+223
+00:08:05,090 --> 00:08:06,760
+And here, we still do sum
+
+224
+00:08:06,990 --> 00:08:08,110
+from j equal 1 through n,
+
+225
+00:08:08,440 --> 00:08:10,070
+because similar to our
+
+226
+00:08:10,380 --> 00:08:11,700
+earlier videos on regularization,
+
+227
+00:08:12,580 --> 00:08:14,110
+we still do not regularize the
+
+228
+00:08:14,180 --> 00:08:15,650
+parameter theta zero, which is
+
+229
+00:08:15,780 --> 00:08:16,560
+why this is a sum for
+
+230
+00:08:16,740 --> 00:08:17,930
+j equals 1 through m
+
+231
+00:08:18,880 --> 00:08:19,840
+instead of j equals zero though
+
+232
+00:08:20,000 --> 00:08:22,200
+m.  So that's
+
+233
+00:08:22,580 --> 00:08:23,760
+the support vector machine learning algorithm.
+
+234
+00:08:24,660 --> 00:08:26,260
+That's one sort of, mathematical
+
+235
+00:08:27,160 --> 00:08:28,310
+detail aside that I
+
+236
+00:08:28,440 --> 00:08:29,840
+should mention, which is
+
+237
+00:08:29,930 --> 00:08:30,780
+that in the way the support
+
+238
+00:08:31,310 --> 00:08:33,020
+vector machine is implemented, this last
+
+239
+00:08:33,320 --> 00:08:34,750
+term is actually done a little bit differently.
+
+240
+00:08:35,680 --> 00:08:36,730
+So you don't really need to
+
+241
+00:08:36,770 --> 00:08:38,080
+know about this last detail in
+
+242
+00:08:38,190 --> 00:08:39,190
+order to use support vector machines,
+
+243
+00:08:39,700 --> 00:08:41,330
+and in fact the equations that
+
+244
+00:08:41,450 --> 00:08:42,500
+are written down here should give
+
+245
+00:08:42,620 --> 00:08:45,160
+you all the intuitions that should need.
+
+246
+00:08:45,310 --> 00:08:46,190
+But in the way the support vector machine
+
+247
+00:08:46,450 --> 00:08:48,450
+is implemented, you know, that term, the
+
+248
+00:08:48,570 --> 00:08:50,960
+sum of j of theta j squared right?
+
+249
+00:08:53,110 --> 00:08:54,780
+Another way to write this is this can
+
+250
+00:08:55,580 --> 00:08:57,660
+be written as theta transpose
+
+251
+00:08:58,500 --> 00:08:59,530
+theta if we ignore
+
+252
+00:09:00,120 --> 00:09:02,730
+the parameter theta 0.
+
+253
+00:09:03,570 --> 00:09:05,640
+So theta 1 down to
+
+254
+00:09:05,800 --> 00:09:10,090
+theta m.  Ignoring theta 0.
+
+255
+00:09:11,130 --> 00:09:13,790
+Then this sum of
+
+256
+00:09:14,510 --> 00:09:15,900
+j of theta j squared that this
+
+257
+00:09:16,040 --> 00:09:18,870
+can also be written theta transpose theta.
+
+258
+00:09:19,930 --> 00:09:21,520
+And what most support vector
+
+259
+00:09:21,730 --> 00:09:23,380
+machine implementations do is actually
+
+260
+00:09:23,720 --> 00:09:25,520
+replace this theta transpose theta,
+
+261
+00:09:26,280 --> 00:09:28,270
+will instead, theta transpose times
+
+262
+00:09:28,590 --> 00:09:30,140
+some matrix inside, that depends
+
+263
+00:09:30,820 --> 00:09:33,930
+on the kernel you use, times theta.
+
+264
+00:09:34,160 --> 00:09:35,500
+And so this gives us a slightly different distance metric.
+
+265
+00:09:36,140 --> 00:09:37,770
+We'll use a slightly different
+
+266
+00:09:38,070 --> 00:09:40,050
+measure instead of minimizing exactly
+
+267
+00:09:41,320 --> 00:09:43,250
+the norm of theta squared means
+
+268
+00:09:43,790 --> 00:09:45,990
+that minimize something slightly similar to it.
+
+269
+00:09:46,140 --> 00:09:47,610
+That's like a rescale version of
+
+270
+00:09:47,770 --> 00:09:50,150
+the parameter vector theta that depends on the kernel.
+
+271
+00:09:50,950 --> 00:09:52,440
+But this is kind of a mathematical detail.
+
+272
+00:09:53,210 --> 00:09:54,360
+That allows the support vector
+
+273
+00:09:54,650 --> 00:09:56,350
+machine software to run much more efficiently.
+
+274
+00:09:58,300 --> 00:09:59,410
+And the reason the support vector machine
+
+275
+00:09:59,700 --> 00:10:01,500
+does this is with this modification.
+
+276
+00:10:02,020 --> 00:10:03,250
+It allows it to
+
+277
+00:10:03,300 --> 00:10:05,740
+scale to much bigger training sets.
+
+278
+00:10:06,370 --> 00:10:07,800
+Because for example, if you have
+
+279
+00:10:07,970 --> 00:10:11,530
+a training set with 10,000 training examples.
+
+280
+00:10:12,590 --> 00:10:13,560
+Then, you know, the way we define
+
+281
+00:10:13,950 --> 00:10:15,750
+landmarks, we end up with 10,000 landmarks.
+
+282
+00:10:16,780 --> 00:10:18,060
+And so theta becomes 10,000 dimensional.
+
+283
+00:10:18,490 --> 00:10:20,450
+And maybe that works, but when m
+
+284
+00:10:20,450 --> 00:10:21,710
+becomes really, really big
+
+285
+00:10:22,470 --> 00:10:24,020
+then solving for all
+
+286
+00:10:24,150 --> 00:10:25,480
+of these parameters, you know, if m were
+
+287
+00:10:25,590 --> 00:10:26,590
+50,000 or a 100,000
+
+288
+00:10:26,880 --> 00:10:28,170
+then solving for
+
+289
+00:10:28,340 --> 00:10:29,660
+all of these parameters can become
+
+290
+00:10:29,890 --> 00:10:31,240
+expensive for the support
+
+291
+00:10:31,420 --> 00:10:33,690
+vector machine optimization software, thus
+
+292
+00:10:33,870 --> 00:10:35,750
+solving the minimization problem that I drew here.
+
+293
+00:10:36,490 --> 00:10:37,570
+So kind of as mathematical
+
+294
+00:10:37,860 --> 00:10:39,580
+detail, which again you really don't need to know about.
+
+295
+00:10:41,000 --> 00:10:43,070
+It actually modifies that last
+
+296
+00:10:43,350 --> 00:10:44,380
+term a little bit to
+
+297
+00:10:44,500 --> 00:10:45,940
+optimize something slightly different than
+
+298
+00:10:46,080 --> 00:10:48,560
+just minimizing the norm squared of theta squared, of theta.
+
+299
+00:10:49,370 --> 00:10:50,600
+But if you want,
+
+300
+00:10:51,080 --> 00:10:52,450
+you can feel free to think
+
+301
+00:10:52,710 --> 00:10:54,880
+of this as an kind of a n implementational detail
+
+302
+00:10:55,340 --> 00:10:56,750
+that does change the objective a
+
+303
+00:10:56,880 --> 00:10:58,260
+bit, but is done primarily
+
+304
+00:10:58,930 --> 00:11:01,590
+for reasons of computational efficiency,
+
+305
+00:11:02,260 --> 00:11:04,390
+so usually you don't really have to worry about this.
+
+306
+00:11:07,640 --> 00:11:09,460
+And by the way, in case your
+
+307
+00:11:09,560 --> 00:11:10,730
+wondering why we don't apply
+
+308
+00:11:11,100 --> 00:11:12,210
+the kernel's idea to other
+
+309
+00:11:12,570 --> 00:11:13,690
+algorithms as well like logistic
+
+310
+00:11:14,040 --> 00:11:15,450
+regression, it turns out
+
+311
+00:11:15,670 --> 00:11:16,770
+that if you want, you
+
+312
+00:11:16,900 --> 00:11:18,120
+can actually apply the kernel's
+
+313
+00:11:18,550 --> 00:11:19,850
+idea and define the source
+
+314
+00:11:19,990 --> 00:11:22,920
+of features using landmarks and so on for logistic regression.
+
+315
+00:11:23,880 --> 00:11:25,860
+But the computational tricks that apply
+
+316
+00:11:26,440 --> 00:11:28,110
+for support vector machines don't
+
+317
+00:11:28,430 --> 00:11:30,700
+generalize well to other algorithms like logistic regression.
+
+318
+00:11:31,310 --> 00:11:33,110
+And so, using kernels with
+
+319
+00:11:33,260 --> 00:11:34,390
+logistic regression is going too
+
+320
+00:11:34,580 --> 00:11:36,330
+very slow, whereas, because of
+
+321
+00:11:36,440 --> 00:11:37,940
+computational tricks, like that
+
+322
+00:11:38,150 --> 00:11:39,490
+embodied and how it modifies
+
+323
+00:11:39,900 --> 00:11:41,130
+this and the details of how
+
+324
+00:11:41,320 --> 00:11:43,140
+the support vector machine software is
+
+325
+00:11:43,240 --> 00:11:44,990
+implemented, support vector machines and
+
+326
+00:11:45,300 --> 00:11:47,090
+kernels tend go particularly well together.
+
+327
+00:11:47,930 --> 00:11:49,450
+Whereas, logistic regression and kernels,
+
+328
+00:11:50,250 --> 00:11:51,990
+you know, you can do it, but this would run very slowly.
+
+329
+00:11:52,890 --> 00:11:53,670
+And it won't be able to
+
+330
+00:11:53,750 --> 00:11:55,420
+take advantage of advanced optimization
+
+331
+00:11:56,040 --> 00:11:57,360
+techniques that people have figured
+
+332
+00:11:57,530 --> 00:11:58,530
+out for the particular case
+
+333
+00:11:59,140 --> 00:12:00,950
+of running a support vector machine with a kernel.
+
+334
+00:12:01,540 --> 00:12:03,340
+But all this pertains only
+
+335
+00:12:03,710 --> 00:12:04,850
+to how you actually implement
+
+336
+00:12:05,230 --> 00:12:06,900
+software to minimize the cost function.
+
+337
+00:12:07,870 --> 00:12:08,940
+I will say more about that in
+
+338
+00:12:09,040 --> 00:12:09,950
+the next video, but you really don't
+
+339
+00:12:10,150 --> 00:12:11,530
+need to know about
+
+340
+00:12:12,200 --> 00:12:13,520
+how to write software to
+
+341
+00:12:13,670 --> 00:12:14,890
+minimize this  cost function because
+
+342
+00:12:15,170 --> 00:12:17,560
+you can find very good off the shelf software for doing so.
+
+343
+00:12:18,670 --> 00:12:19,890
+And just as, you know, I wouldn't
+
+344
+00:12:20,140 --> 00:12:21,340
+recommend writing code to invert
+
+345
+00:12:21,850 --> 00:12:22,960
+a matrix or to compute a
+
+346
+00:12:23,150 --> 00:12:24,490
+square root, I actually do
+
+347
+00:12:24,660 --> 00:12:26,420
+not recommend writing software to
+
+348
+00:12:26,560 --> 00:12:27,750
+minimize this cost function yourself,
+
+349
+00:12:28,240 --> 00:12:29,610
+but instead to use off
+
+350
+00:12:29,780 --> 00:12:31,490
+the shelf software packages that people
+
+351
+00:12:31,740 --> 00:12:33,240
+have developed and so
+
+352
+00:12:33,540 --> 00:12:35,140
+those software packages already embody
+
+353
+00:12:35,790 --> 00:12:37,720
+these numerical optimization tricks,
+
+354
+00:12:39,540 --> 00:12:41,770
+so you don't really have to worry about them.
+
+355
+00:12:41,950 --> 00:12:42,920
+But one other thing that is
+
+356
+00:12:43,180 --> 00:12:45,200
+worth knowing about is when
+
+357
+00:12:45,350 --> 00:12:46,400
+you're applying a support vector
+
+358
+00:12:46,640 --> 00:12:47,730
+machine, how do you
+
+359
+00:12:47,820 --> 00:12:50,220
+choose the parameters of the support vector machine?
+
+360
+00:12:51,520 --> 00:12:52,300
+And the last thing I want to
+
+361
+00:12:52,400 --> 00:12:53,290
+do in this video is say a
+
+362
+00:12:53,450 --> 00:12:54,680
+little word about the bias and
+
+363
+00:12:54,840 --> 00:12:57,070
+variance trade offs when using a support vector machine.
+
+364
+00:12:57,900 --> 00:12:59,230
+When using an SVM, one of
+
+365
+00:12:59,390 --> 00:13:00,670
+the things you need to choose is
+
+366
+00:13:00,960 --> 00:13:03,850
+the parameter C which
+
+367
+00:13:04,090 --> 00:13:05,880
+was in the optimization objective, and
+
+368
+00:13:05,980 --> 00:13:07,690
+you recall that C played a
+
+369
+00:13:07,770 --> 00:13:09,800
+role similar to 1 over
+
+370
+00:13:10,050 --> 00:13:11,750
+lambda, where lambda was the regularization
+
+371
+00:13:12,520 --> 00:13:13,970
+parameter we had for logistic regression.
+
+372
+00:13:15,360 --> 00:13:16,760
+So, if you have a
+
+373
+00:13:16,930 --> 00:13:18,760
+large value of C, this corresponds
+
+374
+00:13:19,520 --> 00:13:20,560
+to what we have back in logistic
+
+375
+00:13:21,270 --> 00:13:22,260
+regression, of a small
+
+376
+00:13:22,670 --> 00:13:25,080
+value of lambda meaning of not using much regularization.
+
+377
+00:13:25,980 --> 00:13:26,960
+And if you do that, you
+
+378
+00:13:27,050 --> 00:13:29,330
+tend to have a hypothesis with lower bias and higher variance.
+
+379
+00:13:30,570 --> 00:13:31,420
+Whereas if you use a smaller
+
+380
+00:13:31,630 --> 00:13:33,050
+value of C then this
+
+381
+00:13:33,240 --> 00:13:34,510
+corresponds to when we
+
+382
+00:13:34,660 --> 00:13:36,450
+are using logistic regression with a
+
+383
+00:13:36,620 --> 00:13:38,090
+large value of lambda and that corresponds
+
+384
+00:13:38,690 --> 00:13:40,180
+to a hypothesis with higher
+
+385
+00:13:40,470 --> 00:13:41,760
+bias and lower variance.
+
+386
+00:13:42,580 --> 00:13:44,520
+And so, hypothesis with large
+
+387
+00:13:45,000 --> 00:13:46,870
+C has a higher
+
+388
+00:13:47,450 --> 00:13:48,380
+variance, and is more prone
+
+389
+00:13:48,580 --> 00:13:50,290
+to overfitting, whereas hypothesis with
+
+390
+00:13:50,450 --> 00:13:52,820
+small C has higher bias
+
+391
+00:13:52,910 --> 00:13:54,900
+and is thus more prone to underfitting.
+
+392
+00:13:56,710 --> 00:13:59,870
+So this parameter C is one of the parameters we need to choose.
+
+393
+00:14:00,210 --> 00:14:01,280
+The other one is the parameter
+
+394
+00:14:02,280 --> 00:14:04,580
+sigma squared, which appeared in the Gaussian kernel.
+
+395
+00:14:05,760 --> 00:14:07,080
+So if the Gaussian kernel
+
+396
+00:14:07,750 --> 00:14:09,370
+sigma squared is large, then
+
+397
+00:14:09,640 --> 00:14:11,350
+in the similarity function, which
+
+398
+00:14:11,530 --> 00:14:12,710
+was this you know E to the
+
+399
+00:14:13,390 --> 00:14:14,710
+minus x minus landmark
+
+400
+00:14:16,280 --> 00:14:17,950
+varies squared over 2 sigma squared.
+
+401
+00:14:20,130 --> 00:14:21,290
+In this one of the example; If I
+
+402
+00:14:21,480 --> 00:14:23,330
+have only one feature, x1, if
+
+403
+00:14:23,570 --> 00:14:25,390
+I have a landmark there at
+
+404
+00:14:25,490 --> 00:14:27,710
+that location, if sigma
+
+405
+00:14:27,960 --> 00:14:29,230
+squared is large, then, you know, the
+
+406
+00:14:29,480 --> 00:14:30,600
+Gaussian kernel would tend to
+
+407
+00:14:30,690 --> 00:14:32,940
+fall off relatively slowly
+
+408
+00:14:33,960 --> 00:14:34,740
+and so this would be my feature
+
+409
+00:14:35,210 --> 00:14:36,690
+f(i), and so this
+
+410
+00:14:36,880 --> 00:14:38,970
+would be smoother function that varies
+
+411
+00:14:39,060 --> 00:14:40,640
+more smoothly, and so this will
+
+412
+00:14:40,760 --> 00:14:42,750
+give you a hypothesis with higher
+
+413
+00:14:43,030 --> 00:14:44,170
+bias and lower variance, because
+
+414
+00:14:44,550 --> 00:14:46,000
+the Gaussian kernel that falls off smoothly,
+
+415
+00:14:46,840 --> 00:14:48,240
+you tend to get a hypothesis that
+
+416
+00:14:48,520 --> 00:14:50,060
+varies slowly, or varies smoothly
+
+417
+00:14:50,130 --> 00:14:51,860
+as you change the
+
+418
+00:14:52,050 --> 00:14:53,680
+input x. Whereas in contrast,
+
+419
+00:14:54,030 --> 00:14:55,330
+if sigma squared was
+
+420
+00:14:55,660 --> 00:14:57,430
+small and if that's my
+
+421
+00:14:57,540 --> 00:14:58,830
+landmark given my 1
+
+422
+00:14:58,960 --> 00:15:01,440
+feature x1, you know, my Gaussian
+
+423
+00:15:01,820 --> 00:15:04,630
+kernel, my similarity function, will vary more abruptly.
+
+424
+00:15:05,310 --> 00:15:07,520
+And in both cases I'd pick
+
+425
+00:15:07,580 --> 00:15:08,550
+out 1, and so if sigma squared
+
+426
+00:15:08,870 --> 00:15:11,730
+is small, then my features vary less smoothly.
+
+427
+00:15:12,190 --> 00:15:13,740
+So if it's just higher slopes
+
+428
+00:15:14,250 --> 00:15:15,300
+or higher derivatives here.
+
+429
+00:15:16,020 --> 00:15:17,170
+And using this, you end
+
+430
+00:15:17,330 --> 00:15:19,620
+up fitting hypotheses of lower
+
+431
+00:15:19,840 --> 00:15:21,870
+bias and you can have higher variance.
+
+432
+00:15:23,030 --> 00:15:24,460
+And if you look at this
+
+433
+00:15:24,680 --> 00:15:26,240
+week's points exercise, you actually get
+
+434
+00:15:26,450 --> 00:15:27,230
+to play around with some
+
+435
+00:15:27,330 --> 00:15:29,480
+of these ideas yourself and see these effects yourself.
+
+436
+00:15:31,590 --> 00:15:34,430
+So, that was the support vector machine with kernels algorithm.
+
+437
+00:15:35,320 --> 00:15:36,450
+And hopefully this discussion of
+
+438
+00:15:37,090 --> 00:15:39,170
+bias and variance will give
+
+439
+00:15:39,310 --> 00:15:40,380
+you some sense of how you
+
+440
+00:15:40,460 --> 00:15:42,600
+can expect this algorithm to behave as well.

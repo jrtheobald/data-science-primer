@@ -1,0 +1,727 @@
+1
+00:00:00,200 --> 00:00:01,596
+In this video we'll talk about
+
+2
+00:00:01,620 --> 00:00:03,659
+how to get logistic regression to
+
+3
+00:00:03,659 --> 00:00:06,089
+work for multi-class classification problems,
+
+4
+00:00:06,089 --> 00:00:07,526
+and in particular I want to
+
+5
+00:00:07,526 --> 00:00:12,070
+tell you about an algorithm called one-versus-all classification.
+
+6
+00:00:12,150 --> 00:00:14,316
+What's a multi-class classification problem?
+
+7
+00:00:14,316 --> 00:00:15,945
+Here are some examples.
+
+8
+00:00:15,945 --> 00:00:17,318
+Let's say you want a learning
+
+9
+00:00:17,320 --> 00:00:19,691
+algorithm to automatically put your
+
+10
+00:00:19,710 --> 00:00:21,076
+email into different folders or
+
+11
+00:00:21,076 --> 00:00:23,398
+to automatically tag your emails.
+
+12
+00:00:23,398 --> 00:00:24,749
+So, you might have different folders
+
+13
+00:00:24,790 --> 00:00:27,052
+or different tags for work email,
+
+14
+00:00:27,060 --> 00:00:28,236
+email from your friends, email
+
+15
+00:00:28,236 --> 00:00:31,561
+from your family and emails about your hobby.
+
+16
+00:00:31,590 --> 00:00:33,145
+And so, here, we have
+
+17
+00:00:33,145 --> 00:00:34,856
+a classification problem with 4
+
+18
+00:00:34,900 --> 00:00:36,164
+classes, which we might
+
+19
+00:00:36,180 --> 00:00:38,129
+assign the numbers, the classes
+
+20
+00:00:38,129 --> 00:00:41,326
+y1, y2, y3 and
+
+21
+00:00:41,326 --> 00:00:43,530
+y4 to, Another
+
+22
+00:00:44,490 --> 00:00:45,790
+example for a medical
+
+23
+00:00:46,000 --> 00:00:47,260
+diagnosis: if a patient
+
+24
+00:00:47,800 --> 00:00:48,910
+comes into your office with
+
+25
+00:00:48,930 --> 00:00:51,395
+maybe a stuffy nose, the possible
+
+26
+00:00:51,395 --> 00:00:52,762
+diagnoses could be that
+
+27
+00:00:52,762 --> 00:00:54,140
+they're not ill, maybe that's
+
+28
+00:00:54,140 --> 00:00:55,474
+y1; or they have
+
+29
+00:00:55,490 --> 00:00:59,026
+a cold, 2; or they have the flu.
+
+30
+00:00:59,026 --> 00:01:00,541
+And the third and final example,
+
+31
+00:01:00,541 --> 00:01:02,056
+if you are using machine learning
+
+32
+00:01:02,090 --> 00:01:03,906
+to classify the weather, you know,
+
+33
+00:01:03,910 --> 00:01:05,299
+maybe you want to decide that
+
+34
+00:01:05,299 --> 00:01:07,937
+the weather is sunny, cloudy, rainy
+
+35
+00:01:07,950 --> 00:01:10,211
+or snow, or if there's gonna be snow.
+
+36
+00:01:10,230 --> 00:01:11,165
+And so, in all of these
+
+37
+00:01:11,165 --> 00:01:12,808
+examples, Y can take
+
+38
+00:01:12,808 --> 00:01:14,300
+on a small number of
+
+39
+00:01:14,300 --> 00:01:16,498
+discreet values, maybe 1 to
+
+40
+00:01:16,498 --> 00:01:17,810
+3, 1 to 4 and so on, and
+
+41
+00:01:17,890 --> 00:01:20,659
+these are multi-class classification problems.
+
+42
+00:01:20,659 --> 00:01:21,904
+And by the way, it doesn't really
+
+43
+00:01:21,904 --> 00:01:23,632
+matter whether we index as
+
+44
+00:01:23,632 --> 00:01:27,063
+0123 or as 1234, I tend
+
+45
+00:01:27,090 --> 00:01:29,138
+to index that my classes
+
+46
+00:01:29,138 --> 00:01:31,569
+starting from 1 rather than starting from 0.
+
+47
+00:01:31,569 --> 00:01:33,756
+But either way, where often, it really doesn't matter.
+
+48
+00:01:33,756 --> 00:01:35,243
+Whereas previously, for a
+
+49
+00:01:35,243 --> 00:01:39,375
+binary classification problem, our data sets look like this.
+
+50
+00:01:39,375 --> 00:01:41,617
+For a multi-class classification problem, our
+
+51
+00:01:41,617 --> 00:01:42,792
+data sets may look like
+
+52
+00:01:42,792 --> 00:01:44,362
+this, where here, I'm using
+
+53
+00:01:44,362 --> 00:01:48,399
+three different symbols to represent our three classes.
+
+54
+00:01:48,410 --> 00:01:49,858
+So, the question is: Given the
+
+55
+00:01:49,858 --> 00:01:51,613
+data set with three classes
+
+56
+00:01:51,613 --> 00:01:53,193
+where this is a the
+
+57
+00:01:53,193 --> 00:01:54,651
+example of one class, that's
+
+58
+00:01:54,651 --> 00:01:55,768
+the example of the different class,
+
+59
+00:01:55,790 --> 00:01:58,389
+and, that's the example of yet, the third class.
+
+60
+00:01:58,410 --> 00:02:01,421
+How do we get a learning algorithm to work for the setting?
+
+61
+00:02:01,421 --> 00:02:02,598
+We already know how to
+
+62
+00:02:02,598 --> 00:02:05,096
+do binary classification, using logistic
+
+63
+00:02:05,096 --> 00:02:06,594
+regression, we know how the,
+
+64
+00:02:06,594 --> 00:02:07,736
+you know, maybe, for the straight line,
+
+65
+00:02:07,736 --> 00:02:10,613
+to separate the positive and negative classes.
+
+66
+00:02:10,613 --> 00:02:12,116
+Using an idea called one
+
+67
+00:02:12,116 --> 00:02:14,399
+versus all classification, we can
+
+68
+00:02:14,400 --> 00:02:15,730
+then take this, and, make
+
+69
+00:02:15,730 --> 00:02:18,646
+it work for multi-class classification, as well.
+
+70
+00:02:18,650 --> 00:02:21,617
+Here's how one versus all classification works.
+
+71
+00:02:21,620 --> 00:02:25,777
+And, this is also sometimes called "one versus rest."
+
+72
+00:02:25,777 --> 00:02:26,941
+Let's say, we have a training
+
+73
+00:02:26,941 --> 00:02:28,138
+set, like that shown on the
+
+74
+00:02:28,150 --> 00:02:30,456
+left, where we have 3 classes.
+
+75
+00:02:30,470 --> 00:02:32,310
+So, if y1, we denote that
+
+76
+00:02:32,310 --> 00:02:34,405
+with a triangle if y2 the
+
+77
+00:02:34,405 --> 00:02:37,970
+square and, if y3 then, the cross.
+
+78
+00:02:37,980 --> 00:02:39,460
+What we're going to do is,
+
+79
+00:02:39,480 --> 00:02:41,350
+take a training set, and, turn
+
+80
+00:02:41,350 --> 00:02:44,816
+this into three separate binary classification problems.
+
+81
+00:02:44,816 --> 00:02:46,719
+So, I'll turn this into three separate
+
+82
+00:02:46,750 --> 00:02:49,450
+two class classification problems.
+
+83
+00:02:49,450 --> 00:02:51,660
+So let's start with Class 1, which is a triangle.
+
+84
+00:02:51,660 --> 00:02:52,990
+We are going to essentially create a
+
+85
+00:02:53,050 --> 00:02:55,418
+new, sort of fake training set.
+
+86
+00:02:55,440 --> 00:02:56,913
+where classes 2 and 3
+
+87
+00:02:56,920 --> 00:02:58,151
+get assigned to the negative
+
+88
+00:02:58,151 --> 00:02:59,873
+class and class 1
+
+89
+00:02:59,873 --> 00:03:01,134
+gets assigned to the positive class
+
+90
+00:03:01,134 --> 00:03:02,352
+when we create a new training
+
+91
+00:03:02,380 --> 00:03:03,700
+set if that's showing
+
+92
+00:03:03,700 --> 00:03:05,508
+on the right and we're going
+
+93
+00:03:05,508 --> 00:03:07,573
+to fit a classifier, which I'm
+
+94
+00:03:07,573 --> 00:03:10,200
+going to call h subscript theta
+
+95
+00:03:10,220 --> 00:03:12,626
+superscript 1 of x
+
+96
+00:03:12,640 --> 00:03:15,659
+where here, the triangles
+
+97
+00:03:15,659 --> 00:03:19,008
+are the positive examples and the circles are the negative examples.
+
+98
+00:03:19,008 --> 00:03:20,649
+So, think of the triangles be
+
+99
+00:03:20,649 --> 00:03:21,800
+assigned the value of 1
+
+100
+00:03:21,800 --> 00:03:25,291
+and the circles the sum, the value of zero.
+
+101
+00:03:25,300 --> 00:03:26,723
+And we're just going to train
+
+102
+00:03:26,723 --> 00:03:29,556
+a standard logistic regression crossfire
+
+103
+00:03:29,556 --> 00:03:34,173
+and maybe that will give us a position boundary.
+
+104
+00:03:34,173 --> 00:03:34,173
+OK?
+
+105
+00:03:34,890 --> 00:03:37,693
+The superscript 1 here is the class one.
+
+106
+00:03:37,693 --> 00:03:40,777
+So, we're doing this for the triangle first class.
+
+107
+00:03:40,800 --> 00:03:42,302
+Next, we do the same thing for class 2.
+
+108
+00:03:42,302 --> 00:03:44,013
+Going to take the squares and
+
+109
+00:03:44,020 --> 00:03:45,456
+assign the squares as the
+
+110
+00:03:45,470 --> 00:03:47,001
+positive class and assign
+
+111
+00:03:47,001 --> 00:03:50,213
+every thing else the triangles and the crosses as the negative class.
+
+112
+00:03:50,220 --> 00:03:54,173
+and then we fit a second logistic regression classifier.
+
+113
+00:03:54,173 --> 00:03:56,410
+I'm gonna call this H of X
+
+114
+00:03:56,420 --> 00:03:58,352
+superscript 2, where the
+
+115
+00:03:58,352 --> 00:04:00,029
+superscript 2 denotes that
+
+116
+00:04:00,029 --> 00:04:01,860
+we're now doing this:  treating the
+
+117
+00:04:01,870 --> 00:04:03,310
+square class as the positive
+
+118
+00:04:03,350 --> 00:04:07,518
+class and maybe we get the classifier like that.
+
+119
+00:04:07,518 --> 00:04:08,854
+And finally, we do the
+
+120
+00:04:08,854 --> 00:04:10,143
+same thing for the third
+
+121
+00:04:10,143 --> 00:04:11,598
+class and fit a third
+
+122
+00:04:11,610 --> 00:04:14,632
+classifier H superscript 3
+
+123
+00:04:14,632 --> 00:04:16,424
+of X and maybe this
+
+124
+00:04:16,440 --> 00:04:18,106
+will give us a decision boundary
+
+125
+00:04:18,106 --> 00:04:19,749
+or give us a classifier that separates
+
+126
+00:04:19,750 --> 00:04:22,863
+the positive and negative examples like that.
+
+127
+00:04:22,870 --> 00:04:24,353
+So, to summarize, what we've
+
+128
+00:04:24,353 --> 00:04:27,872
+done is we fit 3 classifiers.
+
+129
+00:04:27,890 --> 00:04:29,403
+So, for I equals 1
+
+130
+00:04:29,403 --> 00:04:31,836
+2 3 we'll fit a classifier
+
+131
+00:04:31,880 --> 00:04:33,855
+H superscript I subscript theta
+
+132
+00:04:33,855 --> 00:04:35,193
+of X, thus trying to
+
+133
+00:04:35,220 --> 00:04:36,446
+estimate what is the
+
+134
+00:04:36,450 --> 00:04:38,208
+probability that y is
+
+135
+00:04:38,208 --> 00:04:41,834
+equal to class I given X and prioritize by theta.
+
+136
+00:04:41,834 --> 00:04:41,834
+Right?
+
+137
+00:04:41,834 --> 00:04:43,229
+So, in the first
+
+138
+00:04:43,230 --> 00:04:44,903
+instance, for this first one
+
+139
+00:04:44,910 --> 00:04:47,277
+up here, this classifier
+
+140
+00:04:47,280 --> 00:04:49,364
+with learning to by the triangle.
+
+141
+00:04:49,364 --> 00:04:52,037
+So it's thinking of the triangles as a positive class.
+
+142
+00:04:52,060 --> 00:04:53,840
+So, X superscript one is
+
+143
+00:04:53,840 --> 00:04:55,163
+essentially trying to estimate what is
+
+144
+00:04:55,170 --> 00:04:57,343
+the probability that the Y
+
+145
+00:04:57,350 --> 00:04:59,083
+is equal to one, given
+
+146
+00:04:59,083 --> 00:05:02,037
+X and parametrized by theta.
+
+147
+00:05:02,037 --> 00:05:04,475
+And similarly, this is treating,
+
+148
+00:05:04,480 --> 00:05:05,859
+you know, the square class as
+
+149
+00:05:05,859 --> 00:05:07,400
+a positive took pause so its
+
+150
+00:05:07,400 --> 00:05:10,748
+trying to estimate the probability that y2 and so on.
+
+151
+00:05:10,750 --> 00:05:13,300
+So we now have 3 classifiers each
+
+152
+00:05:13,310 --> 00:05:16,649
+of which was trained is one of the three crosses.
+
+153
+00:05:16,670 --> 00:05:17,859
+Just to summarize, what we've
+
+154
+00:05:17,860 --> 00:05:19,685
+done is we've, we want
+
+155
+00:05:19,700 --> 00:05:21,280
+to train a logistic regression
+
+156
+00:05:21,300 --> 00:05:23,560
+classifier, H superscript I
+
+157
+00:05:23,560 --> 00:05:24,947
+of X, for each plus
+
+158
+00:05:24,950 --> 00:05:26,183
+i that predicts it's probably a
+
+159
+00:05:26,183 --> 00:05:28,550
+y i. Finally, to
+
+160
+00:05:28,570 --> 00:05:29,740
+make a prediction when we
+
+161
+00:05:29,820 --> 00:05:31,772
+give it a new input x and
+
+162
+00:05:31,772 --> 00:05:33,326
+we want to make a prediction,
+
+163
+00:05:33,340 --> 00:05:34,729
+we do is we just
+
+164
+00:05:34,730 --> 00:05:36,706
+run Let's say three
+
+165
+00:05:36,706 --> 00:05:38,557
+what run our 3 of our
+
+166
+00:05:38,557 --> 00:05:40,010
+classifiers on the input
+
+167
+00:05:40,010 --> 00:05:41,535
+x and we then
+
+168
+00:05:41,535 --> 00:05:44,068
+pick the class i that maximizes the three.
+
+169
+00:05:44,068 --> 00:05:45,387
+So, we just you know, basically
+
+170
+00:05:45,387 --> 00:05:47,180
+pick the classifier, pick whichever
+
+171
+00:05:47,180 --> 00:05:49,163
+one of the three classifiers is
+
+172
+00:05:49,210 --> 00:05:52,178
+most confident, or most enthusistically
+
+173
+00:05:52,178 --> 00:05:54,352
+says that it thinks it has a right class.
+
+174
+00:05:54,352 --> 00:05:56,153
+So, whichever value of i
+
+175
+00:05:56,190 --> 00:05:58,069
+gives us the highest probability, we
+
+176
+00:05:58,069 --> 00:06:01,056
+then predict y to be that value.
+
+177
+00:06:02,660 --> 00:06:04,453
+So, that's it for multi-class
+
+178
+00:06:04,470 --> 00:06:07,677
+classification and one-versus-all method.
+
+179
+00:06:07,677 --> 00:06:09,120
+And with this little method
+
+180
+00:06:09,120 --> 00:06:10,521
+you can now take the logistic
+
+181
+00:06:10,521 --> 00:06:12,033
+regression classifier and make
+
+182
+00:06:12,033 --> 00:06:15,051
+it work on multi-class classification problems as well.

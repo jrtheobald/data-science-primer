@@ -1,0 +1,420 @@
+In the last few videos, we talked
+about stochastic gradient descent, and,
+you know, other variations of the
+stochastic gradient descent algorithm,
+including those adaptations to online
+learning, but all of those
+algorithms could be run on
+one machine, or could be run on one computer.
+And some machine learning problems
+are just too big to run
+on one machine, sometimes maybe
+you just so much data you
+just don't ever want to run
+all that data through a
+single computer, no matter what algorithm you would use on that computer.
+So in this video I'd
+like to talk about different approach
+to large scale machine learning, called
+the map reduce approach.
+And even though we have
+quite a few videos on stochastic
+gradient descent and we're going
+to spend relative less time
+on map reduce--don't judge the
+relative importance of map reduce
+versus the gradient descent
+based on the amount amount of
+time I spend on these ideas in particular.
+Many people will say that
+map reduce is at least
+an equally important, and some
+would say an even more important idea
+compared to gradient descent, only
+it's relatively simpler to
+explain, which is why I'm
+going to spend less time on
+it, but using these ideas
+you might be able to scale
+learning algorithms to even
+far larger problems than is
+possible using stochastic gradient descent.
+Here's the idea.
+Let's say we want to fit
+a linear regression model or
+a logistic regression model or some
+such, and let's start again
+with batch gradient descent, so
+that's our batch gradient descent learning rule.
+And to keep the writing
+on this slide tractable, I'm going
+to assume throughout that we have m equals 400 examples.
+Of course, by our
+standards, in terms of large scale
+machine learning, you know m
+might be pretty small and so,
+this might be more commonly
+applied to problems, where you
+have maybe closer to 400
+million examples, or some
+such, but just to
+make the writing on the slide
+simpler, I'm going to pretend we have 400 examples.
+So in that case, the
+batch gradient descent learning rule
+has this 400 and the
+sum from i equals 1 through
+400 through my 400 examples
+here, and if m
+is large, then this is a computationally expensive step.
+So, what the MapReduce idea
+does is the following, and
+I should say the map
+reduce idea is due to
+two researchers, Jeff Dean
+and Sanjay Gimawat.
+Jeff Dean, by the way, is
+one of the most legendary engineers in
+all of Silicon Valley and he
+kind of built a large
+fraction of the architectural
+infrastructure that all of Google runs on today.
+But here's the map reduce idea.
+So, let's say I have
+some training set, if we
+want to denote by this box here
+of X Y pairs,
+where it's X1, Y1, down
+to my 400 examples,
+Xm, Ym.
+So, that's my training set with 400 training examples.
+In the MapReduce idea, one way
+to do, is split this training
+set in to different subsets.
+I'm going to.
+assume for this example that
+I have 4 computers,
+or 4 machines to run in
+parallel on my training set,
+which is why I'm splitting this into 4 machines.
+If you have 10 machines or
+100 machines, then you would
+split your training set into 10 pieces or 100 pieces or what have you.
+And what the first of my
+4 machines is to do,
+say, is use just the
+first one quarter of my
+training set--so use just the first 100 training examples.
+And in particular, what it's
+going to do is look at
+this summation, and compute
+that summation for just the first 100 training examples.
+So let me write that up
+I'm going to compute a variable
+temp 1 to superscript 1
+the first machine J equals
+sum from equals 1 through
+100, and then I'm going to plug
+in exactly that term there--so I have
+X-theta, Xi, minus Yi
+times Xij, right?
+So that's just that
+gradient descent term up there.
+And then similarly, I'm going
+to take the second quarter
+of my data and send it
+to my second machine, and
+my second machine will use
+training examples 101 through 200
+and you will compute similar variables
+of a temp to j which
+is the same sum for index
+from examples 101 through 200.
+And similarly machines 3
+and 4 will use the
+third quarter and the fourth
+quarter of my training set.
+So now each machine has
+to sum over 100 instead
+of over 400 examples and so
+has to do only a quarter
+of the work and thus presumably
+it could do it about four times as fast.
+Finally, after all these machines
+have done this work, I am
+going to take these temp variables
+and put them back together.
+So I take these variables and
+send them all to a You
+know centralized master server and
+what the master will do
+is combine these results together.
+and in particular, it will
+update my parameters theta
+j according to theta
+j gets updated as theta j
+minus Of the
+learning rate alpha times one
+over 400 times temp,
+1, J, plus temp
+2j plus temp 3j
+plus temp 4j and
+of course we have to do this separately for J equals 0.
+You know, up to
+and within this number of features.
+So operating this equation into I hope it's clear.
+So what this equation
+is doing is exactly the
+same is that when you
+have a centralized master server
+that takes the results, the ten
+one j the ten two j
+ten three j and ten four
+j and adds them up
+and so of course the sum
+of these four things.
+Right, that's just the sum of
+this, plus the sum
+of this, plus the sum
+of this, plus the sum
+of that, and those four
+things just add up to
+be equal to this sum that
+we're originally computing a batch stream descent.
+And then we have the alpha times
+1 of 400, alpha times 1
+of 100, and this is
+exactly equivalent to the
+batch gradient descent algorithm, only,
+instead of needing to sum
+over all four hundred training
+examples on just one
+machine, we can instead
+divide up the work load on four machines.
+So, here's what the general
+picture of the MapReduce technique looks like.
+We have some training sets, and
+if we want to paralyze across four
+machines, we are going to
+take the training set and split it, you know, equally.
+Split it as evenly as we can into four subsets.
+Then we are going to take the
+4 subsets of the training data and send them to 4 different computers.
+And each of the 4 computers
+can compute a summation over
+just one quarter of the
+training set, and then
+finally take each of
+the computers takes the results, sends
+them to a centralized server, which then combines the results together.
+So, on the previous line
+in that example, the bulk
+of the work in gradient descent,
+was computing the sum from
+i equals 1 to 400 of something.
+So more generally, sum from
+i equals 1 to m
+of that formula for gradient descent.
+And now, because each of
+the four computers can do just
+a quarter of the work, potentially
+you can get up to a 4x speed up.
+In particular, if there were
+no network latencies and
+no costs of the network
+communications to send the
+data back and forth, you can
+potentially get up to a 4x speed up.
+Of course, in practice,
+because of network latencies,
+the overhead of combining the
+results afterwards and other factors,
+in practice you get slightly less than a 4x speedup.
+But, none the less, this sort
+of macro juice approach does offer
+us a way to process much
+larger data sets than is
+possible using a single computer.
+If you are thinking of applying
+Map Reduce to some learning
+algorithm, in order to speed this up.
+By paralleling the computation
+over different computers, the key
+question to ask yourself is,
+can your learning algorithm be expressed
+as a summation over the training set?
+And it turns out that many
+learning algorithms can actually be
+expressed as computing sums of
+functions over the training set and
+the computational expense of running
+them on large data sets is
+because they need to sum over a very large training set.
+So, whenever your learning algorithm
+can be expressed as a
+sum of the training set
+and whenever the bulk of the
+work of the learning algorithm
+can be expressed as the sum
+of the training set, then map
+reviews might a good candidate
+for scaling your learning algorithms through very, very good data sets.
+Lets just look at one more example.
+Let's say that we want to use one of the advanced optimization algorithm.
+So, things like, you
+know, l, b, f, g, s constant
+gradient and so on, and
+let's say we want to train a logistic regression of the algorithm.
+For that, we need to compute two main quantities.
+One is for the advanced
+optimization algorithms like, you know, LPF and constant gradient.
+We need to provide it a
+routine to compute the
+cost function of the optimization objective.
+And so for logistic regression, you
+remember that a cost function
+has this sort of sum over
+the training set, and so
+if youre paralizing over
+ten machines, you would split
+up the training set onto ten
+machines and have each
+of the ten machines compute the sum
+of this quantity over just
+one tenth of the training
+data.
+Then, the other thing that the
+advanced optimization algorithms need,
+is a routine to compute
+these partial derivative terms.
+Once again, these derivative terms, for
+which it's a logistic regression, can
+be expressed as a sum over
+the training set, and so once
+again, similar to our earlier
+example, you would have
+each machine compute that summation
+over just some small fraction of your training data.
+And finally, having computed
+all of these things, they could
+then send their results to
+a centralized server, which can
+then add up the partial sums.
+This corresponds to adding up
+those tenth i or
+tenth ij variables, which
+were computed locally on machine
+number i, and so
+the centralized server can sum
+these things up and get
+the overall cost function
+and get the overall partial derivative,
+which you can then pass through the advanced optimization algorithm.
+So, more broadly, by taking
+other learning algorithms and
+expressing them in sort of
+summation form or by expressing
+them in terms of computing sums
+of functions over the training set,
+you can use the MapReduce technique to
+parallelize other learning algorithms as well,
+and scale them to very large training sets.
+Finally, as one last comment,
+so far we have been
+discussing MapReduce algorithms as
+allowing you to parallelize over
+multiple computers, maybe multiple
+computers in a computer
+cluster or over multiple computers in the data center.
+It turns out that sometimes even
+if you have just a single computer,
+MapReduce can also be applicable.
+In particular, on many single
+computers now, you can have
+multiple processing cores.
+You can have multiple CPUs,
+and within each CPU you can
+have multiple proc cores.
+If you have a large training
+set, what you can
+do if, say, you have
+a computer with 4
+computing cores, what you
+can do is, even on a
+single computer you can split the
+training sets into pieces and
+send the training set to different
+cores within a single box,
+like within a single desktop computer
+or a single server and use
+MapReduce this way to divvy up work load.
+Each of the cores can then
+carry out the sum over,
+say, one quarter of your
+training set, and then they
+can take the partial sums and
+combine them, in order
+to get the summation over the entire training set.
+The advantage of thinking
+about MapReduce this way, as
+paralyzing over cause within a
+single machine, rather than parallelizing over
+multiple machines is that,
+this way you don't have to
+worry about network latency, because
+all the communication, all the
+sending of the  [xx]
+back and forth, all that happens within a single machine.
+And so network latency becomes
+much less of an issue compared
+to if you were using this
+to over different computers within the data sensor.
+Finally, one last caveat on
+parallelizing within a multi-core machine.
+Depending on the details
+of your implementation, if you have a
+multi-core machine and if you
+have certain numerical linear algebra libraries.
+It turns out that the sum numerical linear algebra libraries
+that can automatically parallelize their
+linear algebra operations across multiple cores within the machine.
+So if you're fortunate enough to
+be using one of those numerical linear algebra
+libraries and certainly
+this does not apply to every single library.
+If you're using one of those libraries and.
+If you have a very good vectorizing implementation of the learning algorithm.
+Sometimes you can just implement
+you standard learning algorithm in
+a vectorized fashion and not
+worry about parallelization and numerical linear algebra libararies
+could take care of some of it for you.
+So you don't need to implement [xx] but.
+for other any problems, taking advantage
+of this sort of map reducing commentation,
+finding and using this
+MapReduce formulation and to
+paralelize a cross coarse except
+yourself might be a
+good idea as well and could let you speed up your learning algorithm.
+In this video, we talked about
+the MapReduce approach to parallelizing
+machine learning by taking a
+data and spreading them across
+many computers in the data center.
+Although these ideas are
+critical to paralysing across multiple
+cores within a single computer
+as well.
+Today there are some good
+open source implementations of MapReduce,
+so there are many users
+in open source system called
+Hadoop and using either your
+own implementation or using someone
+else's open source implementation, you
+can use these ideas to
+parallelize learning algorithms and
+get them to run on much
+larger data sets than is
+possible using just a single machine.

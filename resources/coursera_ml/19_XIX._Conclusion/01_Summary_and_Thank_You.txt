@@ -1,0 +1,99 @@
+Welcome to the final video of this Machine Learning class.
+We've been through a lot of different videos together.
+In this video I would like to just quickly
+summarize the main topics of this course
+and then say a few words at the end and that
+will wrap up the class.
+So what have we done?
+In this class we spent a lot of time talking about supervised learning algorithms
+like linear regression, logistic regression, neural networks, SVMs.
+for problems where you have labelled data and labelled examples
+like x(i), y(i)
+And we also spent quite a lot of time talking about unsupervised learning
+like K-means clustering,
+Principal Components Analysis for dimensionality reduction
+and Anomaly Detection algorithms for when you have only
+unlabelled data x(i)
+Although Anomaly Detection can also use some labelled data
+to evaluate the algorithm.
+We also spent some time talking about special applications
+or special topics like Recommender Systems
+and large scale machine learning systems
+including parallelized and rapid-use systems
+as well as some special applications like
+sliding windows object classification for computer vision.
+And finally we also spent a lot of time talking about different aspects
+of, sort of, advice on building a machine learning system.
+And this involved both trying to understand
+what is it that makes a machine learning algorithm
+work or not work.
+So we talked about things like bias and variance,
+and how regularization can help with some variance problems.
+And we also spent a little bit of time talking about
+this question of how to decide what to work on next.
+So, how to prioritize how you spend your time
+when you're developing a machine learning system.
+So we talked about evaluation of learning algorithms,
+evaluation metrics like  precision recall, F1 score
+as well as practical aspects of evaluation
+like the training, cross-validation and test sets.
+And we also spent a lot of time talking about
+debugging learning algorithms and making sure
+the learning algorithm is working.
+So we talked about diagnostics
+like learning curves and also talked about things like
+error analysis and ceiling analysis.
+And so all of these were different tools for helping you to decide
+what to do next and how to spend your valuable
+time when you're developing a machine learning system.
+And in addition to having the tools of machine learning at your disposal
+so knowing the tools of machine learning like
+supervised learning and unsupervised learning and so on,
+I hope that you now not only have the tools,
+but that you know how to apply these tools really well
+to build powerful machine learning systems.
+So, that's it.
+Those were the topics of this class
+and if you worked all the way through this course
+you should now consider yourself
+an expert in machine learning.
+As you know, machine learning is a technology
+that's having huge impact on science, technology and industry.
+And you're now well qualified to use these tools
+of machine learning to great effect.
+I hope that many of you in this class
+will find ways to use machine learning
+to build cool systems and cool applications
+and cool products.
+And I hope that you find ways
+to use machine learning not only
+to make <i>your</i> life better but maybe someday
+to use it to make many other people's life better as well.
+I also wanted to let you know that this class has been great fun for me to teach.
+So, thank you for that.
+And before wrapping up,
+there's just one last thing I wanted to say.
+Which is that: It was maybe not so long ago,
+that I was a student myself.
+And even today, you know, I still try to take different courses
+when I have time to try to learn new things.
+And so I know how time-consuming it is
+to learn this stuff.
+I know that you're probably a busy person
+with many, many other things going on in your life.
+And so the fact that you still found
+the time or took the time to watch these videos
+and, you know, many of these videos just went on
+for hours, right?
+And the fact many of you took the time
+to go through the review questions
+and that many of you took the time
+to work through the programming exercises.
+And these were long and complicate programming exercises.
+I wanted to say thank you for that.
+And I know that many of you have worked hard on this class
+and that many of you have put a lot of time into this class,
+that many of you have put a lot of yourselves into this class.
+So I hope that you also got a lot of out this class.
+And I wanted to say:
+Thank you very much for having been a student in this class.

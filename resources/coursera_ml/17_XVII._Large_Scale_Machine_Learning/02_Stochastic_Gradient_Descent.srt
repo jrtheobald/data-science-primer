@@ -1,0 +1,587 @@
+1
+00:00:00,251 --> 00:00:05,622
+For many learning algorithms, among them linear regression, logistic regression and neural networks,
+
+2
+00:00:05,622 --> 00:00:11,955
+the way we derive the algorithm was by coming up with a cost function or coming up with an optimization objective.
+
+3
+00:00:11,955 --> 00:00:16,476
+And then using an algorithm like gradient descent to minimize that cost function.
+
+4
+00:00:16,476 --> 00:00:22,461
+We have a very large training set gradient descent becomes a computationally very expensive procedure.
+
+5
+00:00:22,461 --> 00:00:29,300
+In this video, we'll talk about a modification to the basic gradient descent algorithm called Stochastic gradient descent,
+
+6
+00:00:29,300 --> 00:00:37,841
+which will allow us to scale these algorithms to much bigger training sets.
+
+7
+00:00:37,841 --> 00:00:41,928
+Suppose you are training a linear regression model using gradient descent.
+
+8
+00:00:41,928 --> 00:00:48,055
+As a quick recap, the hypothesis will look like this, and the cost function will look like this,
+
+9
+00:00:48,055 --> 00:00:54,459
+which is the sum of one half of the average square error of your hypothesis on your m training examples,
+
+10
+00:00:54,459 --> 00:00:59,705
+and the cost function we've already seen looks like this sort of bow-shaped function.
+
+11
+00:00:59,705 --> 00:01:06,659
+So, plotted as function of the parameters theta 0 and theta 1, the cost function J is a sort of a bow-shaped function.
+
+12
+00:01:06,659 --> 00:01:10,999
+And gradient descent looks like this, where in the inner loop of gradient descent
+
+13
+00:01:10,999 --> 00:01:15,594
+you repeatedly update the parameters theta using that expression.
+
+14
+00:01:15,594 --> 00:01:22,574
+Now in the rest of this video, I'm going to keep using linear regression as the running example.
+
+15
+00:01:22,574 --> 00:01:29,371
+But the ideas here, the ideas of Stochastic gradient descent is fully general and also applies to other learning algorithms
+
+16
+00:01:29,371 --> 00:01:38,011
+like logistic regression, neural networks and other algorithms that are based on training gradient descent on a specific training set.
+
+17
+00:01:38,011 --> 00:01:43,236
+So here's a picture of what gradient descent does, if the parameters are initialized to the point there
+
+18
+00:01:43,236 --> 00:01:50,072
+then as you run gradient descent different iterations of gradient descent will take the parameters to the global minimum.
+
+19
+00:01:50,072 --> 00:01:55,193
+So take a trajectory that looks like that and heads pretty directly to the global minimum.
+
+20
+00:01:55,193 --> 00:01:59,561
+Now, the problem with gradient descent is that if m is large.
+
+21
+00:01:59,561 --> 00:02:08,382
+Then computing this derivative term can be very expensive, because the surprise, summing over all m examples.
+
+22
+00:02:08,382 --> 00:02:15,644
+So if m is 300 million, alright. So in the United States, there are about 300 million people.
+
+23
+00:02:15,644 --> 00:02:20,783
+And so the US or United States census data may have on the order of that many records.
+
+24
+00:02:20,783 --> 00:02:26,715
+So you want to fit the linear regression model to that then you need to sum over 300 million records.
+
+25
+00:02:26,715 --> 00:02:36,385
+And that's very expensive. To give the algorithm a name, this particular version of gradient descent is also called Batch gradient descent.
+
+26
+00:02:36,385 --> 00:02:41,352
+And the term Batch refers to the fact that we're looking at all of the training examples at a time.
+
+27
+00:02:41,352 --> 00:02:44,303
+We call it sort of a batch of all of the training examples.
+
+28
+00:02:44,303 --> 00:02:51,853
+And it really isn't the, maybe the best name but this is what machine learning people call this particular version of gradient descent.
+
+29
+00:02:51,853 --> 00:02:57,157
+And if you imagine really that you have 300 million census records stored away on disc.
+
+30
+00:02:57,157 --> 00:03:05,945
+The way this algorithm works is you need to read into your computer memory all 300 million records in order to compute this derivative term.
+
+31
+00:03:05,945 --> 00:03:11,508
+You need to stream all of these records through computer because you can't store all your records in computer memory.
+
+32
+00:03:11,508 --> 00:03:16,425
+So you need to read through them and slowly, you know, accumulate the sum in order to compute the derivative.
+
+33
+00:03:16,425 --> 00:03:21,452
+And then having done all that work, that allows you to take one step of gradient descent.
+
+34
+00:03:21,452 --> 00:03:24,749
+And now you need to do the whole thing again.
+
+35
+00:03:24,749 --> 00:03:28,424
+You know, scan through all 300 million records, accumulate these sums.
+
+36
+00:03:28,424 --> 00:03:32,578
+And having done all that work, you can take another little step using gradient descent.
+
+37
+00:03:32,578 --> 00:03:36,959
+And then do that again. And then you take yet a third step. And so on.
+
+38
+00:03:36,959 --> 00:03:40,819
+And so it's gonna take a long time in order to get the algorithm to converge.
+
+39
+00:03:40,819 --> 00:03:45,375
+In contrast to Batch gradient descent, what we are going to do is come up with a different algorithm
+
+40
+00:03:45,375 --> 00:03:50,465
+that doesn't need to look at all the training examples in every single iteration,
+
+41
+00:03:50,465 --> 00:03:55,118
+but that needs to look at only a single training example in one iteration.
+
+42
+00:03:55,118 --> 00:03:59,617
+Before moving on to the new algorithm, here's just a Batch gradient descent algorithm written out again
+
+43
+00:03:59,617 --> 00:04:05,794
+with that being the cost function and that being the update and of course this term here,
+
+44
+00:04:05,794 --> 00:04:10,678
+that's used in the gradient descent rule, that is the partial derivative
+
+45
+00:04:10,678 --> 00:04:17,933
+with respect to the parameters theta J of our optimization objective, J train of theta.
+
+46
+00:04:17,933 --> 00:04:23,386
+Now, let's look at the more efficient algorithm that scales better to large data sets.
+
+47
+00:04:23,386 --> 00:04:26,489
+In order to work off the algorithms called Stochastic gradient descent,
+
+48
+00:04:26,489 --> 00:04:32,657
+this vectors the cost function in a slightly different way then they define the cost of the parameter theta
+
+49
+00:04:32,657 --> 00:04:40,471
+with respect to a training example x(i), y(i) to be equal to one half times the squared error
+
+50
+00:04:40,471 --> 00:04:44,791
+that my hypothesis incurs on that example, x(i), y(i).
+
+51
+00:04:44,791 --> 00:04:53,386
+So this cost function term really measures how well is my hypothesis doing on a single example x(i), y(i).
+
+52
+00:04:53,386 --> 00:05:01,010
+Now you notice that the overall cost function j train can now be written in this equivalent form.
+
+53
+00:05:01,010 --> 00:05:09,606
+So j train is just the average over my m training examples of the cost of my hypothesis on that example x(i), y(i).
+
+54
+00:05:09,606 --> 00:05:13,522
+Armed with this view of the cost function for linear regression,
+
+55
+00:05:13,522 --> 00:05:17,636
+let me now write out what Stochastic gradient descent does.
+
+56
+00:05:17,636 --> 00:05:26,940
+The first step of Stochastic gradient descent is to randomly shuffle the data set.
+
+57
+00:05:26,940 --> 00:05:32,539
+So by that I just mean randomly shuffle, or randomly reorder your m training examples.
+
+58
+00:05:32,539 --> 00:05:37,450
+It's sort of a standard pre-processing step, come back to this in a minute.
+
+59
+00:05:37,450 --> 00:05:42,997
+But the main work of Stochastic gradient descent is then done in the following.
+
+60
+00:05:42,997 --> 00:05:48,150
+We're going to repeat for i equals 1 through m.
+
+61
+00:05:48,150 --> 00:05:53,067
+So we'll repeatedly scan through my training examples and perform the following update.
+
+62
+00:05:53,067 --> 00:06:06,523
+Gonna update the parameter theta j as theta j minus alpha times h of x(i) minus y(i) times x(i)j.
+
+63
+00:06:06,523 --> 00:06:12,961
+And we're going to do this update as usual for all values of j.
+
+64
+00:06:12,961 --> 00:06:24,708
+Now, you notice that this term over here is exactly what we had inside the summation for Batch gradient descent.
+
+65
+00:06:24,708 --> 00:06:31,256
+In fact, for those of you that are calculus is possible to show that that term here, that's this term here,
+
+66
+00:06:31,256 --> 00:06:43,511
+is equal to the partial derivative with respect to my parameter theta j of the cost of the parameters theta on x(i), y(i).
+
+67
+00:06:43,511 --> 00:06:47,383
+Where cost is of course this thing that was defined previously.
+
+68
+00:06:47,383 --> 00:06:52,081
+And just the wrap of the algorithm, let me close my curly braces over there.
+
+69
+00:06:52,081 --> 00:06:59,365
+So what Stochastic gradient descent is doing is it is actually scanning through the training examples.
+
+70
+00:06:59,365 --> 00:07:04,349
+And first it's gonna look at my first training example x(1), y(1).
+
+71
+00:07:04,349 --> 00:07:09,399
+And then looking at only this first example, it's gonna take like a basically a little gradient descent step
+
+72
+00:07:09,399 --> 00:07:13,725
+with respect to the cost of just this first training example.
+
+73
+00:07:13,725 --> 00:07:15,717
+So in other words, we're going to look at the first example
+
+74
+00:07:15,717 --> 00:07:21,214
+and modify the parameters a little bit to fit just the first training example a little bit better.
+
+75
+00:07:21,214 --> 00:07:29,244
+Having done this inside this inner for-loop is then going to go on to the second training example.
+
+76
+00:07:29,244 --> 00:07:33,848
+And what it's going to do there is take another little step in parameter space,
+
+77
+00:07:33,848 --> 00:07:39,682
+so modify the parameters just a little bit to try to fit just a second training example a little bit better.
+
+78
+00:07:39,682 --> 00:07:44,130
+Having done that, is then going to go onto my third training example.
+
+79
+00:07:44,130 --> 00:07:51,722
+And modify the parameters to try to fit just the third training example a little bit better, and so on
+
+80
+00:07:51,722 --> 00:07:55,114
+until you know, you get through the entire training set.
+
+81
+00:07:55,114 --> 00:08:01,297
+And then this ultra repeat loop may cause it to take multiple passes over the entire training set.
+
+82
+00:08:01,297 --> 00:08:07,346
+This view of Stochastic gradient descent also motivates why we wanted to start by randomly shuffling the data set.
+
+83
+00:08:07,346 --> 00:08:10,772
+This doesn't show us that when we scan through the training site here,
+
+84
+00:08:10,772 --> 00:08:15,197
+that we end up visiting the training examples in some sort of randomly sorted order.
+
+85
+00:08:15,197 --> 00:08:21,229
+Depending on whether your data already came randomly sorted or whether it came originally sorted in some strange order,
+
+86
+00:08:21,229 --> 00:08:26,391
+in practice this would just speed up the conversions to Stochastic gradient descent just a little bit.
+
+87
+00:08:26,391 --> 00:08:30,985
+So in the interest of safety, it's usually better to randomly shuffle the data set if you aren't sure
+
+88
+00:08:30,985 --> 00:08:34,056
+if it came to you in randomly sorted order.
+
+89
+00:08:34,056 --> 00:08:37,240
+But more importantly another view of Stochastic gradient descent is
+
+90
+00:08:37,240 --> 00:08:45,504
+that it's a lot like descent but rather than wait to sum up these gradient terms over all m training examples,
+
+91
+00:08:45,504 --> 00:08:50,624
+what we're doing is we're taking this gradient term using just one single training example
+
+92
+00:08:50,624 --> 00:08:54,810
+and we're starting to make progress in improving the parameters already.
+
+93
+00:08:54,810 --> 00:09:02,248
+So rather than, you know, waiting 'till taking a path through all 300,000 United States Census records,
+
+94
+00:09:02,248 --> 00:09:05,632
+say, rather than needing to scan through all of the training examples
+
+95
+00:09:05,632 --> 00:09:09,947
+before we can modify the parameters a little bit and make progress towards a global minimum.
+
+96
+00:09:09,947 --> 00:09:14,975
+For Stochastic gradient descent instead we just need to look at a single training example
+
+97
+00:09:14,975 --> 00:09:22,188
+and we're already starting to make progress in this case of parameters towards, moving the parameters towards the global minimum.
+
+98
+00:09:22,188 --> 00:09:27,558
+So, here's the algorithm written out again where the first step is to randomly shuffle the data
+
+99
+00:09:27,558 --> 00:09:35,089
+and the second step is where the real work is done, where that's the update with respect to a single training example x(i), y(i).
+
+100
+00:09:35,089 --> 00:09:40,139
+So, let's see what this algorithm does to the parameters.
+
+101
+00:09:40,139 --> 00:09:43,467
+Previously, we saw that when we are using Batch gradient descent,
+
+102
+00:09:43,467 --> 00:09:46,331
+that is the algorithm that looks at all the training examples in time,
+
+103
+00:09:46,331 --> 00:09:53,397
+Batch gradient descent will tend to, you know, take a reasonably straight line trajectory to get to the global minimum like that.
+
+104
+00:09:53,397 --> 00:09:59,956
+In contrast with Stochastic gradient descent every iteration is going to be much faster
+
+105
+00:09:59,956 --> 00:10:03,108
+because we don't need to sum up over all the training examples.
+
+106
+00:10:03,108 --> 00:10:07,259
+But every iteration is just trying to fit single training example better.
+
+107
+00:10:07,259 --> 00:10:13,931
+So, if we were to start stochastic gradient descent, oh, let's start stochastic gradient descent at a point like that.
+
+108
+00:10:13,931 --> 00:10:19,556
+The first iteration, you know, may take the parameters in that direction and
+
+109
+00:10:19,556 --> 00:10:23,791
+maybe the second iteration looking at just the second example maybe just by chance,
+
+110
+00:10:23,791 --> 00:10:28,278
+we get more unlucky and actually head in a bad direction with the parameters like that.
+
+111
+00:10:28,278 --> 00:10:33,731
+In the third iteration where we tried to modify the parameters to fit just the third training examples better,
+
+112
+00:10:33,731 --> 00:10:36,418
+maybe we'll end up heading in that direction.
+
+113
+00:10:36,418 --> 00:10:42,717
+And then we'll look at the fourth training example and we will do that. The fifth example, sixth example, 7th and so on.
+
+114
+00:10:42,717 --> 00:10:46,725
+And as you run Stochastic gradient descent, what you find is that
+
+115
+00:10:46,725 --> 00:10:52,923
+it will generally move the parameters in the direction of the global minimum, but not always.
+
+116
+00:10:52,923 --> 00:11:00,117
+And so take some more random-looking, circuitous path to watch the global minimum.
+
+117
+00:11:00,117 --> 00:11:07,630
+And in fact as you run Stochastic gradient descent it doesn't actually converge in the same same sense as Batch gradient descent does
+
+118
+00:11:07,630 --> 00:11:15,196
+and what it ends up doing is wandering around continuously in some region that's in some region close to the global minimum,
+
+119
+00:11:15,196 --> 00:11:18,740
+but it doesn't just get to the global minimum and stay there.
+
+120
+00:11:18,740 --> 00:11:21,676
+But in practice this isn't a problem because, you know, so
+
+121
+00:11:21,676 --> 00:11:26,788
+long as the parameters end up in some region there maybe it is pretty close to the global minimum.
+
+122
+00:11:26,788 --> 00:11:32,164
+So, as parameters end up pretty close to the global minimum, that will be a pretty good hypothesis
+
+123
+00:11:32,164 --> 00:11:36,340
+and so usually running Stochastic gradient descent
+
+124
+00:11:36,340 --> 00:11:43,658
+we get a parameter near the global minimum and that's good enough for, you know, essentially any, most practical purposes.
+
+125
+00:11:43,658 --> 00:11:47,121
+Just one final detail. In Stochastic gradient descent,
+
+126
+00:11:47,121 --> 00:11:51,099
+we had this outer loop repeat which says to do this inner loop multiple times.
+
+127
+00:11:51,099 --> 00:11:53,892
+So, how many times do we repeat this outer loop?
+
+128
+00:11:53,892 --> 00:11:59,336
+Depending on the size of the training set, doing this loop just a single time may be enough.
+
+129
+00:11:59,336 --> 00:12:02,064
+And up to, you know, maybe 10 times may be typical
+
+130
+00:12:02,064 --> 00:12:05,852
+so we may end up repeating this inner loop anywhere from once to ten times.
+
+131
+00:12:05,852 --> 00:12:12,309
+So if we have a you know, truly massive data set like the this US census gave us that example
+
+132
+00:12:12,309 --> 00:12:15,260
+that I've been talking about with 300 million examples,
+
+133
+00:12:15,260 --> 00:12:19,609
+it is possible that by the time you've taken just a single pass through your training set.
+
+134
+00:12:19,609 --> 00:12:23,073
+So, this is for i equals 1 through 300 million.
+
+135
+00:12:23,073 --> 00:12:25,720
+It's possible that by the time you've taken a single pass through your data set
+
+136
+00:12:25,720 --> 00:12:29,872
+you might already have a perfectly good hypothesis.
+
+137
+00:12:29,872 --> 00:12:36,613
+In which case, you know, this inner loop you might need to do only once if m is very, very large.
+
+138
+00:12:36,613 --> 00:12:43,071
+But in general taking anywhere from 1 through 10 passes through your data set, you know, maybe fairly common.
+
+139
+00:12:43,071 --> 00:12:45,439
+But really it depends on the size of your training set.
+
+140
+00:12:45,439 --> 00:12:49,413
+And if you contrast this to Batch gradient descent.
+
+141
+00:12:49,413 --> 00:12:53,905
+With Batch gradient descent, after taking a pass through your entire training set,
+
+142
+00:12:53,905 --> 00:12:57,034
+you would have taken just one single gradient descent steps.
+
+143
+00:12:57,034 --> 00:13:01,983
+So one of these little baby steps of gradient descent where you just take one small gradient descent step
+
+144
+00:13:01,983 --> 00:13:05,776
+and this is why Stochastic gradient descent can be much faster.
+
+145
+00:13:05,776 --> 00:13:10,880
+So, that was the Stochastic gradient descent algorithm.
+
+146
+00:13:10,880 --> 00:13:15,594
+And if you implement it, hopefully that will allow you to scale up many of your learning algorithms
+
+147
+00:13:15,594 --> 99:59:59,000
+to much bigger data sets and get much more performance that way.

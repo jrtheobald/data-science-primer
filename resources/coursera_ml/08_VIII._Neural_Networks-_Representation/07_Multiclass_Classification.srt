@@ -1,0 +1,443 @@
+1
+00:00:00,320 --> 00:00:01,410
+In this video, I want to
+
+2
+00:00:01,490 --> 00:00:02,710
+tell you about how to use neural
+
+3
+00:00:02,900 --> 00:00:04,390
+networks to do multiclass
+
+4
+00:00:04,830 --> 00:00:06,690
+classification where we may
+
+5
+00:00:06,820 --> 00:00:07,840
+have more than one category
+
+6
+00:00:07,930 --> 00:00:09,600
+that we're trying to distinguish amongst.
+
+7
+00:00:10,470 --> 00:00:12,280
+In the last part of
+
+8
+00:00:12,600 --> 00:00:13,920
+the last video, where we
+
+9
+00:00:14,400 --> 00:00:15,320
+had the handwritten digit recognition
+
+10
+00:00:15,830 --> 00:00:17,030
+problem, that was actually
+
+11
+00:00:17,700 --> 00:00:19,000
+a multiclass classification problem because
+
+12
+00:00:19,440 --> 00:00:20,730
+there were ten possible categories
+
+13
+00:00:21,550 --> 00:00:22,820
+for recognizing the digits from
+
+14
+00:00:23,040 --> 00:00:23,980
+0 through 9 and so, if
+
+15
+00:00:24,060 --> 00:00:25,430
+you want us to fill you
+
+16
+00:00:25,830 --> 00:00:27,840
+in on the details of how to do that.
+
+17
+00:00:30,410 --> 00:00:31,870
+The way we do multiclass classification
+
+18
+00:00:32,990 --> 00:00:34,380
+in a neural network is essentially
+
+19
+00:00:35,060 --> 00:00:37,600
+an extension of the one versus all method.
+
+20
+00:00:38,610 --> 00:00:39,650
+So, let's say that we
+
+21
+00:00:39,790 --> 00:00:41,660
+have a computer vision example,
+
+22
+00:00:42,630 --> 00:00:43,810
+where instead of just trying
+
+23
+00:00:44,010 --> 00:00:46,170
+to recognize cars as in
+
+24
+00:00:46,310 --> 00:00:47,290
+the original example that I started off
+
+25
+00:00:47,470 --> 00:00:48,670
+with, but let's say that
+
+26
+00:00:49,060 --> 00:00:51,380
+we're trying to recognize, you know, four
+
+27
+00:00:51,510 --> 00:00:52,820
+categories of objects and given
+
+28
+00:00:53,030 --> 00:00:53,900
+an image we want to
+
+29
+00:00:54,100 --> 00:00:56,360
+decide if it is a pedestrian, a car, a motorcycle or a truck.
+
+30
+00:00:57,200 --> 00:00:58,750
+If that's the case, what
+
+31
+00:00:58,920 --> 00:01:00,480
+we would do is we would
+
+32
+00:01:00,970 --> 00:01:02,820
+build a neural network with four
+
+33
+00:01:03,160 --> 00:01:04,500
+output units so that
+
+34
+00:01:04,710 --> 00:01:08,110
+our neural network now outputs a vector of four numbers.
+
+35
+00:01:09,110 --> 00:01:10,450
+So, the output now is actually
+
+36
+00:01:11,170 --> 00:01:11,840
+needing to be a vector of four
+
+37
+00:01:12,070 --> 00:01:13,300
+numbers and what we're
+
+38
+00:01:13,540 --> 00:01:14,400
+going to try to do is
+
+39
+00:01:14,780 --> 00:01:16,680
+get the first output unit
+
+40
+00:01:17,180 --> 00:01:18,840
+to classify: is the
+
+41
+00:01:19,160 --> 00:01:20,650
+image a pedestrian, yes or no.
+
+42
+00:01:21,200 --> 00:01:24,530
+The second unit to classify: is the image a car, yes or no.
+
+43
+00:01:25,110 --> 00:01:26,880
+This unit to classify: is the
+
+44
+00:01:27,130 --> 00:01:29,150
+image a motorcycle, yes or
+
+45
+00:01:29,230 --> 00:01:30,460
+no, and this would classify:
+
+46
+00:01:30,930 --> 00:01:32,930
+is the image a truck, yes or no.
+
+47
+00:01:33,720 --> 00:01:35,730
+And thus, when the image
+
+48
+00:01:36,390 --> 00:01:37,630
+is of a pedestrian, we
+
+49
+00:01:37,820 --> 00:01:38,930
+would ideally want the network
+
+50
+00:01:39,410 --> 00:01:40,140
+to output 1, 0, 0, 0,
+
+51
+00:01:40,250 --> 00:01:41,260
+when it is a
+
+52
+00:01:41,520 --> 00:01:42,310
+car we want it to output
+
+53
+00:01:42,750 --> 00:01:43,530
+0, 1, 0, 0, when this
+
+54
+00:01:43,840 --> 00:01:45,960
+is a motorcycle, we get it to or rather, we want
+
+55
+00:01:46,390 --> 00:01:47,460
+it to output 0, 0,
+
+56
+00:01:47,580 --> 00:01:48,970
+1, 0 and so on.
+
+57
+00:01:50,750 --> 00:01:51,880
+So this is just like
+
+58
+00:01:52,270 --> 00:01:53,690
+the "one versus all" method
+
+59
+00:01:54,190 --> 00:01:55,520
+that we talked about when we
+
+60
+00:01:55,680 --> 00:01:58,120
+were describing logistic regression, and
+
+61
+00:01:58,320 --> 00:02:00,480
+here we have essentially four logistic
+
+62
+00:02:01,290 --> 00:02:03,100
+regression classifiers, each of
+
+63
+00:02:03,260 --> 00:02:04,800
+which is trying to recognize one
+
+64
+00:02:05,000 --> 00:02:06,780
+of the four classes that
+
+65
+00:02:06,940 --> 00:02:08,830
+we want to distinguish amongst.
+
+66
+00:02:09,540 --> 00:02:10,780
+So, rearranging the slide of
+
+67
+00:02:10,860 --> 00:02:12,130
+it, here's our neural network
+
+68
+00:02:12,540 --> 00:02:14,070
+with four output units and those
+
+69
+00:02:14,330 --> 00:02:15,510
+are what we want h
+
+70
+00:02:15,670 --> 00:02:16,790
+of x to be when we
+
+71
+00:02:16,990 --> 00:02:18,930
+have the different images, and
+
+72
+00:02:19,580 --> 00:02:20,860
+the way we're going to represent the
+
+73
+00:02:21,110 --> 00:02:22,690
+training set in these settings
+
+74
+00:02:23,260 --> 00:02:24,670
+is as follows. So, when we have
+
+75
+00:02:24,890 --> 00:02:26,170
+a training set with different images
+
+76
+00:02:27,350 --> 00:02:28,990
+of pedestrians, cars, motorcycles and
+
+77
+00:02:29,260 --> 00:02:30,450
+trucks, what we're going
+
+78
+00:02:30,510 --> 00:02:31,940
+to do in this example is
+
+79
+00:02:32,190 --> 00:02:34,580
+that whereas previously we had
+
+80
+00:02:34,990 --> 00:02:36,780
+written out the labels as
+
+81
+00:02:37,040 --> 00:02:38,320
+y being an integer from
+
+82
+00:02:38,710 --> 00:02:42,180
+1, 2, 3 or 4. Instead of
+
+83
+00:02:42,280 --> 00:02:44,210
+representing y this way,
+
+84
+00:02:44,890 --> 00:02:46,340
+we're going to instead represent y
+
+85
+00:02:47,050 --> 00:02:49,400
+as follows: namely Yi
+
+86
+00:02:54,850 --> 00:02:55,230
+will be either 1, 0, 0, 0
+
+87
+00:02:55,230 --> 00:02:57,040
+or 0, 1, 0, 0 or 0, 0, 1, 0 or 0, 0, 0, 1 depending on what the
+
+88
+00:02:57,490 --> 00:02:59,100
+corresponding image Xi is.
+
+89
+00:02:59,410 --> 00:03:00,700
+And so one training example
+
+90
+00:03:01,230 --> 00:03:03,090
+will be one pair Xi colon Yi
+
+91
+00:03:04,530 --> 00:03:06,340
+where Xi is an image with, you
+
+92
+00:03:06,440 --> 00:03:08,000
+know one of the four objects and
+
+93
+00:03:08,170 --> 00:03:09,640
+Yi will be one of these vectors.
+
+94
+00:03:10,970 --> 00:03:12,020
+And hopefully, we can find
+
+95
+00:03:12,420 --> 00:03:13,670
+a way to get our
+
+96
+00:03:14,020 --> 00:03:15,100
+Neural Networks to output some
+
+97
+00:03:15,290 --> 00:03:16,480
+value. So, the h of x
+
+98
+00:03:17,310 --> 00:03:20,360
+is approximately y and
+
+99
+00:03:20,550 --> 00:03:22,000
+both h of x and Yi,
+
+100
+00:03:22,600 --> 00:03:23,770
+both of these are going
+
+101
+00:03:24,020 --> 00:03:25,170
+to be in our example,
+
+102
+00:03:26,060 --> 00:03:28,700
+four dimensional vectors when we have four classes.
+
+103
+00:03:31,810 --> 00:03:33,020
+So, that's how you
+
+104
+00:03:33,170 --> 00:03:34,830
+get neural network to do multiclass classification.
+
+105
+00:03:36,290 --> 00:03:37,780
+This wraps up our discussion on
+
+106
+00:03:38,050 --> 00:03:39,620
+how to represent Neural Networks
+
+107
+00:03:40,120 --> 00:03:41,620
+that is on our hypotheses representation.
+
+108
+00:03:42,780 --> 00:03:44,180
+In the next set of videos, let's
+
+109
+00:03:44,690 --> 00:03:45,830
+start to talk about how take
+
+110
+00:03:45,990 --> 00:03:47,360
+a training set and how to
+
+111
+00:03:47,570 --> 00:03:49,970
+automatically learn the parameters of the neural network.

@@ -1,0 +1,409 @@
+In this and the next video,
+I'd like to tell you about one
+possible extension to the
+anomaly detection algorithm that we've developed so far.
+This extension uses something called the multivariate
+Gaussian distribution, and it
+has some advantages, and some
+disadvantages, and it can
+sometimes catch some anomalies that the earlier algorithm didn't.
+To motivate this, let's start with an example.
+Let's say that so our unlabeled data looks like what I have plotted here.
+And I'm going to use
+the example of monitoring machines
+in the data center, monitoring computers in the data center.
+So my two features are x1
+which is the CPU load and x2
+which is maybe the memory use.
+So if I take
+my two features, x1 and x2,
+and I model them as Gaussians then
+here's a plot of
+my X1 features, here's a
+plot of my X2 features,
+and so if I fit a
+Gaussian to that, maybe I'll
+get a Gaussian like this, so
+here's P of X 1,
+which depends
+on the parameters mu 1, and
+sigma squared 1,
+and here's my memory used, and,
+you know, maybe I'll get a Gaussian
+that looks like this, and this is my P of X 2,
+which depends on mu 2 and sigma squared 2.
+And so this is
+how the anomaly detection algorithm
+models X1 and X2.
+Now let's say that in the
+test sets I have an
+example that looks like this.
+The location of that green
+cross, so the value of
+X 1 is about 0.4, and the value of X 2 is about 1.5.
+Now, if you look at
+the data, it looks like,
+yeah, most of the data data
+lies in this region, and
+so that green cross
+is pretty far away from any of the data I've seen.
+It looks like that should be raised
+as an anomaly. So, in my
+data, in my, in the
+data of my good examples,
+it looks like, you know, the
+CPU load, and the
+memory use, they sort
+of grow linearly with each other.
+So if I have a
+machine using lots of CPU,
+you know memory use
+will also be high, whereas this
+example, this green example it looks like
+here, the CPU load is
+very low, but the memory use
+is very high, and I just
+have not seen that before in my training set.
+It looks like that should be an anomaly.
+But let's see what the anomaly detection algorithm will do.
+Well, for the CPU load, it
+puts it at around there
+0.5 and this reasonably high
+probability is not that
+far from other examples we've seen,
+maybe, whereas, for the
+memory use, this appointment, 0.5,
+whereas for the memory
+use, it's about 1.5, which is there. Again,
+you know, it's all to
+us, it's not terribly Gaussian, but
+the value here and the value
+here is not that different
+from many other examples we've
+seen, and so P of
+X 1, will be pretty high,
+reasonably high.
+P of X 2 reasonably high.
+I mean, if you look at this
+plot right, this point here,
+it doesn't look that bad, and
+if you look at this plot, you
+know across here, doesn't look that bad.
+I mean, I have had examples with
+even greater memory used, or
+with even less CPU use,
+and so this example doesn't look that anomalous.
+And so, an anomaly detection algorithm
+will fail to flag this point as an anomaly.
+And it turns out what
+our anomaly detection algorithm is
+doing is that it is
+not realizing that this blue
+ellipse shows the high
+probability region, is that, one
+of the thing is that, examples here,
+a high probability, and the
+examples, the next circle
+of from a lower probably, and
+examples here are even
+lower probability, and somehow, here
+are things that are, green cross
+there, it's pretty high probability,
+and in particular, it tends to think
+that, you know, everything in this
+region, everything on the
+line that I'm circling over, has, you know, about equal probability,
+and it doesn't realize that something
+out here actually has
+much lower probability than something over there.
+So, in order to fix
+this, we can, we're going to
+develop a modified version of
+the anomaly detection algorithm, using
+something called the multivariate
+Gaussian distribution also called the multivariate normal distribution.
+So here's what we're going to
+do. We have features x
+which are in Rn and
+instead of P of X 1, P of X 2, separately,
+we're going to model P of
+X, all in one go,
+so model P of X, you know, all at the same time.
+So the parameters of the
+multivariate Gaussian distribution are mu,
+which is a vector, and sigma,
+which is an n by n matrix, called a covariance matrix,
+and this is similar to the
+covariance matrix that we
+saw when we were working
+with the PCA, with the
+principal components analysis algorithm.
+For the second complete is, let
+me just write out the formula
+for the multivariate Gaussian distribution.
+So we say that probability of
+X, and this is parameterized
+by my parameters mu and
+sigma that the
+probability of x is equal
+to once again
+there's absolutely no need to memorize this formula.
+You know, you can look it up
+whenever you need to use
+it, but this is what
+the probability of X looks like.
+Transverse, 2nd inverse, X
+minus mu.
+And this thing here,
+the absolute value of sigma, this
+thing here when you write
+this symbol, this is called
+the determent of sigma
+and this is a mathematical function
+of a matrix and you really
+don't need to know what the
+determinant of a matrix is,
+but really all you need to
+know is that you can
+compute it in octave by using
+the octave command DET of
+sigma.
+Okay, and again, just be clear, alright?
+In this expression, these sigmas
+here, these are just n by n matrix.
+This is not a summation and
+you know, the sigma there is an n by n matrix.
+So that's the formula for P
+of X, but it's
+more interestingly, or more importantly,
+what does P of X actually looks like?
+Lets look at some examples of
+multivariate Gaussian distributions.
+So let's take a
+two dimensional example, say if
+I have N equals 2, I
+have two features, X 1 and X 2.
+Lets say I set MU to
+be equal to 0 and sigma
+to be equal to this matrix here.
+With 1s on the diagonals and 0s on the off-diagonals,
+this matrix is sometimes also called the identity matrix.
+In that case, p of
+x will look like
+this, and what
+I'm showing in this figure is, you know,
+for a specific value of X1
+and for a specific value of
+X2, the height of
+this surface the value
+of p of x. And
+so with this setting the parameters
+p of x is highest when
+X1 and X2 equal zero 0,
+so that's the peak of this Gaussian distribution,
+and the probability falls off with this
+sort of two dimensional Gaussian or
+this bell shaped two dimensional bell-shaped surface.
+Down below is the same
+thing but plotted using a
+contour plot instead, or using different colors,
+and so this
+heavy intense red in the
+middle, corresponds to the highest values,
+and then the values decrease
+with the yellow being slightly lower
+values the cyan being
+lower values and this deep
+blue being the lowest
+values so this is really the same figure but plotted
+viewed from the top instead, using colors instead.
+And so, with this distribution,
+you see that it faces most
+of the probability near 0,0
+and then as you go out
+from 0,0 the probability of X1 and X2 goes down.
+Now lets try varying some
+of the parameters and see
+what happens. So let's
+take sigma and change it
+so let's say sigma shrinks a
+little bit. Sigma is a
+covariance matrix and so it
+measures the variance or the
+variability of the features X1 X2.
+So if the shrink
+sigma then what you get
+is what you get is that the
+width of this bump diminishes
+and the height also
+increases a bit, because the
+area under the surface is equal to 1.
+So the integral of the
+volume under the surface is
+equal to 1, because probability
+distribution must integrate to one.
+But, if you shrink the variance,
+it's kinda like shrinking
+sigma squared,
+you end up with a narrower distribution, and one that's a little bit taller.
+And so you see here also the
+concentric ellipsis has shrunk a little bit.
+Whereas in contrast if you were to increase sigma
+to 2 2 on the
+diagonals, so it is now two
+times the identity then you end up with a
+much wider and much flatter Gaussian.
+And so the width of this is much wider.
+This is hard to see but this
+is still a bell shaped bump,
+it's just flattened down a lot,
+it has become much wider and
+so the variance or the
+variability of X1 and X2 just becomes wider.
+Here are a few more examples.
+Now lets try varying
+one of the elements of sigma at the time.
+Let's say I send sigma to
+0.6 there, and 1 over there.
+What this does, is this
+reduces the variance of
+the first feature, X 1, while
+keeping the variance of the
+second feature X 2, the same.
+And so with this setting of parameters, you can model things like that.
+X 1 has smaller variance, and
+X 2 has larger variance.
+Whereas if I do this,
+if I set this
+matrix to 2, 1
+then you can also model
+examples where you know here
+we'll say X1 can have take
+on a large range of values
+whereas X2 takes on a relatively narrower range of values.
+And that's reflected in this
+figure as well, you know where,
+the distribution falls off
+more slowly as X 1
+moves away from 0,
+and falls off very
+rapidly as X 2 moves away from 0.
+And similarly if
+we were to modify
+this element of the
+matrix instead, then similar to the previous
+slide, except that here where
+you know playing around here saying
+that X2 can take on
+a very small range of values
+and so here if this
+is 0.6, we notice now X2
+tends to take on a much
+smaller range of values than the original example,
+whereas if we were to
+set sigma to be equal to 2 then
+that's like saying X2 you know, has a much larger range of values.
+Now, one of the cool
+things about the multivariate
+Gaussian distribution is that
+you can also use it to
+model correlations between the data.
+That is we can use it to
+model the fact that
+X1 and X2 tend to be
+highly correlated with each other for example.
+So specifically if you start
+to change the off diagonal
+entries of this covariance
+matrix you can get a different type of Gaussian distribution.
+And so as I
+increase the off-diagonal entries
+from .5 to .8, what
+I get is this distribution that
+is more and more thinly peaked
+along this sort of x equals y line.
+And so here the
+contour says that x and
+y tend to grow together and
+the things that are with
+large probability are if
+either X1 is large and
+Y2 is large or X1
+is small and Y2 is small.
+Or somewhere in between.
+And as this entry,
+0.8 gets large, you get
+a Gaussian distribution, that's sort of
+where all the probability lies on
+this sort of narrow region,
+where x is approximately equal to
+y. This is a very
+tall, thin distribution you know
+line mostly along this line
+central region where x is
+close to y. So this
+is if we set these
+entries to be positive entries.
+In contrast if we set
+these to negative values, as
+I decreases it to -.5
+down to -.8, then
+what we get is a model where
+we put most of the probability
+in this sort of negative X
+one in the next 2 correlation region,
+and so, most of the
+probability now lies in this region,
+where X 1 is about equal
+to -X 2, rather than X
+1 equals X 2.
+And so this captures a sort
+of negative correlation between x1
+and x2.
+And so this is
+a hopefully this gives you a sense of the
+different distributions that the
+multivariate Gaussian distribution can capture.
+So follow up in varying, the
+covariance matrix sigma, the other
+thing you can do is
+also, vary the mean
+parameter mu, and so
+operationally, we have mu
+equal 0 0, and so the
+distribution was centered around
+X 1 equals 0, X2 equals 0,
+so the peak of the
+distribution is here, whereas,
+if we vary the values of
+mu, then that varies the
+peak of the distribution and so,
+if mu equals 0, 0.5,
+the peak is at, you know,
+X1 equals zero, and X2
+equals 0.5, and so the
+peak or the center of
+this distribution has shifted,
+and if mu was 1.5
+minus 0.5 then OK,
+and similarly the peak
+of the distribution has now
+shifted to a different location,
+corresponding to where, you know,
+X1 is 1.5 and X2
+is -0.5, and so
+varying the mu parameter, just shifts
+around the center of this whole distribution.
+So, hopefully, looking at
+all these different pictures gives you
+a sense of the sort
+of probability distributions that
+the Multivariate Gaussian Distribution allows you to capture.
+And the key advantage of it
+is it allows you to
+capture, when you'd expect
+two different features to be
+positively correlated, or maybe negatively correlated.
+In the next video, we'll take
+this multivariate Gaussian distribution
+and apply it to anomaly detection.

@@ -1,0 +1,366 @@
+In the last video we talked
+about the Multivariate Gaussian Distribution
+and saw some examples of the
+sorts of distributions you can model, as
+you vary the parameters, mu and sigma.
+In this video, let's take those
+ideas, and apply them
+to develop a different anomaly detection algorithm.
+To recap the multivariate Gaussian
+distribution and the multivariate normal
+distribution has two parameters, mu and sigma.
+Where mu this an n
+dimensional vector and sigma,
+the covariance matrix, is an
+n by n matrix.
+And here's the formula for
+the probability of X, as
+parameterized by mu and
+sigma, and as you
+vary mu and sigma, you
+can get a range of different
+distributions, like, you know,
+these are three examples of the
+ones that we saw in the previous video.
+So let's talk about the
+parameter fitting or the
+parameter estimation problem. The
+question, as usual, is if
+I have a set of examples
+X1 through XM and here each
+of these examples is an
+n dimensional vector and I think my
+examples come from a multivariate Gaussian distribution.
+How do I try to estimate my parameters mu and sigma?
+Well the standard formulas for
+estimating them is you
+set mu to be just
+the average of your training examples.
+And you set sigma to be equal to this.
+And this is actually just
+like the sigma that we had
+written out, when we were
+using the PCA or
+the Principal Components Analysis algorithm.
+So you just plug in these
+two formulas and this
+would give you your estimated parameter
+mu and your estimated parameter sigma.
+So given the data set here is how you estimate mu and sigma.
+Let's take this method
+and just plug it
+into an anomaly detection algorithm.
+So how do we
+put all of this together to
+develop an anomaly detection algorithm?
+Here 's what we do.
+First we take our training
+set, and we fit the
+model, we fit P
+of X, by, you know, setting
+mu and sigma as described
+on the previous slide.
+Next when you are given
+a new example X. So
+if you are given a test example,
+lets take an earlier example to have a new example out here.
+And that is my test example.
+Given the new example X, what
+we are going to do is compute
+P of X, using this
+formula for the multivariate Gaussian distribution.
+And then, if P of
+X is very small, then we
+flagged it as an anomaly,
+whereas, if P of X is greater
+than that parameter epsilon, then
+we don't flag it as an anomaly.
+So it turns out, if we were to fit a multivariate Gaussian distribution to this data set,
+so just the red crosses, not the green example,
+you end up with a Gaussian
+distribution that places lots
+of probability in the central
+region, slightly less probability here,
+slightly less probability here,
+slightly less probability here,
+and very low probability at the point that is way out here.
+And so, if you apply
+the multivariate Gaussian distribution to
+this example, it will actually
+correctly flag that example.
+as an anomaly.
+Finally it's worth saying
+a few words about what is
+the relationship between the
+multivariate Gaussian distribution model, and
+the original model, where we
+were modeling P of
+X as a product of this
+P of X1, P of X2,
+up to P of Xn.
+It turns out that you can
+prove mathematically, I'm not
+going to do the proof here, but
+you can prove mathematically that this
+relationship, between the
+multivariate Gaussian model and
+this original one. And in
+particular, it turns out
+that the original model corresponds
+to multivariate Gaussians, where
+the contours of the
+Gaussian are always axis aligned.
+So all three of
+these are examples of
+Gaussian distributions that you
+can fit using the original model.
+It turns out that that corresponds
+to multivariate Gaussian, where, you
+know, the ellipsis here, the contours
+of this distribution--it
+turns out that this model actually
+corresponds to a special
+case of a multivariate Gaussian distribution.
+And in particular, this special
+case is defined by constraining
+the distribution of p
+of x, the multivariate a Gaussian
+distribution of p of x,
+so that the contours of
+the probability density function, of
+the probability distribution function, are axis aligned.
+And so you can get a p
+of x with a
+multivariate Gaussian that looks like
+this, or like this, or like this.
+And you notice, that in all
+3 of these examples, these ellipses,
+or these ovals that I'm drawing, have
+their axes aligned with the X1 X2 axes.
+And what we do not have, is
+a set of contours
+that are at an angle, right?
+And this corresponded to examples where
+sigma is equal to 1 1, 0.8, 0.8.
+Let's say, with non-0 elements on the
+off diagonals.
+So, it turns out that
+it's possible to show mathematically that
+this model actually is the
+same as a multivariate Gaussian
+distribution but with a constraint.
+And the constraint is that the
+covariance matrix sigma must
+have 0's on the off diagonal elements.
+In particular, the covariance matrix sigma,
+this thing here, it would
+be sigma squared 1, sigma
+squared 2, down to sigma
+squared n, and then
+everything on the off diagonal
+entries, all of these elements
+above and below the diagonal of the matrix,
+all of those are going to be zero.
+And in fact if you take
+these values of sigma, sigma
+squared 1, sigma squared 2,
+down to sigma squared n,
+and plug them into here, and
+you know, plug them into this
+covariance matrix, then the
+two models are actually identical.
+That is, this new model,
+using a multivariate Gaussian distribution,
+corresponds exactly to the
+old model, if the covariance
+matrix sigma, has only
+0 elements off the diagonals,
+and in pictures that
+corresponds to having Gaussian distributions,
+where the contours of this
+distribution function are axis aligned.
+So you aren't allowed to model the correlations between the diffrent features.
+So in that sense the original model
+is actually a special case of this multivariate Gaussian model.
+So when would you use each of these two models?
+So when would you the original
+model and when would you use
+the multivariate Gaussian model?
+The original model is probably
+used somewhat more often,
+and whereas the multivariate Gaussian
+distribution is used somewhat
+less but it has the advantage of being
+able to capture correlations between features. So
+suppose you want to
+capture anomalies where you
+have different features say where
+features x1, x2 take
+on unusual combinations of values
+so in the earlier
+example, we had that example where the anomaly was with the CPU load and the memory use taking on unusual combinations of values, if
+you want to use the original
+model to capture that, then what you
+need to do is create an
+extra feature, such as X3
+equals X1/X2, you know
+equals maybe the CPU load divided by the memory used, or something, and you
+need to create extra features
+if there's unusual combinations of values
+where X1 and X2 take
+on an unusual combination of
+values even though X1 by
+itself and X2 by itself
+looks like it's taking a perfectly normal value. But if you're willing to spend the time to manually
+create an extra feature like this,
+then the original model will work
+fine. 
+Whereas in contrast, the multivariate Gaussian model can automatically capture
+correlations between different features. But the original model has some other more significant advantages, too, and one huge
+advantage of the original model
+is that it is computationally cheaper, and another view on this
+is that is scales better to
+very large values of n
+and very large numbers of
+features, and so even
+if n were ten thousand,
+or even if n were equal
+to a hundred thousand, the original
+model will usually work just fine.
+Whereas in contrast for the multivariate Gaussian model notice here, for
+example, that we need to
+compute the inverse of the matrix
+sigma where sigma is
+an n by n matrix
+and so computing sigma if
+sigma is a hundred thousand by a
+hundred thousand matrix that is going to be very computationally expensive.
+And so the multivariate Gaussian model
+scales less well to large
+values of N. And
+finally for the original
+model, it turns out
+to work out ok even if
+you have a relatively small training
+set this is the small unlabeled
+examples that we use to model p of x
+of course, and this works fine, even if
+M is, you
+know, maybe 50, 100, works fine.
+Whereas for the multivariate Gaussian, it
+is sort of a mathematical property
+of the algorithm that you must have m
+greater than n, so that the number of examples is greater than the number of features you have. And there's a mathematical property of the way we estimate the parameters
+that if this is not true, so if m is less than or equal to n,
+then this matrix isn't even invertible, that is this matrix is singular, and so you can't even use the
+multivariate Gaussian model unless you make some changes to it. But a
+typical rule of thumb
+that I use is, I will use the
+multivariate Gaussian model only if m is much greater than n, so this is sort of the
+narrow mathematical requirement, but
+in practice, I would use
+the multivariate Gaussian model, only
+if m were quite a bit
+bigger than n. 
+So if
+m were greater than or
+equal to 10 times n, let's
+say, might be a reasonable rule of thumb, and if
+it doesn't satisfy this, then the multivariate Gaussian model
+has a lot
+of parameters, right, so this covariance matrix sigma is an n by n matrix,
+so it has, you know, roughly
+n squared parameters, because it's a symmetric matrix,
+it's actually closer to n squared
+over 2 parameters, but this is a
+lot of parameters, so you need
+make sure you have a fairly
+large value for m, make sure you have enough data to fit all these parameters. And m greater than
+or equal to 10 n would be a reasonable rule of thumb to make sure that you can estimate this covariance matrix sigma reasonably well.
+So in practice the original
+model shown on the left that is used more often.
+And if you suspect that you
+need to capture correlations between features
+what people will often do is just manually design extra features like these to capture specific
+unusual combinations of values. But in problems where you
+have a very large training set or m is very large and n is
+not too large, then the multivariate Gaussian
+model is well worth considering and may work better as well, and can
+save you from having to
+spend your time to manually
+create extra features in case
+the anomalies turn out to be captured by unusual
+combinations of values of the features.
+Finally I just want to
+briefly mention one somewhat technical
+property, but if you're
+fitting multivariate Gaussian
+model, and if you find
+that the covariance matrix sigma
+is singular, or you find
+it's non-invertible, they're usually 2 cases for this.
+One is if it's failing to
+satisfy this m greater than
+n condition, and the
+second case is if you have redundant features.
+So by redundant features, I mean,
+if you have 2 features that are the same.
+Somehow you accidentally made two
+copies of the feature, so your x1 is just equal to x2. Or if you have redundant features like maybe
+your features X3 is equal to feature X4, plus feature X5.
+Okay, so if you have highly
+redundant features like these, you
+know, where if X3 is equal
+to X4 plus X5, well X3
+doesn't contain any extra information, right?
+You just take these 2 other features, and add them together.
+And if you have this
+sort of redundant features, duplicated features,
+or this sort of features, than sigma may be non-invertible.
+And so there's a debugging set--
+this should very rarely happen,
+so you probably won't run into this,
+it is very unlikely that you have to worry about this--
+but in case you implement a
+multivariate Gaussian model you find that sigma is non-invertible.
+What I would do is first
+make sure that M is quite
+a bit bigger than N, and if it
+is then, the second thing I
+do, is just check for redundant features.
+And so if there are 2 features
+that are equal, just get rid
+of one of them, or if
+you have redundant if these
+, X3 equals X4 plus X5,
+just get rid of the redundant
+feature, and then it should work fine again.
+As an aside for those of you
+who are experts in linear algebra,
+by redundant features, what I
+mean is the formal term is
+features that are linearly dependent.
+But in practice what that really means
+is one of these problems tripping
+up the algorithm if you just make you features non-redundant.,
+that should solve the problem of sigma being non-invertable.
+But once again
+the odds of your running into this
+at all are pretty low so
+chances are, you can
+just apply the multivariate Gaussian
+model, without having to
+worry about sigma being non-invertible,
+so long as m is greater
+than or equal to n.
+So
+that's it for anomaly detection,
+with the multivariate Gaussian distribution.
+And if you apply this method
+you would be able to have an
+anomaly detection algorithm that automatically
+captures positive and negative
+correlations between your different
+features and flags an anomaly
+if it sees is unusual combination
+of the values of the features.
