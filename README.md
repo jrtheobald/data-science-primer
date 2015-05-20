@@ -2,7 +2,7 @@
 
 This is a collection of self paced resources for anyone looking to get into data science. The materials assume an absolute beginner and are intended to prepare students for the Galvanize Data Science interview process: http://www.galvanize.com/courses/data-science/ 
 
-![](http://i.giphy.com/83QtfwKWdmSEo.gif)
+![](http://i.giphy.com/5bo8XMq0GROw0.gif)
 
 ## Getting Started
 
