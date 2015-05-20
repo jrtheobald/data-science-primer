@@ -2,6 +2,8 @@
 
 This is a collection of self paced resources for anyone looking to get into data science. The materials assume an absolute beginner and are intended to prepare students for the Galvanize Data Science interview process: http://www.galvanize.com/courses/data-science/ 
 
+![](http://i.giphy.com/83QtfwKWdmSEo.gif)
+
 ## Getting Started
 
 We see many aspiring data scientist come to us from a variety of backgrounds: statisticians, mechanical engineers, political scientists, business analysts, software engineers, etc., etc. We have pretty much seen it all!  And many of these folks come to us with one simple question:
@@ -11,6 +13,10 @@ We see many aspiring data scientist come to us from a variety of backgrounds: st
 This respository is a curated set of the best resources out there to provide an on-ramp to becoming a data scientist no matter someone's background.  The skills needed can be broken up into the following topics: Programming (Python for us!), Linear Algebra, Statistics, Probability, and SQL.  And as extra, it helps to have a high level overview of machine learning.
 
 By no means do you need to be an expert in all of these, but we have identified these topics as the ones that we have seen set students up for success.  And as such, anyone who is looking to apply to our [Galvanize Data Science Immersive](http://www.galvanize.com/courses/data-science/ ) program can prepare for the interview/application process by completing these resources!
+
+## Getting Help
+
+If you have any questions about any of Galvanize's educational offerings, or questions about this material please feel free to [reach out](https://galvanize.zendesk.com/hc/en-us/requests/new)!
 
 ## Resources
 
@@ -36,6 +42,7 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 
 1. Review
   * [MIT: Statistics Cheat Sheet][7]
+  * [Hypothesis Testing: The Basics][7.1]
 2. In-Depth
   * [Khan Academy: Descriptive Statistics][8]
   * [Khan Academy: Inferential Statistics][9]
@@ -63,6 +70,16 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 2. In-Depth
   * Andrew Ng Coursera ([online][17] | [archive][18])
 
+## Acknowledgements
+
+Thanks to the following course for putting their content online for all to leverage:
+* [Khan Academy][20]
+* [UW: Introduction to ML][19]
+* [MITx: Introduction to Computer Science][2]
+* [Coursera: Machine Learning][18]
+
+This resource is intentionally meant to be curated, concise, and compact, it covers the absolute necessities. If you are looking for even more resources we recommend looking to the [The Open-Source Data Science Masters][21].
+
 <!-- references -->
 
 [1]: http://learnpythonthehardway.org/book/
@@ -74,6 +91,7 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 [6]: https://www.khanacademy.org/math/probability/random-variables-topic
 
 [7]: http://web.mit.edu/~csvoss/Public/usabo/stats_handout.pdf
+[7.1]: http://20bits.com/article/hypothesis-testing-the-basics
 [8]: https://www.khanacademy.org/math/probability/descriptive-statistics
 [9]: https://www.khanacademy.org/math/probability/statistics-inferential
 
@@ -88,3 +106,7 @@ Each sub heading below has two sections, a __Review__ section intended for anyon
 [16]: http://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf
 [17]: https://www.coursera.org/course/ml
 [18]: resources/coursera_ml
+
+[19]: http://courses.washington.edu/css490/2012.Winter/CSS490-590-Winter2012-syllabus.html
+[20]: https://www.khanacademy.org
+[21]: http://datasciencemasters.org/
